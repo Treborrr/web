@@ -27,5 +27,5 @@ xdg-open index.html # Linux
 ## Contacto
 - [GitHub](https://github.com/treborrr)
 - [LinkedIn](https://www.linkedin.com/in/robert-alvarado-valle/)
-- Email: [dev.robertalvarado@gmail.com](mailto:dev.robertalvarado@gmail.com)
+- [dev.robertalvarado@gmail.com](mailto:dev.robertalvarado@gmail.com)
 
