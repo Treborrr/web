@@ -1,0 +1,229 @@
+Fondo	
+RGB(40, 42, 54)
+	
+Línea actual	
+RGB(98, 114, 164)
+	
+Selección	
+RGB(68, 71, 90)
+	
+Primer plano	
+RGB(248, 248, 242)
+	
+Comentario	
+RGB(98, 114, 164)
+	
+Rojo	
+RGB(255, 85, 85)
+	
+Naranja	
+RGB(255, 184, 108)
+	
+Amarillo	
+RGB(241, 250, 140)
+	
+Verde	
+RGB(80, 250, 123)
+	
+Cian	
+RGB(139, 233, 253)
+	
+Púrpura	
+RGB(189, 147, 249)
+	
+Rosa	
+RGB(255, 121, 198)<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>treborrr — DevOps Portfolio</title>
+  <!-- Google Fonts: Kdam Thmor Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #282a36;
+      --surface: #2f3140;
+      --border: #3a3c4a;
+      --fg: #f8f8f2;
+      --muted: #aeb2cc;
+      --accent: #bd93f9;
+      --accent-2: #8be9fd;
+      --radius: 12px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Kdam Thmor Pro', sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+
+    .container{ max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+    .hero{ padding: 72px 0 36px; text-align:center; }
+    .profile-pic{
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 18px;
+    }
+    .title{
+      font-size: clamp(40px, 6vw, 64px);
+      margin: 0 0 10px 0;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .title .dot{ color: var(--muted); }
+    /* Ext color requested: #50FA7B */
+    .title .ext{ color: #50FA7B; }
+    .cursor{ display:inline-block; width:.55ch; height: 1em; background: currentColor; margin-left: 2px; vertical-align: -10%; opacity:1; animation: blink .95s steps(1,end) infinite; }
+    @keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+    .subtitle{ color: var(--muted); font-size: 1.05rem; max-width: 64ch; margin: 0 auto; }
+
+    .actions{ margin-top: 22px; display:flex; gap:12px; justify-content:center; }
+    .btn{ appearance:none; border:1px solid var(--border); background: var(--surface); color: var(--fg); padding: 10px 14px; border-radius: 10px; font-weight: 700; letter-spacing:.2px; cursor:pointer; font-family: 'Kdam Thmor Pro', sans-serif; }
+    .btn.primary{ border-color: transparent; background: var(--accent); color: #1a1a1a; }
+
+    section{ padding: 28px 0; }
+    .section-title{ font-size: 1.1rem; color: var(--muted); margin: 0 0 12px 0; letter-spacing:.8px; }
+    .card{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+
+    .list{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .item{ padding: 14px 16px; display:flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .item + .item{ border-top: 1px solid var(--border); }
+    .item-title{ font-weight: 700; }
+    .item-meta{ color: var(--muted); font-size: .95rem; }
+
+    footer{ border-top: 1px solid var(--border); margin-top: 36px; padding: 20px 0; background: #1f2029; font-size: 0.9rem; }
+    .footer-container{ max-width: 1100px; margin: 0 auto; display:flex; justify-content:space-between; align-items:center; padding: 10px 20px; color: var(--muted); }
+    .footer-left{ font-size: 0.85rem; }
+    .footer-right a{ color: var(--fg); text-decoration:none; margin-left:16px; font-size:0.9rem; }
+    .footer-right a:hover{ color: var(--accent-2); }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero" id="inicio">
+      <img src="trimmed-image.png" alt="Foto de perfil" class="profile-pic" />
+      <h1 class="title" aria-label="treborrr changing extension">
+        treborrr<span class="dot">.</span><span class="ext" id="ext-hero">sh</span><span class="cursor" aria-hidden="true"></span>
+      </h1>
+      <p class="subtitle">University student in engineering at UPC, with a focus on system architecture and a passion for cloud infrastructure. Paleta Dracula, tipografía <strong>Kdam Thmor Pro</strong>.</p>
+      <div class="actions">
+        <button class="btn primary">Ver proyectos DevOps</button>
+        <button class="btn">Descargar CV</button>
+      </div>
+    </section>
+
+    <section id="sobre">
+      <h2 class="section-title">SOBRE MÍ</h2>
+      <div class="card">
+        Estudiante universitario en Ingeniería en la UPC, con enfoque en arquitectura de sistemas y pasión por la infraestructura en la nube. Experiencia práctica como Analista de Calidad de Software (Tester QA) en QSD Soft S.A.C. – Lima, Perú (Ene 2022 – Feb 2025).
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2 class="section-title">HABILIDADES</h2>
+      <div class="list">
+        <div class="item"><div class="item-title">Control de Versiones</div><div class="item-meta">Git</div></div>
+        <div class="item"><div class="item-title">Cloud</div><div class="item-meta">Amazon Web Services</div></div>
+        <div class="item"><div class="item-title">Contenedores</div><div class="item-meta">Docker</div></div>
+        <div class="item"><div class="item-title">Sistemas</div><div class="item-meta">Linux</div></div>
+        <div class="item"><div class="item-title">Lenguajes</div><div class="item-meta">C++ • Bash • Python</div></div>
+      </div>
+    </section>
+
+    <section id="experiencia">
+      <h2 class="section-title">EXPERIENCIA LABORAL</h2>
+      <div class="card">
+        <strong>Analista de Calidad de Software (Tester QA)</strong><br>
+        QSD Soft S.A.C. – Lima, Perú | Ene 2022 – Feb 2025
+      </div>
+    </section>
+
+    <!--
+    <section id="proyectos">
+      <h2 class="section-title">PROYECTOS DEVOPS</h2>
+      <div class="list">
+        <div class="item">
+          <div class="item-title">Pipeline CI/CD</div>
+          <div class="item-meta">GitHub Actions • Docker • Kubernetes</div>
+        </div>
+        <div class="item">
+          <div class="item-title">Infraestructura como Código</div>
+          <div class="item-meta">Terraform • Ansible</div>
+        </div>
+        <div class="item">
+          <div class="item-title">Observabilidad</div>
+          <div class="item-meta">Prometheus • Grafana • ELK</div>
+        </div>
+      </div>
+    </section>
+    -->
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-left">© 2025 Robert Alvarado. Casi todos los derechos reservados</div>
+      <div class="footer-right">
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:dev.robertalvarado@gmail.com?subject=Contacto%20desde%20treborrr.dev&body=Hola%20Robert,%20te%20escribo%20porque...">Contáctame</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const extEl = document.getElementById('ext-hero');
+
+      console.assert(!!extEl, '[TEST] #ext-hero should exist in DOM');
+      if(!extEl){
+        console.warn('[WARN] #ext-hero not found. Skipping extension animation.');
+        return;
+      }
+
+      const exts = ['sh','yaml','docker','py','lua','cpp'];
+      let idx = 0;
+      const sleep = (ms)=> new Promise(r=>setTimeout(r,ms));
+
+      async function typeReplace(next){
+        extEl.textContent = '';
+        for(let i=1; i<=next.length; i++){
+          extEl.textContent = next.slice(0,i);
+          await sleep(100);
+        }
+      }
+      async function eraseCurrent(){
+        const current = extEl.textContent;
+        for(let i=current.length; i>0; i--){
+          extEl.textContent = current.slice(0,i-1);
+          await sleep(80);
+        }
+      }
+      async function loop(){
+        while(true){
+          await sleep(1400);
+          await eraseCurrent();
+          idx = (idx+1)%exts.length;
+          await typeReplace(exts[idx]);
+        }
+      }
+
+      extEl.textContent = exts[0];
+      loop();
+
+      const yearEl = document.getElementById('y');
+      if(yearEl){ yearEl.textContent = new Date().getFullYear(); }
+    });
+  </script>
+</body>
+</html>
