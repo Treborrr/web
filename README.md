@@ -28,4 +28,3 @@ xdg-open index.html # Linux
 - [GitHub](https://github.com/treborrr)
 - [LinkedIn](https://www.linkedin.com/in/robert-alvarado-valle/)
 - [dev.robertalvarado@gmail.com](mailto:dev.robertalvarado@gmail.com)
-
