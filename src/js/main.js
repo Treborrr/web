@@ -15,32 +15,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Spawn stardust
       const now = Date.now();
-      if (now - lastSparkTime > 30) { // Limit spark generation rate
-        const spark = document.createElement('div');
-        spark.className = 'stardust-particle';
+      if (now - lastSparkTime > 15) { // Faster spawn rate
+        // Generate 2 particles at a time for a denser effect
+        for (let i = 0; i < 2; i++) {
+          const spark = document.createElement('div');
+          spark.className = 'stardust-particle';
 
-        // Randomizing properties
-        const size = Math.random() * 4 + 2; // 2px to 6px
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const tx = (Math.random() - 0.5) * 60 + 'px'; // drift x
-        const ty = (Math.random() - 0.5) * 60 + 20 + 'px'; // drift y (mostly down)
+          // Randomizing properties
+          const size = Math.random() * 4 + 2; // 2px to 6px
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          const tx = (Math.random() - 0.5) * 80 + 'px'; // slightly wider drift
+          const ty = (Math.random() - 0.5) * 80 + 20 + 'px'; // mostly downwards drift
 
-        spark.style.width = `${size}px`;
-        spark.style.height = `${size}px`;
-        spark.style.backgroundColor = color;
-        spark.style.boxShadow = `0 0 ${size * 2}px ${color}`;
-        spark.style.left = `${posX}px`;
-        spark.style.top = `${posY}px`;
-        spark.style.setProperty('--tx', tx);
-        spark.style.setProperty('--ty', ty);
+          spark.style.width = `${size}px`;
+          spark.style.height = `${size}px`;
+          spark.style.backgroundColor = color;
+          spark.style.boxShadow = `0 0 ${size * 2}px ${color}`;
 
-        document.body.appendChild(spark);
+          // Add slight initial offset so they don't spawn exactly on top of each other
+          const offsetX = (Math.random() - 0.5) * 10;
+          const offsetY = (Math.random() - 0.5) * 10;
+
+          spark.style.left = `${posX + offsetX}px`;
+          spark.style.top = `${posY + offsetY}px`;
+          spark.style.setProperty('--tx', tx);
+          spark.style.setProperty('--ty', ty);
+
+          document.body.appendChild(spark);
+
+          // Clean up particle after animation
+          setTimeout(() => {
+            spark.remove();
+          }, 1000);
+        }
         lastSparkTime = now;
-
-        // Clean up particle after animation
-        setTimeout(() => {
-          spark.remove();
-        }, 1000);
       }
     });
 
