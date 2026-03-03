@@ -1,195 +1,744 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>treborrr</title>
-  <!-- Google Fonts: Kdam Thmor Pro -->
+  <title>Robert Alvarado | Soluciones de Negocio</title>
+  <meta name="description"
+    content="Programador enfocado en resolver problemas de negocio. Construyo sistemas a medida que eliminan la fricción del papel y los procesos manuales, llevando tu operación a la nube." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&display=swap"
+    rel="stylesheet">
+
   <style>
-    :root{
+    :root {
+      /* Dracula Theme Colors */
       --bg: #282a36;
-      --surface: #2f3140;
-      --border: #3a3c4a;
+      --surface: #44475a;
+      --surface-transparent: rgba(68, 71, 90, 0.4);
       --fg: #f8f8f2;
-      --muted: #aeb2cc;
-      --accent: #bd93f9;
-      --accent-2: #8be9fd;
-      --radius: 12px;
+      --muted: #6272a4;
+      --cyan: #8be9fd;
+      --green: #50fa7b;
+      --orange: #ffb86c;
+      --pink: #ff79c6;
+      --purple: #bd93f9;
+      --red: #ff5555;
+      --yellow: #f1fa8c;
+
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    *{ box-sizing: border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      background: var(--bg);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(at 0% 0%, rgba(189, 147, 249, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 121, 198, 0.12) 0px, transparent 50%);
+      background-attachment: fixed;
       color: var(--fg);
-      font-family: 'Kdam Thmor Pro', sans-serif;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .container{ max-width: 880px; margin: 0 auto; padding: 0 20px; }
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    .logo-font {
+      font-family: 'Kdam Thmor Pro', sans-serif;
+    }
 
-    .hero{ padding: 72px 0 36px; text-align:center; }
-    .profile-pic{
-      width: 140px; height: 140px;
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navbar */
+    nav {
+      padding: 32px 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      color: var(--fg);
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 32px;
+      transition: var(--transition);
+      font-size: 0.95rem;
+    }
+
+    nav a:hover {
+      color: var(--cyan);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 64px;
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .subtitle-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(189, 147, 249, 0.1);
+      border: 1px solid rgba(189, 147, 249, 0.3);
+      color: var(--purple);
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .title {
+      font-size: clamp(3rem, 8vw, 5rem);
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .title .dot {
+      color: var(--muted);
+    }
+
+    .title .ext {
+      color: var(--green);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 0.5ch;
+      height: 1em;
+      background: currentColor;
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .description {
+      font-size: 1.15rem;
+      color: var(--fg);
+      opacity: 0.9;
+      max-width: 600px;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .description {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    .profile-container {
+      position: relative;
+    }
+
+    .profile-pic {
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 18px;
+      border: 4px solid var(--surface);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 2;
+      transition: var(--transition);
     }
-    .title{
-      font-size: clamp(40px, 6vw, 64px);
-      margin: 0 0 10px 0;
+
+    .profile-container:hover .profile-pic {
+      transform: scale(1.02);
+      border-color: var(--purple);
+    }
+
+    .profile-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 320px;
+      background: linear-gradient(45deg, var(--purple), var(--cyan));
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.3;
+      z-index: 1;
+      animation: pulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.2;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+
+      100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .actions {
+        justify-content: center;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      font-size: 1rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(189, 147, 249, 0.4);
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(189, 147, 249, 0.6);
+    }
+
+    .btn.secondary {
+      background: var(--surface-transparent);
+      border-color: rgba(248, 248, 242, 0.1);
+      color: var(--fg);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(68, 71, 90, 0.8);
+      transform: translateY(-2px);
+      border-color: var(--cyan);
+    }
+
+    /* Sections */
+    section {
+      padding: 90px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      display: inline-block;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    /* Grid layout for what I do */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .glass-card {
+      background: var(--surface-transparent);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--transparent), var(--transparent));
+      transition: var(--transition);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(68, 71, 90, 0.6);
+    }
+
+    .glass-card.card-1:hover::before {
+      background: linear-gradient(90deg, var(--purple), var(--pink));
+    }
+
+    .glass-card.card-2:hover::before {
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+    }
+
+    .glass-card.card-3:hover::before {
+      background: linear-gradient(90deg, var(--orange), var(--yellow));
+    }
+
+    .card-icon {
+      font-size: 2.8rem;
+      margin-bottom: 24px;
+      display: inline-block;
+      background: var(--surface);
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
       font-weight: 700;
-      letter-spacing: .5px;
+      color: var(--fg);
     }
-    .title .dot{ color: var(--muted); }
-    /* Ext color requested: #50FA7B */
-    .title .ext{ color: #50FA7B; }
-    .cursor{ display:inline-block; width:.55ch; height: 1em; background: currentColor; margin-left: 2px; vertical-align: -10%; opacity:1; animation: blink .95s steps(1,end) infinite; }
-    @keyframes blink{ 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
 
-    .subtitle{ color: var(--muted); font-size: 1.05rem; max-width: 64ch; margin: 0 auto; }
+    .card-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
 
-    .actions{ margin-top: 22px; display:flex; gap:12px; justify-content:center; }
-    .btn{ appearance:none; border:1px solid var(--border); background: var(--surface); color: var(--fg); padding: 10px 14px; border-radius: 10px; font-weight: 700; letter-spacing:.2px; cursor:pointer; font-family: 'Kdam Thmor Pro', sans-serif; }
-    .btn.primary{ border-color: transparent; background: var(--accent); color: #1a1a1a; }
+    /* Stack section */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 24px;
+    }
 
-    section{ padding: 28px 0; }
-    .section-title{ font-size: 1.1rem; color: var(--muted); margin: 0 0 12px 0; letter-spacing:.8px; }
-    .card{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    @media (max-width: 480px) {
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-    .list{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
-    .item{ padding: 14px 16px; display:flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-    .item + .item{ border-top: 1px solid var(--border); }
-    .item-title{ font-weight: 700; }
-    .item-meta{ color: var(--muted); font-size: .95rem; }
+    .stack-category {
+      background: rgba(40, 42, 54, 0.6);
+      border: 1px solid var(--surface);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: var(--transition);
+    }
 
-    footer{ border-top: 1px solid var(--border); margin-top: 36px; padding: 20px 0; background: #1f2029; font-size: 0.9rem; }
-    .footer-container{ max-width: 1100px; margin: 0 auto; display:flex; justify-content:space-between; align-items:center; padding: 10px 20px; color: var(--muted); }
-    .footer-left{ font-size: 0.85rem; }
-    .footer-right a{ color: var(--fg); text-decoration:none; margin-left:16px; font-size:0.9rem; }
-    .footer-right a:hover{ color: var(--accent-2); }
+    .stack-category:hover {
+      border-color: rgba(189, 147, 249, 0.4);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .stack-title {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      font-family: 'Kdam Thmor Pro', sans-serif;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: var(--surface);
+      color: var(--fg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge:hover {
+      background: var(--surface-transparent);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Dynamic badge borders */
+    .badge-ts {
+      border-left: 2px solid #3178c6;
+    }
+
+    .badge-ang {
+      border-left: 2px solid #dd0031;
+    }
+
+    .badge-nxt {
+      border-left: 2px solid #fff;
+    }
+
+    .badge-pg {
+      border-left: 2px solid #336791;
+    }
+
+    .badge-aws {
+      border-left: 2px solid #ff9900;
+    }
+
+    .badge-doc {
+      border-left: 2px solid #2496ed;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--surface);
+      padding: 40px 0;
+      margin-top: 60px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .social-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .social-links a:hover {
+      color: var(--cyan);
+    }
+
+    /* Reveal Animation class */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
+
 <body>
-  <main class="container">
-    <section class="hero" id="inicio">
-      <img src="src/trimmed-image.png" alt="Foto de perfil" class="profile-pic" />
-      <h1 class="title" aria-label="treborrr changing extension">
-        treborrr<span class="dot">.</span><span class="ext" id="ext-hero">sh</span><span class="cursor" aria-hidden="true"></span>
-      </h1>
-      <p class="subtitle">University student in engineering at UPC, with a focus on system architecture and a passion for cloud infrastructure. Paleta Dracula, tipografía <strong>Kdam Thmor Pro</strong>.</p>
-      <div class="actions">
-        <button class="btn primary">Ver proyectos DevOps</button>
-        <a class="btn" href="/cv/cv.pdf" >Descargar CV</a>
-      </div>
-    </section>
 
-    <section id="sobre">
-      <h2 class="section-title">SOBRE MÍ</h2>
-      <div class="card">
-        Estudiante universitario en Ingeniería en la UPC, con enfoque en arquitectura de sistemas y pasión por la infraestructura en la nube.
-      </div>
-    </section>
+  <div class="container">
+    <nav>
+      <a href="#lo-que-hago">Servicios</a>
+      <a href="#stack">Stack</a>
+      <a href="mailto:dev.robertalvarado@gmail.com">Contacto</a>
+    </nav>
 
-    <section id="skills">
-      <h2 class="section-title">HABILIDADES</h2>
-      <div class="list">
-        <div class="item"><div class="item-title">Control de Versiones</div><div class="item-meta">Git</div></div>
-        <div class="item"><div class="item-title">Cloud</div><div class="item-meta">Amazon Web Services</div></div>
-        <div class="item"><div class="item-title">Contenedores</div><div class="item-meta">Docker</div></div>
-        <div class="item"><div class="item-title">Sistemas</div><div class="item-meta">Linux</div></div>
-        <div class="item"><div class="item-title">Lenguajes</div><div class="item-meta">C++ • Bash • Python</div></div>
-      </div>
-    </section>
-
-    <section id="experiencia">
-      <h2 class="section-title">EXPERIENCIA LABORAL</h2>
-      <div class="card">
-        <strong>Analista de Calidad de Software (Tester QA)</strong><br>
-        QSD Soft S.A.C. – Lima, Perú | Ene 2022 – Feb 2025
-      </div>
-    </section>
-
-    <!--
-    <section id="proyectos">
-      <h2 class="section-title">PROYECTOS DEVOPS</h2>
-      <div class="list">
-        <div class="item">
-          <div class="item-title">Pipeline CI/CD</div>
-          <div class="item-meta">GitHub Actions • Docker • Kubernetes</div>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="subtitle-badge">Desarrollador de Soluciones de Negocio</span>
+          <h1 class="title logo-font">
+            treborrr<span class="dot">.</span><span class="ext" id="ext-hero">ts</span><span class="cursor"
+              aria-hidden="true"></span>
+          </h1>
+          <p class="description">
+            Analizo cómo operan las empresas para diseñar y construir sistemas a medida que eliminan la fricción del
+            papel y los procesos manuales, llevando toda tu operación a una infraestructura robusta en la nube.
+          </p>
+          <div class="actions">
+            <a href="#lo-que-hago" class="btn primary">Descubre cómo te ayudo</a>
+            <a href="/cv/cv.pdf" target="_blank" class="btn secondary">Ver Currículum</a>
+          </div>
         </div>
-        <div class="item">
-          <div class="item-title">Infraestructura como Código</div>
-          <div class="item-meta">Terraform • Ansible</div>
-        </div>
-        <div class="item">
-          <div class="item-title">Observabilidad</div>
-          <div class="item-meta">Prometheus • Grafana • ELK</div>
+        <div class="profile-container">
+          <div class="profile-glow"></div>
+          <img src="src/trimmed-image.png" alt="Robert Alvarado" class="profile-pic" />
         </div>
       </div>
     </section>
-    -->
-  </main>
+
+    <section id="lo-que-hago" class="reveal">
+      <div class="section-header">
+        <h2 class="section-title">Lo que hago</h2>
+        <p style="color: var(--muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto; font-weight: 300;">
+          Transformo problemas operativos complejos en soluciones digitales eficientes y escalables.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="glass-card card-1">
+          <div class="card-icon" style="color: var(--purple);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3 class="card-title">Análisis Operativo</h3>
+          <p class="card-desc">Estudio tu flujo de trabajo actual para identificar cuellos de botella y oportunidades de
+            automatización que optimicen tiempo y recursos en tu empresa.</p>
+        </div>
+
+        <div class="glass-card card-2">
+          <div class="card-icon" style="color: var(--cyan);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </div>
+          <h3 class="card-title">Digitalización</h3>
+          <p class="card-desc">Transformo formularios, hojas de cálculo y registros físicos en plataformas digitales
+            intuitivas, conectadas y hechas totalmente a la medida de tu equipo.</p>
+        </div>
+
+        <div class="glass-card card-3">
+          <div class="card-icon" style="color: var(--orange);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
+            </svg>
+          </div>
+          <h3 class="card-title">Seguridad en la Nube</h3>
+          <p class="card-desc">Implemento arquitecturas en la nube escalables con respaldos automatizados, garantizando
+            que tu información esté siempre disponible, consistente y segura.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack" class="reveal">
+      <div class="section-header">
+        <h2 class="section-title">Stack Tecnológico</h2>
+        <p style="color: var(--muted); font-size: 1.15rem; font-weight: 300;">Las herramientas que utilizo para
+          construir producto e infraestructura.</p>
+      </div>
+
+      <div class="stack-grid">
+        <div class="stack-category">
+          <h3 class="stack-title">Desarrollo Core</h3>
+          <div class="badges">
+            <span class="badge badge-nxt">Next.js</span>
+            <span class="badge badge-ts">TypeScript</span>
+            <span class="badge badge-ang">Angular</span>
+            <span class="badge">Python</span>
+            <span class="badge">C++</span>
+            <span class="badge">PHP</span>
+            <span class="badge">Lua</span>
+          </div>
+        </div>
+
+        <div class="stack-category">
+          <h3 class="stack-title">Bases de Datos</h3>
+          <div class="badges">
+            <span class="badge badge-pg">PostgreSQL</span>
+            <span class="badge" style="border-left: 2px solid #00758f;">MySQL</span>
+            <span class="badge" style="border-left: 2px solid #003B57;">SQLite</span>
+          </div>
+        </div>
+
+        <div class="stack-category">
+          <h3 class="stack-title">Infraestructura & Deploy</h3>
+          <div class="badges">
+            <span class="badge badge-aws">AWS</span>
+            <span class="badge badge-doc">Docker</span>
+            <span class="badge" style="border-left: 2px solid #009639;">Nginx</span>
+            <span class="badge" style="border-left: 2px solid #D22128;">Apache</span>
+            <span class="badge" style="border-left: 2px solid #fff;">Vercel</span>
+            <span class="badge" style="border-left: 2px solid #000;">Railway</span>
+            <span class="badge" style="border-left: 2px solid #3ECF8E;">Supabase</span>
+          </div>
+        </div>
+
+        <div class="stack-category">
+          <h3 class="stack-title">Herramientas</h3>
+          <div class="badges">
+            <span class="badge">Linux</span>
+            <span class="badge" style="border-left: 2px solid #F05032;">Git</span>
+            <span class="badge" style="border-left: 2px solid #57A143;">Neovim</span>
+            <span class="badge">Laragon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <footer>
-    <div class="footer-container">
-      <div class="footer-left">© 2025 Robert Alvarado. Casi todos los derechos reservados</div>
-      <div class="footer-right">
+    <div class="container footer-content">
+      <div class="footer-left">
+        © <span id="y">2025</span> Robert Alvarado. Resolviendo problemas con código.
+      </div>
+      <div class="social-links">
         <a href="https://github.com/treborrr" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://www.linkedin.com/in/robert-alvarado-valle/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="mailto:dev.robertalvarado@gmail.com?subject=Contacto%20desde%20treborrr.dev&body=Hola%20Robert,%20te%20escribo%20porque...">Contáctame</a>
+        <a href="https://www.linkedin.com/in/robert-alvarado-valle/" target="_blank"
+          rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:dev.robertalvarado@gmail.com">Contacto</a>
       </div>
     </div>
   </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Dynamic Extension Animation
       const extEl = document.getElementById('ext-hero');
+      if (extEl) {
+        // Stack-based extensions
+        const exts = ['ts', 'tsx', 'sql', 'py', 'aws', 'cpp'];
+        const colors = [
+          'var(--green)',   // ts
+          'var(--red)',     // tsx
+          'var(--cyan)',    // sql
+          'var(--yellow)',  // py
+          'var(--orange)',  // aws
+          'var(--purple)'   // cpp
+        ];
 
-      console.assert(!!extEl, '[TEST] #ext-hero should exist in DOM');
-      if(!extEl){
-        console.warn('[WARN] #ext-hero not found. Skipping extension animation.');
-        return;
-      }
+        let idx = 0;
+        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-      const exts = ['sh','yaml','docker','py','lua','cpp'];
-      let idx = 0;
-      const sleep = (ms)=> new Promise(r=>setTimeout(r,ms));
-
-      async function typeReplace(next){
-        extEl.textContent = '';
-        for(let i=1; i<=next.length; i++){
-          extEl.textContent = next.slice(0,i);
-          await sleep(100);
+        async function typeReplace(next, color) {
+          extEl.style.color = color;
+          extEl.textContent = '';
+          for (let i = 1; i <= next.length; i++) {
+            extEl.textContent = next.slice(0, i);
+            await sleep(100);
+          }
         }
-      }
-      async function eraseCurrent(){
-        const current = extEl.textContent;
-        for(let i=current.length; i>0; i--){
-          extEl.textContent = current.slice(0,i-1);
-          await sleep(80);
+
+        async function eraseCurrent() {
+          const current = extEl.textContent;
+          for (let i = current.length; i > 0; i--) {
+            extEl.textContent = current.slice(0, i - 1);
+            await sleep(60);
+          }
         }
-      }
-      async function loop(){
-        while(true){
-          await sleep(1400);
-          await eraseCurrent();
-          idx = (idx+1)%exts.length;
-          await typeReplace(exts[idx]);
+
+        async function loop() {
+          while (true) {
+            await sleep(2500); // Wait longer to read the extension
+            await eraseCurrent();
+            idx = (idx + 1) % exts.length;
+            await typeReplace(exts[idx], colors[idx]);
+          }
         }
+
+        extEl.textContent = exts[0];
+        extEl.style.color = colors[0];
+        loop();
       }
 
-      extEl.textContent = exts[0];
-      loop();
-
+      // 2. Auto-update year
       const yearEl = document.getElementById('y');
-      if(yearEl){ yearEl.textContent = new Date().getFullYear(); }
+      if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+
+      // 3. Scroll Reveal Animation
+      function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight;
+          var elementTop = reveals[i].getBoundingClientRect().top;
+          var elementVisible = 100;
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add("active");
+          }
+        }
+      }
+      window.addEventListener("scroll", reveal);
+      reveal(); // Trigger on load
     });
   </script>
 </body>
+
 </html>
