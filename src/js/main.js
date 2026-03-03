@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+      // 0. Custom Cursor Logic
+      const cursorDot = document.getElementById('cursor-dot');
+      const cursorGlow = document.getElementById('cursor-glow');
+      
+      if (cursorDot && cursorGlow) {
+        window.addEventListener('mousemove', (e) => {
+          const posX = e.clientX;
+          const posY = e.clientY;
+          
+          cursorDot.style.left = `${posX}px`;
+          cursorDot.style.top = `${posY}px`;
+          
+          // Smooth follow for the glow
+          cursorGlow.animate({
+              left: `${posX}px`,
+              top: `${posY}px`
+          }, { duration: 500, fill: "forwards" });
+        });
+        
+        // Hide/Show custom cursor when mouse leaves/enters window
+        document.addEventListener('mouseleave', () => {
+            cursorDot.style.opacity = '0';
+            cursorGlow.style.opacity = '0';
+        });
+        
+        document.addEventListener('mouseenter', () => {
+            cursorDot.style.opacity = '1';
+            cursorGlow.style.opacity = '1';
+        });
+      }
+
       // 1. Dynamic Extension Animation
       const extEl = document.getElementById('ext-hero');
       if (extEl) {

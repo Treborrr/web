@@ -40,6 +40,58 @@
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      cursor: none; /* Hide default cursor to use custom one */
+    }
+    
+    /* Custom Interactive Glow Cursor */
+    #cursor-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--cyan);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background-color 0.2s;
+      box-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+    }
+
+    #cursor-glow {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(139, 233, 253, 0.4);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, top 0.1s ease-out, left 0.1s ease-out;
+      box-shadow: 0 0 15px rgba(189, 147, 249, 0.2);
+    }
+    
+    /* Hover states for interactive elements */
+    a:hover ~ #cursor-dot, button:hover ~ #cursor-dot, .glass-card:hover ~ #cursor-dot {
+      width: 12px;
+      height: 12px;
+      background-color: var(--purple);
+      box-shadow: 0 0 15px var(--purple), 0 0 30px var(--purple);
+    }
+    
+    a:hover ~ #cursor-glow, button:hover ~ #cursor-glow, .glass-card:hover ~ #cursor-glow {
+      width: 60px;
+      height: 60px;
+      border-color: rgba(189, 147, 249, 0.6);
+      background-color: rgba(189, 147, 249, 0.1);
+    }
+    
+    /* Revert cursor for text elements */
+    input, textarea, p, h1, h2, h3 {
+        cursor: auto;
     }
 
     /* Typography */
