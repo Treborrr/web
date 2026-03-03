@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simulador ERP | Robert Alvarado</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&display=swap"
+        rel="stylesheet">
+
+    <!-- Usando los mismos estilos, ruta relativa a la carpeta raíz -->
+    <link rel="stylesheet" href="../src/css/style.css">
+
+    <style>
+        /* Estilos específicos para la página de demostración (Opcionales) */
+        .demo-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .demo-icon {
+            font-size: 5rem;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <nav>
+            <a href="../index.html">← Volver al inicio</a>
+        </nav>
+
+        <section class="demo-container">
+            <div class="demo-icon">👨‍💻</div>
+            <h1 class="title logo-font">
+                Simulador ERP
+            </h1>
+            <p class="description" style="margin-left:auto; margin-right:auto;">
+                Página de demostración para el sistema de planificación de recursos empresariales.
+                Aquí podrás colocar capturas de pantalla, explicaciones técnicas de la infraestructura
+                (bases de datos, repositorios en la nube) e incluso IFrames con una demo funcionando.
+            </p>
+            <div class="actions" style="justify-content: center;">
+                <a href="#" class="btn primary">Ver Repositorio (Privado)</a>
+                <a href="#" class="btn secondary">Ver Arquitectura en AWS</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-left">
+                © <span id="y">2025</span> Robert Alvarado.
+            </div>
+            <div class="social-links">
+                <a href="../index.html">Inicio</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('y');
+            if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+        });
+    </script>
+</body>
+
+</html>
