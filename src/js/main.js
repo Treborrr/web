@@ -128,4 +128,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.addEventListener("scroll", reveal);
   reveal(); // Trigger on load
+
+  // 4. Experience View Toggle
+  const toggleInputs = document.querySelectorAll('input[name="exp-view"]');
+  const views = document.querySelectorAll('.exp-view');
+
+  if (toggleInputs.length > 0 && views.length > 0) {
+    toggleInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        const targetViewId = `view-${e.target.value}`;
+
+        views.forEach(view => {
+          if (view.id === targetViewId) {
+            view.classList.add('active');
+          } else {
+            view.classList.remove('active');
+          }
+        });
+      });
+    });
+  }
 });

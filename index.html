@@ -27,6 +27,7 @@
     <nav>
       <a href="#lo-que-hago">Servicios</a>
       <a href="#proyectos">Portafolio</a>
+      <a href="#experiencia">Trayectoria</a>
       <a href="#stack">Stack</a>
       <a href="mailto:dev.robertalvarado@gmail.com">Contacto</a>
     </nav>
@@ -45,7 +46,6 @@
           </p>
           <div class="actions">
             <a href="#lo-que-hago" class="btn primary">Descubre cómo te ayudo</a>
-            <a href="/cv/cv.pdf" target="_blank" class="btn secondary">Ver Currículum</a>
           </div>
         </div>
         <div class="profile-container">
@@ -55,6 +55,7 @@
       </div>
     </section>
 
+    <!-- Servicios Section -->
     <section id="lo-que-hago" class="reveal">
       <div class="section-header">
         <h2 class="section-title">Lo que hago</h2>
@@ -103,7 +104,7 @@
       </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- Portafolio Section -->
     <section id="proyectos" class="reveal">
       <div class="section-header">
         <h2 class="section-title">Portafolio Interactivo</h2>
@@ -131,6 +132,161 @@
         </div>
       </div>
     </section>
+
+    <!-- Trayectoria Section -->
+    <section id="experiencia" class="reveal">
+      <div class="section-header">
+        <h2 class="section-title">Trayectoria Profesional</h2>
+        <p style="color: var(--muted); font-size: 1.15rem; max-width: 600px; margin: 0 auto; font-weight: 300;">
+          Mi recorrido diseñando sistemas a medida y asegurando la calidad del software.
+        </p>
+      </div>
+
+      <!-- Toggle Switch -->
+      <div class="view-toggle-container">
+        <div class="view-toggle">
+          <input type="radio" id="view-1" name="exp-view" value="terminal" checked>
+          <label for="view-1" class="toggle-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+            Terminal
+          </label>
+
+          <input type="radio" id="view-2" name="exp-view" value="timeline">
+          <label for="view-2" class="toggle-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+            </svg>
+            Timeline
+          </label>
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+
+      <!-- Views Container -->
+      <div class="exp-views-wrapper">
+
+        <!-- VIEW 1: Terminal -->
+        <div id="view-terminal" class="exp-view active">
+          <div class="terminal-window glass-card">
+            <div class="terminal-header">
+              <div class="term-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="term-title">robert@admin: ~/experiencia</div>
+            </div>
+            <div class="terminal-body logo-font">
+              <div class="term-line"><span class="term-prompt">robert@admin:~$</span> ./show_experience.sh</div>
+              <div class="term-output">
+                <div class="term-block">
+                  <span class="term-key">[CARGO]</span> Desarrollador de Software a Medida<br />
+                  <span class="term-key">[EMPRESA]</span> Cacao Nuestro<br />
+                  <span class="term-key">[PERIODO]</span> Feb 2026
+                </div>
+                <div class="term-list" style="margin-bottom: 24px;">
+                  <div>> Desarrollo e implementación de "SCCE" (Sistema de Control de Cacao Especial).</div>
+                  <div>> Construcción de una solución tecnológica hecha completamente a la medida según la lógica de
+                    negocio de la empresa.</div>
+                  <div>> Digitalización de procesos, reemplazando el papel por trazabilidad y gestión estructurada.
+                  </div>
+                  <div>> Diseño de arquitectura de software para optimizar el flujo de trabajo operativo.</div>
+                </div>
+
+                <div class="term-block">
+                  <span class="term-key">[CARGO]</span> Analista de Calidad de Software (Tester QA)<br />
+                  <span class="term-key">[EMPRESA]</span> QSD Soft S.A.C. – Lima, Perú<br />
+                  <span class="term-key">[PERIODO]</span> Ene 2022 – Feb 2025
+                </div>
+                <div class="term-list">
+                  <div>> Ejecución de pruebas funcionales y no funcionales en entornos de desarrollo y producción.</div>
+                  <div>> Elaboración de casos de prueba y documentación de resultados.</div>
+                  <div>> Identificación, reporte y seguimiento de incidencias en aplicaciones web y de escritorio.</div>
+                  <div>> Colaboración directa con equipos de desarrollo para asegurar la calidad del producto final.
+                  </div>
+                  <div>> Validación del cumplimiento de requisitos técnicos y funcionales establecidos.</div>
+                  <div>> Automatización de procesos y administración de entornos de prueba en Linux.</div>
+                </div>
+              </div>
+              <div class="term-line"><span class="term-prompt">robert@admin:~$</span> <span class="cursor"
+                  aria-hidden="true"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 2: Timeline -->
+        <div id="view-timeline" class="exp-view">
+          <div class="timeline-container">
+            <!-- SCCE Experience -->
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content glass-card">
+                <div class="timeline-header">
+                  <h3 class="role-title">Desarrollador de Software a Medida</h3>
+                  <div class="company-info">
+                    <span class="company-name">Cacao Nuestro</span>
+                    <span class="company-period">Feb 2026</span>
+                  </div>
+                </div>
+                <ul class="role-tasks" style="margin-bottom: 0;">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Arquitectura y desarrollo de <strong>SCCE</strong> (Sistema de Control de Cacao Especial).
+                  </li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Solución construida a la medida, adaptada estrictamente a la lógica de negocio y operativa de
+                    la empresa.</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Digitalización del flujo de trabajo, eliminando la fricción del papel para mejorar la
+                    trazabilidad de la operación.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- QSD Soft Experience -->
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content glass-card">
+                <div class="timeline-header">
+                  <h3 class="role-title">Analista de Calidad de Software (Tester QA)</h3>
+                  <div class="company-info">
+                    <span class="company-name">QSD Soft S.A.C.</span>
+                    <span class="company-period">Ene 2022 – Feb 2025</span>
+                  </div>
+                </div>
+                <ul class="role-tasks" style="margin-bottom: 0;">
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Ejecución de pruebas funcionales y no funcionales en entornos de desarrollo y producción.
+                  </li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Elaboración de casos de prueba, documentación de resultados y gestión de incidencias.</li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Colaboración directa con equipos de desarrollo para asegurar la calidad del producto final.
+                  </li>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg> Automatización de procesos y administración de entornos de prueba operando en Linux.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
 
     <section id="stack" class="reveal">
       <div class="section-header">
