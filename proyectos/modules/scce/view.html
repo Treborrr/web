@@ -1,0 +1,276 @@
+<style>
+    .scce-app {
+        display: flex;
+        height: 100%;
+        background: #f4f7f6;
+        color: #333;
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+    }
+
+    .scce-sidebar {
+        width: 180px;
+        background: white;
+        border-right: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 10px;
+    }
+
+    .scce-logo {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .scce-logo img {
+        width: 30px;
+    }
+
+    .scce-nav {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        flex-grow: 1;
+    }
+
+    .scce-nav-item {
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: 0.2s;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .scce-nav-item:hover {
+        background: #f0f0f0;
+    }
+
+    .scce-nav-item.active {
+        background: #00a651;
+        color: white;
+    }
+
+    .scce-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .scce-header {
+        background: white;
+        padding: 10px 25px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .scce-header h4 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    .scce-content {
+        padding: 30px;
+    }
+
+    .scce-welcome {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .scce-title h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1a1a1a;
+    }
+
+    .scce-title span {
+        color: #00a651;
+    }
+
+    .scce-badge-admin {
+        background: #e8f5e9;
+        color: #00a651;
+        padding: 4px 12px;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .scce-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .scce-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        border-left: 4px solid #ddd;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .scce-card h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+    }
+
+    .scce-card p {
+        font-size: 0.75rem;
+        color: #666;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+    .scce-card a {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #f39c12;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .card-dash {
+        border-color: #00a651;
+    }
+
+    .card-lotes {
+        border-color: #f39c12;
+    }
+
+    .card-ferm {
+        border-color: #00a651;
+    }
+
+    .card-secado {
+        border-color: #e67e22;
+    }
+
+    .scce-table-container {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .scce-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.75rem;
+    }
+
+    .scce-table th {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 2px solid #f0f0f0;
+        color: #999;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .scce-table td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .scce-status {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.65rem;
+    }
+
+    .status-lote {
+        background: #e8f5e9;
+        color: #00a651;
+    }
+
+    .status-ferm {
+        background: #fff3e0;
+        color: #e67e22;
+    }
+</style>
+<div class="scce-app">
+    <aside class="scce-sidebar">
+        <div class="scce-logo">
+            <img src="/src/img/trimmed-image.png" style="filter: grayscale(1) invert(0.2);">
+            <span>SISTEMA CONTROL<br>CACAO ESPECIAL</span>
+        </div>
+        <ul class="scce-nav">
+            <li class="scce-nav-item active" onclick="window.loadScceInicio()">Inicio</li>
+            <li class="scce-nav-item" onclick="window.loadScceDashboard()">Dashboard</li>
+            <li class="scce-nav-item" onclick="window.loadScceTracking()">Tracking</li>
+            <li class="scce-nav-item" onclick="window.loadScceFermentacion()">Fermentación</li>
+            <li class="scce-nav-item">Secado</li>
+            <li class="scce-nav-item">Almacén</li>
+        </ul>
+        <div style="margin-top: auto; padding: 10px;">
+            <div
+                style="background: #e8f5e9; padding: 5px 10px; border-radius: 5px; color: #00a651; font-weight: 700; font-size: 0.65rem; text-align:center;">
+                ADMIN</div>
+            <div style="color: #e74c3c; font-size: 0.65rem; margin-top: 10px; text-align:center; cursor:pointer;">Cerrar
+                sesión</div>
+        </div>
+    </aside>
+    <main class="scce-main">
+        <header class="scce-header">
+            <h4>Sistema de Trazabilidad</h4>
+        </header>
+        <div class="scce-content" id="scce-inner-view">
+            <div class="scce-welcome">
+                <div class="scce-title">
+                    <h1>Bienvenido, <span>Administrador</span></h1>
+                    <p style="font-size: 0.8rem; color: #999;">Sistema de Trazabilidad de Producción de Cacao</p>
+                </div>
+                <div class="scce-badge-admin">ADMINISTRADOR</div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: #999; margin-bottom: 20px;">Tienes acceso a las siguientes secciones:
+            </p>
+
+            <div class="scce-grid">
+                <div class="scce-card card-dash">
+                    <h3>Dashboard</h3>
+                    <p>KPIs, gráficos y actividad reciente del sistema.</p>
+                    <a href="#">Ir a Dashboard →</a>
+                </div>
+                <div class="scce-card card-lotes" onclick="window.loadScceTracking()">
+                    <h3>Lotes</h3>
+                    <p>Registro y seguimiento de lotes de cacao.</p>
+                    <a href="#" style="color: #f39c12;">Ir a Lotes →</a>
+                </div>
+                <div class="scce-card card-ferm">
+                    <h3>Fermentación</h3>
+                    <p>Control de eventos y mediciones del proceso.</p>
+                    <a href="#">Ir a Fermentación →</a>
+                </div>
+                <div class="scce-card card-secado">
+                    <h3>Secado</h3>
+                    <p>Registro del proceso de secado y finalización.</p>
+                    <a href="#" style="color: #e67e22;">Ir a Secado →</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,853 @@
+<style>
+    /* ====== HackerShop Base ====== */
+    .hs-app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: #0a0a0a;
+        color: #e0e0e0;
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+    }
+
+    /* Nav */
+    .hs-nav {
+        display: flex;
+        align-items: center;
+        padding: 0 32px;
+        height: 52px;
+        background: #111;
+        border-bottom: 1px solid #1a1a1a;
+        gap: 32px;
+        flex-shrink: 0;
+    }
+
+    .hs-logo {
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .hs-logo span {
+        color: #00e676;
+    }
+
+    .hs-navlinks {
+        display: flex;
+        gap: 20px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .hs-navlinks a {
+        font-size: 0.78rem;
+        color: #aaa;
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .hs-navlinks a:hover {
+        color: #fff;
+    }
+
+    .hs-navicons {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .hs-navicons span {
+        cursor: pointer;
+        font-size: 1rem;
+        color: #aaa;
+    }
+
+    .hs-cart-badge {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .hs-badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: #00e676;
+        color: #000;
+        font-size: 0.55rem;
+        font-weight: 800;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* ====== Views ====== */
+    .hs-view {
+        display: none;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .hs-view.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* --- LANDING --- */
+    .hs-hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 32px 20px;
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 230, 118, 0.08) 0%, transparent 60%);
+    }
+
+    .hs-hero-icon {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+    }
+
+    .hs-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 900;
+        line-height: 1.15;
+        margin-bottom: 14px;
+    }
+
+    .hs-hero h1 .green {
+        color: #00e676;
+    }
+
+    .hs-hero h1 .cyan {
+        color: #00bcd4;
+    }
+
+    .hs-hero p {
+        font-size: 0.82rem;
+        color: #888;
+        max-width: 420px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+    }
+
+    .hs-hero-btns {
+        display: flex;
+        gap: 12px;
+    }
+
+    .hs-btn-primary {
+        padding: 10px 24px;
+        background: #00e676;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.82rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+    }
+
+    .hs-btn-primary:hover {
+        background: #00c853;
+    }
+
+    .hs-btn-secondary {
+        padding: 10px 24px;
+        background: transparent;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.82rem;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 1px solid #333;
+        transition: border-color 0.2s;
+    }
+
+    .hs-btn-secondary:hover {
+        border-color: #666;
+    }
+
+    .hs-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: #1a1a1a;
+        border-top: 1px solid #1a1a1a;
+        flex-shrink: 0;
+    }
+
+    .hs-stat {
+        background: #111;
+        padding: 18px;
+        text-align: center;
+    }
+
+    .hs-stat-icon {
+        font-size: 1.2rem;
+        color: #00e676;
+        margin-bottom: 6px;
+    }
+
+    .hs-stat-value {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #fff;
+    }
+
+    .hs-stat-label {
+        font-size: 0.65rem;
+        color: #666;
+    }
+
+    /* --- CATALOG --- */
+    .hs-catalog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        padding: 24px;
+    }
+
+    .hs-product-card {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .hs-product-card:hover {
+        border-color: #00e676;
+        transform: translateY(-2px);
+    }
+
+    .hs-product-img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        background: #0f0f0f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hs-product-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .hs-product-info {
+        padding: 12px;
+    }
+
+    .hs-product-name {
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .hs-product-price {
+        font-size: 0.9rem;
+        font-weight: 800;
+        color: #00e676;
+    }
+
+    .hs-product-stock {
+        font-size: 0.65rem;
+        color: #00e676;
+        margin-bottom: 8px;
+    }
+
+    .hs-add-btn {
+        width: 100%;
+        padding: 7px;
+        background: #00e676;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.72rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .hs-add-btn:hover {
+        background: #00c853;
+    }
+
+    /* --- CART --- */
+    .hs-cart-layout {
+        display: flex;
+        gap: 20px;
+        padding: 24px;
+        flex: 1;
+    }
+
+    .hs-cart-items {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hs-cart-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .hs-cart-sub {
+        font-size: 0.75rem;
+        color: #666;
+        margin-bottom: 16px;
+    }
+
+    .hs-cart-item {
+        display: flex;
+        gap: 14px;
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        padding: 14px;
+        align-items: center;
+    }
+
+    .hs-cart-item-img {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        background: #0f0f0f;
+        border-radius: 6px;
+    }
+
+    .hs-cart-item-info {
+        flex: 1;
+    }
+
+    .hs-cart-item-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .hs-cart-item-status {
+        font-size: 0.68rem;
+        color: #00e676;
+        margin: 3px 0 8px;
+    }
+
+    .hs-qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hs-qty-btn {
+        width: 24px;
+        height: 24px;
+        background: #1e1e1e;
+        border: 1px solid #333;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+    .hs-qty-val {
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .hs-cart-item-price {
+        font-size: 0.9rem;
+        font-weight: 800;
+        color: #00e676;
+    }
+
+    .hs-trash {
+        cursor: pointer;
+        color: #e74c3c;
+        font-size: 0.9rem;
+    }
+
+    .hs-order-summary {
+        width: 220px;
+        flex-shrink: 0;
+    }
+
+    .hs-summary-box {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        padding: 18px;
+    }
+
+    .hs-summary-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .hs-summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: #888;
+        margin-bottom: 8px;
+    }
+
+    .hs-summary-row.total {
+        color: #00e676;
+        font-weight: 800;
+        font-size: 0.88rem;
+        border-top: 1px solid #222;
+        padding-top: 10px;
+        margin-top: 4px;
+    }
+
+    .hs-safe-badge {
+        text-align: center;
+        font-size: 0.65rem;
+        color: #00e676;
+        margin: 10px 0 12px;
+    }
+
+    .hs-checkout-btn {
+        width: 100%;
+        padding: 10px;
+        background: #00e676;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.78rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-bottom: 8px;
+    }
+
+    .hs-cont-btn {
+        width: 100%;
+        padding: 9px;
+        background: transparent;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.75rem;
+        border: 1px solid #333;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    /* --- ADMIN PANEL --- */
+    .hs-admin-header {
+        padding: 24px 28px 12px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .hs-admin-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .hs-admin-sub {
+        font-size: 0.75rem;
+        color: #666;
+    }
+
+    .hs-admin-role {
+        font-size: 0.72rem;
+        color: #00e676;
+    }
+
+    .hs-admin-tabs {
+        display: flex;
+        border-bottom: 1px solid #1e1e1e;
+        padding: 0 28px;
+        gap: 2px;
+    }
+
+    .hs-admin-tab {
+        padding: 10px 20px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        color: #666;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s;
+    }
+
+    .hs-admin-tab:hover {
+        color: #fff;
+    }
+
+    .hs-admin-tab.active {
+        color: #fff;
+        border-bottom-color: #00e676;
+    }
+
+    .hs-admin-body {
+        padding: 20px 28px;
+    }
+
+    .hs-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .hs-kpi-card {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 8px;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .hs-kpi-label {
+        font-size: 0.68rem;
+        color: #666;
+        margin-bottom: 4px;
+    }
+
+    .hs-kpi-value {
+        font-size: 1.3rem;
+        font-weight: 800;
+    }
+
+    .hs-kpi-icon {
+        font-size: 1.4rem;
+    }
+
+    .hs-recent {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 8px;
+        padding: 16px;
+    }
+
+    .hs-recent-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    .hs-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.75rem;
+    }
+
+    .hs-table th {
+        color: #555;
+        font-weight: 600;
+        text-align: left;
+        padding: 8px 0;
+        border-bottom: 1px solid #1e1e1e;
+    }
+
+    .hs-table td {
+        padding: 10px 0;
+        border-bottom: 1px solid #111;
+        color: #888;
+    }
+</style>
+
+<div class="hs-app">
+    <!-- Nav -->
+    <nav class="hs-nav">
+        <div class="hs-logo">HACKER<span>SHOP</span></div>
+        <div class="hs-navlinks">
+            <a onclick="hsShowView('landing')">Inicio</a>
+            <a onclick="hsShowView('catalog')">Catálogo</a>
+            <a>Hardware</a>
+            <a>Software</a>
+            <a>Libros</a>
+            <a>Licencias</a>
+        </div>
+        <div class="hs-navicons">
+            <span title="Buscar">🔍</span>
+            <div class="hs-cart-badge" onclick="hsShowView('cart')">
+                🛒
+                <span class="hs-badge">2</span>
+            </div>
+            <span onclick="hsShowView('admin')">👤</span>
+        </div>
+    </nav>
+
+    <!-- LANDING VIEW -->
+    <div class="hs-view active" id="hs-landing">
+        <div class="hs-hero">
+            <div class="hs-hero-icon">💻</div>
+            <h1>
+                <span class="green">PROTEGE</span> <span class="cyan">TU MUNDO</span><br>
+                <strong>DIGITAL</strong>
+            </h1>
+            <p>La tienda especializada en ciberseguridad para profesionales y entusiastas. Encuentra las mejores
+                herramientas, software y recursos para proteger tu infraestructura digital.</p>
+            <div class="hs-hero-btns">
+                <button class="hs-btn-primary" onclick="hsShowView('catalog')">Explorar Catálogo →</button>
+                <button class="hs-btn-secondary">Conoce Más</button>
+            </div>
+
+            <!-- YouTube Demo Banner -->
+            <a href="https://youtu.be/lLwLApyE-x4?si=arpcwGwo21Ld3_DA" target="_blank" rel="noopener"
+                style="margin-top: 28px; display: flex; align-items: center; gap: 14px; background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 10px 18px; text-decoration: none; transition: border-color 0.2s; max-width: 360px;"
+                onmouseover="this.style.borderColor='#00e676'" onmouseout="this.style.borderColor='#2a2a2a'">
+                <!-- Thumbnail with play overlay -->
+                <div
+                    style="position: relative; flex-shrink: 0; width: 80px; height: 50px; border-radius: 6px; overflow: hidden;">
+                    <img src="https://img.youtube.com/vi/lLwLApyE-x4/mqdefault.jpg"
+                        style="width:100%; height:100%; object-fit:cover;" alt="Demo HackerShop">
+                    <div
+                        style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45);">
+                        <span style="font-size:1.1rem;">▶</span>
+                    </div>
+                </div>
+                <!-- Text -->
+                <div style="text-align: left;">
+                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:3px;">
+                        <span
+                            style="background:#ff0000; color:#fff; font-size:0.55rem; font-weight:800; padding:2px 6px; border-radius:3px; letter-spacing:0.5px;">YouTube</span>
+                        <span style="font-size:0.65rem; color:#555;">Demo completa</span>
+                    </div>
+                    <div style="font-size:0.78rem; font-weight:600; color:#e0e0e0;">Ver Demo de HackerShop</div>
+                    <div style="font-size:0.65rem; color:#555; margin-top:2px;">youtu.be/lLwLApyE-x4</div>
+                </div>
+                <div style="margin-left:auto; color:#00e676; font-size:0.8rem;">↗</div>
+            </a>
+        </div>
+        <div class="hs-stats">
+            <div class="hs-stat">
+                <div class="hs-stat-icon">👥</div>
+                <div class="hs-stat-value">10,000+</div>
+                <div class="hs-stat-label">Clientes Activos</div>
+            </div>
+            <div class="hs-stat">
+                <div class="hs-stat-icon">🛡️</div>
+                <div class="hs-stat-value">500+</div>
+                <div class="hs-stat-label">Productos</div>
+            </div>
+            <div class="hs-stat">
+                <div class="hs-stat-icon">✅</div>
+                <div class="hs-stat-value">99.9%</div>
+                <div class="hs-stat-label">Uptime</div>
+            </div>
+            <div class="hs-stat">
+                <div class="hs-stat-icon">⚡</div>
+                <div class="hs-stat-value">24/7</div>
+                <div class="hs-stat-label">Soporte</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATALOG VIEW -->
+    <div class="hs-view" id="hs-catalog">
+        <div class="hs-catalog-grid">
+            <div class="hs-product-card" onclick="hsShowView('cart')">
+                <div class="hs-product-img">
+                    <img src="/src/img/product_airpods.png" alt="AirPods Pro 2">
+                </div>
+                <div class="hs-product-info">
+                    <div class="hs-product-stock">● En Stock</div>
+                    <div class="hs-product-name">AirPods Pro 2</div>
+                    <div class="hs-product-price" style="margin-bottom:8px;">249,99 €</div>
+                    <button class="hs-add-btn">Añadir al Carrito</button>
+                </div>
+            </div>
+            <div class="hs-product-card" onclick="hsShowView('cart')">
+                <div class="hs-product-img">
+                    <img src="/src/img/product_dell.png" alt="Dell XPS 13">
+                </div>
+                <div class="hs-product-info">
+                    <div class="hs-product-stock">● En Stock</div>
+                    <div class="hs-product-name">Dell XPS 13</div>
+                    <div class="hs-product-price" style="margin-bottom:8px;">1,199,99 €</div>
+                    <button class="hs-add-btn">Añadir al Carrito</button>
+                </div>
+            </div>
+            <div class="hs-product-card">
+                <div class="hs-product-img" style="background:#111; font-size:2rem; color:#333;">🔒</div>
+                <div class="hs-product-info">
+                    <div class="hs-product-stock">● En Stock</div>
+                    <div class="hs-product-name">Yubikey 5C NFC</div>
+                    <div class="hs-product-price" style="margin-bottom:8px;">69,99 €</div>
+                    <button class="hs-add-btn">Añadir al Carrito</button>
+                </div>
+            </div>
+            <div class="hs-product-card">
+                <div class="hs-product-img" style="background:#111; font-size:2rem; color:#333;">🌐</div>
+                <div class="hs-product-info">
+                    <div class="hs-product-stock">● En Stock</div>
+                    <div class="hs-product-name">VPN Pro License</div>
+                    <div class="hs-product-price" style="margin-bottom:8px;">49,99 €</div>
+                    <button class="hs-add-btn">Añadir al Carrito</button>
+                </div>
+            </div>
+            <div class="hs-product-card">
+                <div class="hs-product-img" style="background:#111; font-size:2rem; color:#333;">📡</div>
+                <div class="hs-product-info">
+                    <div class="hs-product-stock">● En Stock</div>
+                    <div class="hs-product-name">Wi-Fi Pineapple Mk7</div>
+                    <div class="hs-product-price" style="margin-bottom:8px;">119,99 €</div>
+                    <button class="hs-add-btn">Añadir al Carrito</button>
+                </div>
+            </div>
+            <div class="hs-product-card">
+                <div class="hs-product-img" style="background:#111; font-size:2rem; color:#333;">📖</div>
+                <div class="hs-product-info">
+                    <div class="hs-product-stock">● En Stock</div>
+                    <div class="hs-product-name">The Hacker's Handbook</div>
+                    <div class="hs-product-price" style="margin-bottom:8px;">34,99 €</div>
+                    <button class="hs-add-btn">Añadir al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART VIEW -->
+    <div class="hs-view" id="hs-cart">
+        <div class="hs-cart-layout">
+            <div class="hs-cart-items">
+                <div class="hs-cart-title">Carrito de Compras</div>
+                <div class="hs-cart-sub">Revisa tus productos antes de <u>finalizar</u> la compra</div>
+                <div class="hs-cart-item">
+                    <img class="hs-cart-item-img" src="/src/img/product_airpods.png" alt="AirPods">
+                    <div class="hs-cart-item-info">
+                        <div class="hs-cart-item-name">AirPods Pro 2</div>
+                        <div class="hs-cart-item-status">En Stock</div>
+                        <div class="hs-qty-controls">
+                            <button class="hs-qty-btn">−</button>
+                            <span class="hs-qty-val">1</span>
+                            <button class="hs-qty-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="hs-cart-item-price">249,99 €</div>
+                    <div class="hs-trash">🗑</div>
+                </div>
+                <div class="hs-cart-item">
+                    <img class="hs-cart-item-img" src="/src/img/product_dell.png" alt="Dell XPS">
+                    <div class="hs-cart-item-info">
+                        <div class="hs-cart-item-name">Dell XPS 13</div>
+                        <div class="hs-cart-item-status">En Stock</div>
+                        <div class="hs-qty-controls">
+                            <button class="hs-qty-btn">−</button>
+                            <span class="hs-qty-val">1</span>
+                            <button class="hs-qty-btn">+</button>
+                        </div>
+                    </div>
+                    <div class="hs-cart-item-price">1,199,99 €</div>
+                    <div class="hs-trash">🗑</div>
+                </div>
+            </div>
+            <div class="hs-order-summary">
+                <div class="hs-summary-box">
+                    <div class="hs-summary-title">🧾 Resumen del Pedido</div>
+                    <div class="hs-summary-row"><span>Subtotal</span><span>1.449,98 €</span></div>
+                    <div class="hs-summary-row"><span>Envío</span><span style="color:#00e676;">Gratis</span></div>
+                    <div class="hs-summary-row"><span>IVA (21%)</span><span>304,50 €</span></div>
+                    <div class="hs-summary-row total"><span>Total</span><span>1.754,48 €</span></div>
+                    <div class="hs-safe-badge">○ Compra 100% Segura</div>
+                    <button class="hs-checkout-btn">🛒 Finalizar Compra</button>
+                    <button class="hs-cont-btn" onclick="hsShowView('catalog')">Continuar Comprando</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL VIEW -->
+    <div class="hs-view" id="hs-admin">
+        <div class="hs-admin-header">
+            <div>
+                <div class="hs-admin-title">🛡️ Panel de Administración</div>
+                <div class="hs-admin-sub">Gestiona productos, pedidos y usuarios de la tienda</div>
+            </div>
+            <div class="hs-admin-role">Administrador</div>
+        </div>
+        <div class="hs-admin-tabs">
+            <div class="hs-admin-tab active">Dashboard</div>
+            <div class="hs-admin-tab">Productos</div>
+            <div class="hs-admin-tab">Pedidos</div>
+            <div class="hs-admin-tab">Usuarios</div>
+        </div>
+        <div class="hs-admin-body">
+            <div class="hs-kpi-grid">
+                <div class="hs-kpi-card">
+                    <div>
+                        <div class="hs-kpi-label">Productos Totales</div>
+                        <div class="hs-kpi-value">6</div>
+                    </div>
+                    <div class="hs-kpi-icon" style="color:#00e676;">📦</div>
+                </div>
+                <div class="hs-kpi-card">
+                    <div>
+                        <div class="hs-kpi-label">Pedidos Pendientes</div>
+                        <div class="hs-kpi-value">0</div>
+                    </div>
+                    <div class="hs-kpi-icon" style="color:#00bcd4;">🛒</div>
+                </div>
+                <div class="hs-kpi-card">
+                    <div>
+                        <div class="hs-kpi-label">Usuarios Registrados</div>
+                        <div class="hs-kpi-value">1</div>
+                    </div>
+                    <div class="hs-kpi-icon" style="color:#64b5f6;">👥</div>
+                </div>
+                <div class="hs-kpi-card">
+                    <div>
+                        <div class="hs-kpi-label">Ingresos del Mes</div>
+                        <div class="hs-kpi-value">0,00 €</div>
+                    </div>
+                    <div class="hs-kpi-icon" style="color:#f1fa8c;">💰</div>
+                </div>
+            </div>
+            <div class="hs-recent">
+                <div class="hs-recent-title">↗ Pedidos Recientes</div>
+                <table class="hs-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5" style="text-align:center; color:#333; padding: 20px 0; font-size:0.75rem;">
+                                No hay pedidos recientes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function hsShowView(id) {
+        document.querySelectorAll('.hs-view').forEach(v => v.classList.remove('active'));
+        const target = document.getElementById('hs-' + id);
+        if (target) target.classList.add('active');
+    }
+</script>

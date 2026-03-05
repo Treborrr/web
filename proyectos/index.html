@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portfolio | Robert Alvarado</title>
+    <link rel="icon" type="image/png" href="../src/img/trimmed-image.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../src/css/style.css">
+    <link rel="stylesheet" href="../src/css/showcase.css">
+</head>
+
+<body style="overflow:hidden; padding: 0;">
+    <div id="cursor-dot"></div>
+
+    <div style="padding: 0 40px;">
+        <nav style="padding: 16px 0; display:flex; align-items:center;">
+            <a href="../index.html" style="margin-left: 0; font-size: 0.85rem;">← Regresar al Inicio</a>
+            <div style="flex-grow: 1;"></div>
+            <span class="logo-font" style="color: var(--purple); font-size: 1.1rem;">treborrr.showcase</span>
+        </nav>
+    </div>
+
+    <!-- VS Code Window -->
+    <div class="vscode-window" style="margin: 0 40px;">
+
+        <!-- Title Bar -->
+        <div class="vsc-titlebar">
+            <div class="vsc-dot vsc-dot-close"></div>
+            <div class="vsc-dot vsc-dot-min"></div>
+            <div class="vsc-dot vsc-dot-max"></div>
+            <div class="vsc-titlebar-name">treborrr — Portfolio · Visual Studio Code</div>
+        </div>
+
+        <!-- Menu Bar -->
+        <div class="vsc-menubar">
+            <span class="vsc-menu-item">File</span>
+            <span class="vsc-menu-item">Edit</span>
+            <span class="vsc-menu-item">View</span>
+            <span class="vsc-menu-item">Go</span>
+            <span class="vsc-menu-item">Run</span>
+            <span class="vsc-menu-item">Terminal</span>
+            <span class="vsc-menu-item">Help</span>
+        </div>
+
+        <!-- Main Body -->
+        <div class="vsc-body">
+
+            <!-- Activity Bar -->
+            <div class="vsc-activity-bar">
+                <!-- Explorer: two stacked pages -->
+                <div class="vsc-activity-icon active" title="Explorer">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M13 2v7h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M9 13h6M9 17h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <!-- Search: magnifying glass -->
+                <div class="vsc-activity-icon" title="Search">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <!-- Source Control: git branch -->
+                <div class="vsc-activity-icon" title="Source Control">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5" />
+                        <circle cx="6" cy="18" r="2.5" stroke="currentColor" stroke-width="1.5" />
+                        <circle cx="18" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M6 8.5V15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M6 8.5C6 11 8 12.5 10.5 12.5H13C15.5 12.5 18 11.5 18 9" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" fill="none" />
+                    </svg>
+                </div>
+                <!-- Extensions: puzzle piece -->
+                <div class="vsc-activity-icon" title="Extensions">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 7h4V4a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3h4a1 1 0 0 1 1 1v3h-3a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h3v3a1 1 0 0 1-1 1h-4v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3H4a1 1 0 0 1-1-1v-4h3a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3V8a1 1 0 0 1 1-1z"
+                            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <!-- Settings: gear -->
+                <div class="vsc-activity-icon vsc-activity-bottom" title="Settings">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" />
+                        <path
+                            d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- File Explorer Sidebar -->
+            <div class="vsc-sidebar">
+                <div class="vsc-explorer-title">Explorer</div>
+
+                <!-- Single flat folder -->
+                <div class="vsc-folder">
+                    <div class="vsc-folder-name">
+                        <span class="vsc-chevron">▼</span>
+                        <span class="vsc-folder-icon">📂</span>
+                        <span>portfolio</span>
+                    </div>
+
+                    <div class="vsc-file project-item active" data-project="scce">
+                        <span class="ext-ts">TS</span>
+                        <span>scce.ts</span>
+                    </div>
+
+                    <div class="vsc-file project-item" data-project="hackershop">
+                        <span class="ext-js">JS</span>
+                        <span>hackershop.jsx</span>
+                    </div>
+
+                    <div class="vsc-file project-item" data-project="login">
+                        <span class="ext-html">HTML</span>
+                        <span>login-lab.html</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Editor Area -->
+            <div class="vsc-editor">
+
+                <!-- Tabs -->
+                <div class="vsc-tabs" id="vsc-tabs">
+                    <div class="vsc-tab active" data-project="scce" id="tab-scce">
+                        <span class="ext-ts" style="font-size:0.7rem; font-weight:700; color:#3178c6;">TS</span>
+                        app.module.ts
+                        <span class="vsc-tab-close">×</span>
+                    </div>
+                </div>
+
+                <!-- Breadcrumb -->
+                <div class="vsc-breadcrumb" id="vsc-breadcrumb">
+                    treborrr › sistemas-a-medida › scce-enterprise › <span>app.module.ts</span>
+                </div>
+
+                <!-- Editor content -->
+                <div class="vsc-editor-content">
+                    <!-- Preview pane (top) -->
+                    <div class="vsc-preview-pane">
+                        <div id="project-viewport" style="height:100%;">
+                            <div
+                                style="display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column; gap:16px; color: var(--dr-comment);">
+                                <span style="font-size:3rem;">⚡</span>
+                                <p style="font-size: 0.88rem;">Selecciona un archivo para iniciar la simulación.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Docs pane (bottom) -->
+                    <div class="vsc-docs-pane" id="doc-panel">
+                        <div class="vsc-docs-header">
+                            <div class="vsc-docs-tab active">README</div>
+                            <div class="vsc-docs-tab">Stack</div>
+                            <div class="vsc-docs-tab">Info</div>
+                        </div>
+                        <div class="vsc-docs-body">
+                            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 8px;">
+                                <h2 class="doc-title" id="doc-title">—</h2>
+                                <span class="doc-type-badge" id="doc-type">—</span>
+                            </div>
+                            <p class="doc-subtitle" id="doc-desc">—</p>
+                            <div class="doc-stack" id="doc-stack"></div>
+                            <div class="doc-highlights" id="doc-highlights"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Bar -->
+                <div class="vsc-statusbar">
+                    <div class="vsc-statusbar-left">
+                        <span class="vsc-status-item">⎇&nbsp; main</span>
+                        <span class="vsc-status-item">✓ 0 errors</span>
+                    </div>
+                    <div class="vsc-statusbar-right">
+                        <span class="vsc-status-item" id="status-lang">TypeScript</span>
+                        <span class="vsc-status-item">UTF-8</span>
+                        <span class="vsc-status-item">Dracula 🧛</span>
+                    </div>
+                </div>
+
+            </div><!-- /vsc-editor -->
+        </div><!-- /vsc-body -->
+    </div><!-- /vscode-window -->
+
+    <script src="../src/js/main.js"></script>
+    <script src="../src/js/showcase.js" defer></script>
+</body>
+
+</html>

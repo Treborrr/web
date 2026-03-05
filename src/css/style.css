@@ -44,6 +44,14 @@ body {
   /* Hide default cursor to use custom one */
 }
 
+/* Force custom cursor on ALL elements — prevent browser overriding with pointer/auto */
+*,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
+
 /* Custom Interactive Glow Cursor */
 #cursor-dot {
   width: 8px;

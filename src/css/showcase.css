@@ -1,0 +1,529 @@
+/* =============================================
+   VSCode Dracula Theme - Project Showcase
+   ============================================= */
+
+/* Dracula palette tokens */
+:root {
+    --dr-bg: #282a36;
+    --dr-bg-light: #21222c;
+    --dr-surface: #343746;
+    --dr-border: #44475a;
+    --dr-comment: #6272a4;
+    --dr-fg: #f8f8f2;
+    --dr-purple: #bd93f9;
+    --dr-pink: #ff79c6;
+    --dr-cyan: #8be9fd;
+    --dr-green: #50fa7b;
+    --dr-yellow: #f1fa8c;
+    --dr-orange: #ffb86c;
+    --dr-red: #ff5555;
+}
+
+/* ------ OUTER WRAPPER ------ */
+.vscode-window {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 88px);
+    border: 1px solid var(--dr-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+/* ------ TITLE BAR ------ */
+.vsc-titlebar {
+    height: 30px;
+    background: var(--dr-bg-light);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--dr-border);
+    user-select: none;
+}
+
+.vsc-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.vsc-dot-close {
+    background: #ff5f57;
+}
+
+.vsc-dot-min {
+    background: #febc2e;
+}
+
+.vsc-dot-max {
+    background: #28c840;
+}
+
+.vsc-titlebar-name {
+    flex: 1;
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--dr-comment);
+    font-family: 'Inter', sans-serif;
+}
+
+/* ------ MENU BAR ------ */
+.vsc-menubar {
+    height: 28px;
+    background: var(--dr-bg-light);
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 2px;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--dr-border);
+}
+
+.vsc-menu-item {
+    padding: 2px 10px;
+    font-size: 0.72rem;
+    color: var(--dr-fg);
+    border-radius: 3px;
+    cursor: default;
+    opacity: 0.8;
+}
+
+.vsc-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    opacity: 1;
+}
+
+/* ------ MAIN BODY (activity + sidebar + editor) ------ */
+.vsc-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* ------ ACTIVITY BAR ------ */
+.vsc-activity-bar {
+    width: 46px;
+    background: var(--dr-bg-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    gap: 4px;
+    border-right: 1px solid var(--dr-border);
+    flex-shrink: 0;
+}
+
+.vsc-activity-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--dr-comment);
+    transition: color 0.15s, background 0.15s;
+    position: relative;
+}
+
+.vsc-activity-icon:hover {
+    color: var(--dr-fg);
+}
+
+.vsc-activity-icon.active {
+    color: var(--dr-fg);
+    border-left: 2px solid var(--dr-purple);
+}
+
+.vsc-activity-bottom {
+    margin-top: auto;
+}
+
+/* ------ FILE EXPLORER / SIDEBAR ------ */
+.vsc-sidebar {
+    width: 220px;
+    background: var(--dr-bg-light);
+    border-right: 1px solid var(--dr-border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.vsc-explorer-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--dr-fg);
+    padding: 10px 16px 6px;
+    flex-shrink: 0;
+}
+
+.vsc-folder {
+    padding: 3px 0;
+}
+
+.vsc-folder-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 16px;
+    font-size: 0.8rem;
+    color: var(--dr-fg);
+    cursor: default;
+    user-select: none;
+}
+
+.vsc-folder-name .vsc-chevron {
+    font-size: 0.6rem;
+    color: var(--dr-comment);
+}
+
+.vsc-folder-icon {
+    font-size: 0.9rem;
+}
+
+.vsc-file {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 16px 3px 36px;
+    font-size: 0.78rem;
+    color: var(--dr-comment);
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vsc-file:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--dr-fg);
+}
+
+.vsc-file.active {
+    background: var(--dr-surface);
+    color: var(--dr-fg);
+}
+
+.vsc-file .ext-ts {
+    color: #3178c6;
+}
+
+.vsc-file .ext-ang {
+    color: var(--dr-red);
+}
+
+.vsc-file .ext-js {
+    color: var(--dr-yellow);
+}
+
+.vsc-file .ext-html {
+    color: var(--dr-orange);
+}
+
+.vsc-file .ext-css {
+    color: var(--dr-purple);
+}
+
+.vsc-file .ext-db {
+    color: var(--dr-cyan);
+}
+
+.vsc-file .ext-env {
+    color: var(--dr-green);
+}
+
+.vsc-file .ext-md {
+    color: var(--dr-fg);
+}
+
+/* ------ EDITOR AREA ------ */
+.vsc-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--dr-bg);
+    overflow: hidden;
+}
+
+/* Tab bar */
+.vsc-tabs {
+    display: flex;
+    align-items: stretch;
+    background: var(--dr-bg-light);
+    border-bottom: 1px solid var(--dr-border);
+    flex-shrink: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.vsc-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.vsc-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    height: 35px;
+    font-size: 0.78rem;
+    color: var(--dr-comment);
+    border-right: 1px solid var(--dr-border);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.vsc-tab:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--dr-fg);
+}
+
+.vsc-tab.active {
+    background: var(--dr-bg);
+    color: var(--dr-fg);
+    border-top: 1px solid var(--dr-purple);
+}
+
+.vsc-tab-close {
+    font-size: 0.7rem;
+    opacity: 0;
+    border-radius: 3px;
+    padding: 1px 3px;
+    line-height: 1;
+}
+
+.vsc-tab:hover .vsc-tab-close {
+    opacity: 0.5;
+}
+
+.vsc-tab.active .vsc-tab-close {
+    opacity: 0.6;
+}
+
+/* Editor content split: top = mock, bottom = docs */
+.vsc-editor-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Breadcrumb */
+.vsc-breadcrumb {
+    padding: 4px 16px;
+    font-size: 0.72rem;
+    color: var(--dr-comment);
+    background: var(--dr-bg);
+    border-bottom: 1px solid rgba(68, 71, 90, 0.4);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.vsc-breadcrumb span {
+    color: var(--dr-fg);
+}
+
+/* Mock preview pane */
+.vsc-preview-pane {
+    flex: 1 1 auto;
+    overflow: auto;
+    min-height: 0;
+    position: relative;
+    background: var(--dr-bg);
+}
+
+#project-viewport {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease;
+}
+
+/* Docs pane */
+.vsc-docs-pane {
+    border-top: 2px solid var(--dr-border);
+    background: var(--dr-bg);
+    flex-shrink: 0;
+    overflow-y: auto;
+    display: none;
+    max-height: 260px;
+}
+
+.vsc-docs-pane.visible {
+    display: block;
+}
+
+/* Docs pane header (mimics panel tab bar) */
+.vsc-docs-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 16px;
+    background: var(--dr-bg-light);
+    border-bottom: 1px solid var(--dr-border);
+    flex-shrink: 0;
+}
+
+.vsc-docs-tab {
+    padding: 6px 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--dr-comment);
+    cursor: default;
+    border-bottom: 2px solid transparent;
+}
+
+.vsc-docs-tab.active {
+    color: var(--dr-fg);
+    border-bottom-color: var(--dr-purple);
+}
+
+/* Docs content */
+.vsc-docs-body {
+    padding: 16px 24px;
+}
+
+.doc-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--dr-fg);
+    margin-bottom: 6px;
+    font-family: 'Inter', sans-serif;
+}
+
+.doc-type-badge {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: rgba(189, 147, 249, 0.15);
+    border: 1px solid rgba(189, 147, 249, 0.3);
+    color: var(--dr-purple);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.doc-subtitle {
+    font-size: 0.78rem;
+    color: var(--dr-comment);
+    line-height: 1.7;
+    max-width: 680px;
+    margin-bottom: 14px;
+}
+
+.doc-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.doc-stack-item {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--dr-surface);
+    color: var(--dr-cyan);
+    border: 1px solid rgba(139, 233, 253, 0.15);
+}
+
+.doc-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.doc-highlight-item {
+    border-left: 2px solid var(--dr-purple);
+    padding: 5px 12px;
+    background: rgba(68, 71, 90, 0.3);
+    border-radius: 0 4px 4px 0;
+    min-width: 150px;
+}
+
+.doc-highlight-item strong {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--dr-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.doc-highlight-item span {
+    font-size: 0.75rem;
+    color: var(--dr-fg);
+    opacity: 0.85;
+}
+
+/* ------ STATUS BAR ------ */
+.vsc-statusbar {
+    height: 22px;
+    background: var(--dr-purple);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+.vsc-statusbar-left,
+.vsc-statusbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.vsc-status-item {
+    font-size: 0.68rem;
+    color: rgba(0, 0, 0, 0.75);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: default;
+}
+
+/* dot-btn kept for shells */
+.dot-btn {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dot-red {
+    background: #ff5f57;
+}
+
+.dot-yellow {
+    background: #febc2e;
+}
+
+.dot-green {
+    background: #28c840;
+}
+
+.shell-header {
+    background: var(--dr-surface);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
