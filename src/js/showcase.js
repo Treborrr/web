@@ -3,6 +3,7 @@ const PROJECTS = {
         title: "SCCE — Sistema de Control de Cacao Especial",
         type: "Sistema Enterprise",
         desc: "Plataforma de trazabilidad agroindustrial que digitaliza el ciclo de vida completo del cacao especial: desde el ingreso de materia prima con proveedor y origen, pasando por fermentación y secado, hasta el análisis de calidad y almacenamiento. Diseñado para reemplazar registros físicos y hojas de cálculo dispersas en una empresa real.",
+        info: "Este fue un sistema a medida donde aprendí muchísimo. No solamente con respecto a lo técnico, sino que también aprendes cómo operan otras industrias e inventas soluciones reales para problemas reales de su día a día. Desarrollar este tipo de ERPs completos te da una visión panorámica de lo que realmente es resolver problemas con código.",
         stack: ["NestJS", "TypeScript", "Angular 17", "PostgreSQL", "TypeORM", "JWT Auth", "REST API", "AWS EC2"],
         highlights: [
             { label: "Tipo de Proyecto", value: "Full Stack Enterprise" },
@@ -18,6 +19,7 @@ const PROJECTS = {
         title: "HackerShop — E-commerce Full Stack Decoupled",
         type: "E-commerce",
         desc: "Tienda en línea construida con una arquitectura completamente desacoplada: el frontend (React SPA) y el backend (Express.js) operan de manera independiente comunicándose exclusivamente vía JSON. Demuestra el patron API-First donde el servidor es agnóstico a la capa de presentación.",
+        info: "En este proyecto me enfoqué en dominar la arquitectura Full Stack desacoplada. Aprender a comunicar un frontend React independiente con una API REST en Express.js me enseñó la importancia del diseño API-First y la separación rígida de responsabilidades en las aplicaciones modernas de escala global.",
         stack: ["React", "Express.js", "SQLite", "REST API", "Vite", "React Router", "CSS Modules"],
         highlights: [
             { label: "Arquitectura", value: "Full Stack Decoupled" },
@@ -30,9 +32,10 @@ const PROJECTS = {
         view: "/proyectos/modules/hackershop/view.html"
     },
     login: {
-        title: "Animated Login Lab — Experimento UX con SVG",
+        title: "Animated Login Lab —  UX con SVG",
         type: "Experimento UX",
-        desc: "Componente de login interactivo donde un personaje SVG reacciona a las acciones del usuario en tiempo real: los ojos siguen el cursor, la boca sonríe al enfocar el email y las manos tapan los ojos al ingresar la contraseña. Una alternativa de alto impacto visual a los formularios estáticos tradicionales.",
+        desc: "Componente de login interactivo donde un personaje SVG reacciona a las acciones del usuario en tiempo real: sonríe al enfocar el email y se tapa los ojos al ingresar la contraseña. Una alternativa de alto impacto visual a los formularios estáticos tradicionales.",
+        info: "Un experimento muy divertido creado para explorar hasta dónde podía llegar manipulando elementos SVG directamente con CSS y JS puro, sin depender de librerías de animación complejas de terceros. Comprobé cómo la micro-interactividad bien implementada puede elevar enormemente la experiencia del usuario.",
         stack: ["SVG", "CSS Animations", "Vanilla JS", "HTML5", "conic-gradient", "Event Listeners"],
         highlights: [
             { label: "Tipo", value: "Componente UX interactivo" },
@@ -54,10 +57,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const docStack = document.getElementById('doc-stack');
     const docType = document.getElementById('doc-type');
     const docHighlights = document.getElementById('doc-highlights');
+    const docInfo = document.getElementById('doc-info');
     const tabBar = document.getElementById('vsc-tabs');
     const breadcrumb = document.getElementById('vsc-breadcrumb');
     const statusLang = document.getElementById('status-lang');
     const items = document.querySelectorAll('.project-item');
+    const docsTabs = document.querySelectorAll('.vsc-docs-tab');
+
+    // Manejo de las pestañas del panel inferior (README, STACK, INFO)
+    docsTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.target;
+            docsTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            document.querySelectorAll('.vsc-pane-content').forEach(pane => {
+                pane.style.display = 'none';
+            });
+            document.getElementById('pane-' + target).style.display = 'block';
+        });
+    });
 
     // Map project → display metadata for tabs/breadcrumb
     const TAB_META = {
@@ -115,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         docTitle.textContent = p.title;
         docDesc.textContent = p.desc;
         docType.textContent = p.type;
+        if (docInfo) docInfo.innerHTML = p.info || "Sin información adicional.";
         docStack.innerHTML = p.stack.map(s => `<span class="doc-stack-item">${s}</span>`).join('');
         docHighlights.innerHTML = p.highlights.map(h => `
             <div class="doc-highlight-item">
