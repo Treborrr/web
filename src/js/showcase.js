@@ -50,6 +50,7 @@ const PROJECTS = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    let currentProjectId = 'scce';
     const viewport = document.getElementById('project-viewport');
     const docPanel = document.getElementById('doc-panel');
     const docTitle = document.getElementById('doc-title');
@@ -64,17 +65,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = document.querySelectorAll('.project-item');
     const docsTabs = document.querySelectorAll('.vsc-docs-tab');
 
-    // Manejo de las pestañas del panel inferior (README, STACK, INFO)
+    // Manejo de las pestañas del panel inferior (README, STACK, INFO, ARCHITECTURE)
     docsTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const target = tab.dataset.target;
+
+            if (target === 'arch') {
+                const archTabId = `${currentProjectId}-arch`;
+                if (!TAB_META[archTabId]) {
+                    TAB_META[archTabId] = {
+                        iconColor: '#98c379',
+                        iconLabel: 'PNG',
+                        file: 'arch.png',
+                        crumb: currentProjectId,
+                        lang: 'Image'
+                    };
+                }
+                openTabs.add(archTabId);
+                renderTabs(archTabId);
+                loadArchView(currentProjectId);
+                updateActiveFile(archTabId);
+                return;
+            }
+
             docsTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-
             document.querySelectorAll('.vsc-pane-content').forEach(pane => {
                 pane.style.display = 'none';
             });
-            document.getElementById('pane-' + target).style.display = 'block';
+            document.getElementById('pane-' + target).style.display = target === 'arch' ? 'flex' : 'block';
         });
     });
 
@@ -116,8 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateActiveFile(id) {
-        // Sidebar active state
-        items.forEach(i => i.classList.toggle('active', i.dataset.project === id));
+        const isArch = id && id.endsWith('-arch');
+        // Sidebar: don't change highlight for arch tabs
+        if (!isArch) items.forEach(i => i.classList.toggle('active', i.dataset.project === id));
         // Tab active state
         document.querySelectorAll('.vsc-tab').forEach(t => t.classList.toggle('active', t.dataset.project === id));
         // Breadcrumb
@@ -142,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span>${h.value}</span>
             </div>
         `).join('');
+
         docPanel.classList.add('visible');
     }
 
@@ -155,9 +176,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function loadArchView(projectId) {
+        const src = `/proyectos/modules/${projectId}/arch.png`;
+        viewport.style.opacity = '0';
+        setTimeout(() => {
+            viewport.innerHTML = `
+                <div id="arch-viewer" data-theme="dark"
+                    style="width:100%; height:100%; background:var(--dr-bg); display:flex; align-items:center; justify-content:center; overflow:auto; padding:24px; box-sizing:border-box; position:relative; transition:background 0.25s;">
+                    <button id="arch-theme-btn" onclick="window.toggleArchTheme()"
+                        style="position:absolute; top:12px; right:12px; display:flex; align-items:center; gap:6px; background:var(--dr-surface); border:1px solid var(--dr-border); border-radius:6px; padding:5px 10px; cursor:pointer; font-size:0.72rem; font-family:'Fira Code',monospace; color:var(--dr-comment); transition:color 0.2s, background 0.2s;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                        claro
+                    </button>
+                    <img src="${src}" id="arch-img" alt="Arquitectura"
+                        style="max-width:100%; max-height:100%; object-fit:contain; filter:invert(1); transition:filter 0.25s;"
+                        onerror="this.style.display='none'; document.getElementById('arch-theme-btn').style.display='none'; this.nextElementSibling.style.display='block';" />
+                    <p style="display:none; color:#a1a1aa; font-size:0.82rem; font-family:'Fira Code',monospace;">// arquitectura en desarrollo...</p>
+                </div>`;
+
+            window.toggleArchTheme = () => {
+                const viewer = document.getElementById('arch-viewer');
+                const img   = document.getElementById('arch-img');
+                const btn   = document.getElementById('arch-theme-btn');
+                const isDark = viewer.dataset.theme === 'dark';
+                if (isDark) {
+                    viewer.style.background = '#f5f5f0';
+                    img.style.filter = 'none';
+                    btn.innerHTML = btn.innerHTML.replace('claro', 'oscuro');
+                    viewer.dataset.theme = 'light';
+                } else {
+                    viewer.style.background = 'var(--dr-bg)';
+                    img.style.filter = 'invert(1)';
+                    btn.innerHTML = btn.innerHTML.replace('oscuro', 'claro');
+                    viewer.dataset.theme = 'dark';
+                }
+            };
+
+            viewport.style.opacity = '1';
+        }, 300);
+    }
+
     async function loadProject(id) {
+        if (id && id.endsWith('-arch')) {
+            loadArchView(id.replace('-arch', ''));
+            return;
+        }
+
         const p = PROJECTS[id];
         if (!p) return;
+        currentProjectId = id;
 
         viewport.style.opacity = '0';
         try {
