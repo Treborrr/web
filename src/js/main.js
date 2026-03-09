@@ -198,5 +198,83 @@ document.addEventListener('DOMContentLoaded', () => {
         holoWrapper.style.transition = 'transform 0.1s ease';
       }, 500);
     });
+
+    // Gyroscope tilt effect for mobile
+    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (isMobile) {
+      let betaOrigin = null;
+      let gammaOrigin = null;
+      let gyroActive = false;
+
+      function applyGyroTilt(e) {
+        if (!gyroActive) return;
+        const beta = e.beta ?? 0;   // front-back tilt (-90 to 90)
+        const gamma = e.gamma ?? 0; // left-right tilt (-90 to 90)
+
+        // Calibrate on first reading
+        if (betaOrigin === null) {
+          betaOrigin = beta;
+          gammaOrigin = gamma;
+        }
+
+        const deltaBeta = beta - betaOrigin;
+        const deltaGamma = gamma - gammaOrigin;
+
+        // Map to ±15deg, clamped
+        const MAX = 15;
+        const rotateX = Math.max(-MAX, Math.min(MAX, (deltaBeta / 30) * MAX));
+        const rotateY = Math.max(-MAX, Math.min(MAX, (deltaGamma / 30) * MAX));
+
+        holoWrapper.style.setProperty('--rotate-x', `${rotateX}deg`);
+        holoWrapper.style.setProperty('--rotate-y', `${rotateY}deg`);
+
+        // Map to 0–100% for shine/glare
+        const pointerX = ((rotateY / MAX) * 0.5 + 0.5) * 100;
+        const pointerY = ((rotateX / MAX) * -0.5 + 0.5) * 100;
+
+        holoShine.style.setProperty('--pointer-x', `${pointerX}%`);
+        holoShine.style.setProperty('--pointer-y', `${pointerY}%`);
+        if (holoGlare) {
+          holoGlare.style.setProperty('--pointer-x', `${pointerX}%`);
+          holoGlare.style.setProperty('--pointer-y', `${pointerY}%`);
+        }
+      }
+
+      function startGyro() {
+        if (typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+          // iOS 13+ requires explicit permission
+          holoCard.addEventListener('touchstart', function requestOnce() {
+            DeviceOrientationEvent.requestPermission().then(state => {
+              if (state === 'granted') {
+                betaOrigin = null;
+                gammaOrigin = null;
+                window.addEventListener('deviceorientation', applyGyroTilt);
+              }
+            }).catch(() => {});
+            holoCard.removeEventListener('touchstart', requestOnce);
+          }, { once: true });
+        } else if (typeof DeviceOrientationEvent !== 'undefined') {
+          // Android / other browsers — no permission needed
+          betaOrigin = null;
+          gammaOrigin = null;
+          window.addEventListener('deviceorientation', applyGyroTilt);
+        }
+      }
+
+      // Only run gyro while the card is visible in viewport
+      const gyroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            gyroActive = true;
+            startGyro();
+          } else {
+            gyroActive = false;
+          }
+        });
+      }, { threshold: 0.3 });
+
+      gyroObserver.observe(holoCard);
+    }
   }
 });
