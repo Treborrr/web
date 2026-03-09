@@ -200,35 +200,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Gyroscope tilt effect for mobile
-    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    if (isMobile) {
+    if (typeof DeviceOrientationEvent !== 'undefined') {
       let betaOrigin = null;
       let gammaOrigin = null;
       let gyroActive = false;
+      let gyroListening = false;
 
       function applyGyroTilt(e) {
         if (!gyroActive) return;
-        const beta = e.beta ?? 0;   // front-back tilt (-90 to 90)
-        const gamma = e.gamma ?? 0; // left-right tilt (-90 to 90)
+        const beta = e.beta ?? 0;
+        const gamma = e.gamma ?? 0;
 
-        // Calibrate on first reading
         if (betaOrigin === null) {
           betaOrigin = beta;
           gammaOrigin = gamma;
         }
 
-        const deltaBeta = beta - betaOrigin;
-        const deltaGamma = gamma - gammaOrigin;
-
-        // Map to ±15deg, clamped
         const MAX = 15;
-        const rotateX = Math.max(-MAX, Math.min(MAX, (deltaBeta / 30) * MAX));
-        const rotateY = Math.max(-MAX, Math.min(MAX, (deltaGamma / 30) * MAX));
+        const rotateX = Math.max(-MAX, Math.min(MAX, ((beta - betaOrigin) / 30) * MAX));
+        const rotateY = Math.max(-MAX, Math.min(MAX, ((gamma - gammaOrigin) / 30) * MAX));
 
         holoWrapper.style.setProperty('--rotate-x', `${rotateX}deg`);
         holoWrapper.style.setProperty('--rotate-y', `${rotateY}deg`);
 
-        // Map to 0–100% for shine/glare
         const pointerX = ((rotateY / MAX) * 0.5 + 0.5) * 100;
         const pointerY = ((rotateX / MAX) * -0.5 + 0.5) * 100;
 
@@ -240,41 +234,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      function startGyro() {
-        if (typeof DeviceOrientationEvent !== 'undefined' &&
-            typeof DeviceOrientationEvent.requestPermission === 'function') {
-          // iOS 13+ requires explicit permission
-          holoCard.addEventListener('touchstart', function requestOnce() {
-            DeviceOrientationEvent.requestPermission().then(state => {
-              if (state === 'granted') {
-                betaOrigin = null;
-                gammaOrigin = null;
-                window.addEventListener('deviceorientation', applyGyroTilt);
-              }
-            }).catch(() => {});
-            holoCard.removeEventListener('touchstart', requestOnce);
-          }, { once: true });
-        } else if (typeof DeviceOrientationEvent !== 'undefined') {
-          // Android / other browsers — no permission needed
-          betaOrigin = null;
-          gammaOrigin = null;
-          window.addEventListener('deviceorientation', applyGyroTilt);
-        }
+      function attachGyro() {
+        if (gyroListening) return;
+        gyroListening = true;
+        window.addEventListener('deviceorientation', applyGyroTilt);
       }
 
-      // Only run gyro while the card is visible in viewport
-      const gyroObserver = new IntersectionObserver((entries) => {
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+: needs user gesture to request permission
+        holoCard.addEventListener('touchstart', () => {
+          DeviceOrientationEvent.requestPermission()
+            .then(state => { if (state === 'granted') attachGyro(); })
+            .catch(() => {});
+        }, { once: true });
+      } else {
+        // Android and other browsers: attach immediately
+        attachGyro();
+      }
+
+      // IntersectionObserver: activate/deactivate and recalibrate
+      new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+          gyroActive = entry.isIntersecting;
           if (entry.isIntersecting) {
-            gyroActive = true;
-            startGyro();
-          } else {
-            gyroActive = false;
+            betaOrigin = null;
+            gammaOrigin = null;
           }
         });
-      }, { threshold: 0.3 });
-
-      gyroObserver.observe(holoCard);
+      }, { threshold: 0.3 }).observe(holoCard);
     }
   }
 });
