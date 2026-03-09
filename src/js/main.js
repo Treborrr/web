@@ -237,27 +237,38 @@ document.addEventListener('DOMContentLoaded', () => {
       function attachGyro() {
         if (gyroListening) return;
         gyroListening = true;
-        console.log('[gyro] listener attached');
-        window.addEventListener('deviceorientation', (e) => {
-          console.log('[gyro] event beta:', e.beta, 'gamma:', e.gamma, 'active:', gyroActive);
-          applyGyroTilt(e);
-        });
+        window.addEventListener('deviceorientation', applyGyroTilt);
       }
 
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+: needs user gesture to request permission
-        console.log('[gyro] iOS mode — esperando touchstart');
-        holoCard.addEventListener('touchstart', () => {
+        // iOS 13+: Safari requires requestPermission() called from a real button click
+        const iosBtn = document.createElement('button');
+        iosBtn.textContent = '⟳ 3D';
+        iosBtn.setAttribute('aria-label', 'Activar efecto 3D con giroscopio');
+        Object.assign(iosBtn.style, {
+          position: 'absolute', bottom: '10px', right: '10px', zIndex: '10',
+          background: 'rgba(189,147,249,0.15)', border: '1px solid rgba(189,147,249,0.5)',
+          color: '#bd93f9', borderRadius: '20px', padding: '4px 10px',
+          fontSize: '11px', cursor: 'pointer', backdropFilter: 'blur(4px)',
+          fontFamily: 'Fira Code, monospace', letterSpacing: '0.05em',
+        });
+        holoCard.style.position = 'relative';
+        holoCard.appendChild(iosBtn);
+
+        iosBtn.addEventListener('click', () => {
           DeviceOrientationEvent.requestPermission()
             .then(state => {
-              console.log('[gyro] iOS permission:', state);
-              if (state === 'granted') attachGyro();
+              if (state === 'granted') {
+                attachGyro();
+                iosBtn.remove();
+              } else {
+                iosBtn.textContent = '✗ sin permiso';
+              }
             })
-            .catch((err) => console.warn('[gyro] iOS permission error:', err));
-        }, { once: true });
+            .catch(() => { iosBtn.textContent = '✗ error'; });
+        });
       } else {
         // Android and other browsers: attach immediately
-        console.log('[gyro] Android mode — attaching');
         attachGyro();
       }
 
