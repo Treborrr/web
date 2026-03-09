@@ -237,18 +237,27 @@ document.addEventListener('DOMContentLoaded', () => {
       function attachGyro() {
         if (gyroListening) return;
         gyroListening = true;
-        window.addEventListener('deviceorientation', applyGyroTilt);
+        console.log('[gyro] listener attached');
+        window.addEventListener('deviceorientation', (e) => {
+          console.log('[gyro] event beta:', e.beta, 'gamma:', e.gamma, 'active:', gyroActive);
+          applyGyroTilt(e);
+        });
       }
 
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
         // iOS 13+: needs user gesture to request permission
+        console.log('[gyro] iOS mode — esperando touchstart');
         holoCard.addEventListener('touchstart', () => {
           DeviceOrientationEvent.requestPermission()
-            .then(state => { if (state === 'granted') attachGyro(); })
-            .catch(() => {});
+            .then(state => {
+              console.log('[gyro] iOS permission:', state);
+              if (state === 'granted') attachGyro();
+            })
+            .catch((err) => console.warn('[gyro] iOS permission error:', err));
         }, { once: true });
       } else {
         // Android and other browsers: attach immediately
+        console.log('[gyro] Android mode — attaching');
         attachGyro();
       }
 
