@@ -940,6 +940,12 @@ section {
   opacity: 0.9;
 }
 
+.role-tasks li span {
+  flex: 1;
+  /* Asegura que el texto ocupe todo el espacio sobrante y wrap correctamente */
+  line-height: 1.5;
+}
+
 .role-tasks li svg {
   width: 20px;
   height: 20px;
@@ -999,6 +1005,16 @@ section {
 
   .hero-content {
     gap: 16px;
+  }
+
+  .role-title {
+    font-size: 1.25rem;
+    /* Ajuste para que el título no se deforme en pantallas pequeñas */
+  }
+
+  .timeline-content {
+    padding: 20px;
+    /* Reducción de padding para ganar espacio horizontal */
   }
 }
 
@@ -1127,28 +1143,73 @@ footer {
 }
 
 /* Stagger delays for scroll-reveal children */
-.reveal-d1 { transition-delay: 0.15s; }
-.reveal-d2 { transition-delay: 0.3s; }
-.reveal-d3 { transition-delay: 0.45s; }
-.reveal-d4 { transition-delay: 0.6s; }
+.reveal-d1 {
+  transition-delay: 0.15s;
+}
+
+.reveal-d2 {
+  transition-delay: 0.3s;
+}
+
+.reveal-d3 {
+  transition-delay: 0.45s;
+}
+
+.reveal-d4 {
+  transition-delay: 0.6s;
+}
 
 /* === Hero Entrance Animations (on load) === */
 @keyframes heroFadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes heroFadeRight {
-  from { opacity: 0; transform: translateX(36px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-nav                      { animation: heroFadeUp   0.6s cubic-bezier(0.5,0,0,1) 0.05s both; }
-.subtitle-badge          { animation: heroFadeUp   0.7s cubic-bezier(0.5,0,0,1) 0.2s  both; }
-.hero-text .title        { animation: heroFadeUp   0.7s cubic-bezier(0.5,0,0,1) 0.45s both; }
-.hero-text .description  { animation: heroFadeUp   0.7s cubic-bezier(0.5,0,0,1) 0.65s both; }
-.hero-text .actions      { animation: heroFadeUp   0.7s cubic-bezier(0.5,0,0,1) 0.85s both; }
-.profile-container       { animation: heroFadeRight 0.9s cubic-bezier(0.5,0,0,1) 0.3s  both; }
+@keyframes heroFadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(36px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+nav {
+  animation: heroFadeUp 0.6s cubic-bezier(0.5, 0, 0, 1) 0.05s both;
+}
+
+.subtitle-badge {
+  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.2s both;
+}
+
+.hero-text .title {
+  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.45s both;
+}
+
+.hero-text .description {
+  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.65s both;
+}
+
+.hero-text .actions {
+  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.85s both;
+}
+
+.profile-container {
+  animation: heroFadeRight 0.9s cubic-bezier(0.5, 0, 0, 1) 0.3s both;
+}
 
 @media (max-width: 768px) {
-  .profile-container { animation-name: heroFadeUp; }
+  .profile-container {
+    animation-name: heroFadeUp;
+  }
 }
