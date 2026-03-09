@@ -164,6 +164,10 @@ nav a:hover {
   .hero-content {
     flex-direction: column-reverse;
     text-align: center;
+    gap: 24px;
+  }
+  .profile-container {
+    margin: 0 auto;
   }
 }
 
@@ -244,8 +248,9 @@ nav a:hover {
 }
 
 .holo-wrapper {
-  width: 380px;
-  height: 500px;
+  width: min(380px, calc(100vw - 48px));
+  height: auto;
+  aspect-ratio: 380 / 500;
   position: relative;
   border-radius: 20px;
   transform-style: preserve-3d;
@@ -293,7 +298,7 @@ nav a:hover {
 }
 
 .holo-header h3 {
-  font-size: 2rem;
+  font-size: clamp(1.3rem, 5.5vw, 2rem);
   color: var(--white);
   margin-bottom: 0;
   line-height: 1.1;
@@ -983,6 +988,15 @@ section {
 @media (max-width: 480px) {
   .stack-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .holo-wrapper {
+    width: min(320px, calc(100vw - 32px));
+  }
+  .hero-content {
+    gap: 16px;
   }
 }
 
