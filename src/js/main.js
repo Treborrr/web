@@ -148,4 +148,55 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // 5. Holographic Profile Card Tilt Effect
+  const holoCard = document.getElementById('holo-card');
+  if (holoCard) {
+    const holoWrapper = holoCard.querySelector('.holo-wrapper');
+    const holoShine = holoCard.querySelector('.holo-shine');
+    const holoGlare = holoCard.querySelector('.holo-glare');
+
+    holoCard.addEventListener('mousemove', (e) => {
+      const rect = holoCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -15; // Max 15deg tilt
+      const rotateY = ((x - centerX) / centerX) * 15;
+
+      holoWrapper.style.setProperty('--rotate-x', `${rotateX}deg`);
+      holoWrapper.style.setProperty('--rotate-y', `${rotateY}deg`);
+
+      const pointerX = (x / rect.width) * 100;
+      const pointerY = (y / rect.height) * 100;
+
+      holoShine.style.setProperty('--pointer-x', `${pointerX}%`);
+      holoShine.style.setProperty('--pointer-y', `${pointerY}%`);
+
+      if (holoGlare) {
+        holoGlare.style.setProperty('--pointer-x', `${pointerX}%`);
+        holoGlare.style.setProperty('--pointer-y', `${pointerY}%`);
+      }
+    });
+
+    holoCard.addEventListener('mouseleave', () => {
+      holoWrapper.style.setProperty('--rotate-x', `0deg`);
+      holoWrapper.style.setProperty('--rotate-y', `0deg`);
+      holoShine.style.setProperty('--pointer-x', `50%`);
+      holoShine.style.setProperty('--pointer-y', `50%`);
+
+      if (holoGlare) {
+        holoGlare.style.setProperty('--pointer-x', `50%`);
+        holoGlare.style.setProperty('--pointer-y', `50%`);
+      }
+      // Add slight transition when returning to flat
+      holoWrapper.style.transition = 'transform 0.5s ease';
+      setTimeout(() => {
+        holoWrapper.style.transition = 'transform 0.1s ease';
+      }, 500);
+    });
+  }
 });
