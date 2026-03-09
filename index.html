@@ -29,7 +29,6 @@
       <a href="#proyectos">Portafolio</a>
       <a href="#experiencia">Trayectoria</a>
       <a href="#stack">Stack</a>
-      <a href="mailto:dev.robertalvarado@gmail.com">Contacto</a>
     </nav>
 
     <section class="hero">
@@ -61,7 +60,7 @@
             <div class="holo-contact-card">
               <div class="holo-contact-user">
                 <div class="holo-contact-avatar">
-                  <img src="src/img/mi-foto.png" alt="Avatar">
+                  <img src="src/img/trimmed-image.png" alt="Avatar">
                 </div>
                 <div class="holo-contact-details">
                   <span class="holo-contact-username">@trebor.sh</span>
@@ -87,7 +86,7 @@
       </div>
 
       <div class="services-grid">
-        <div class="glass-card card-1">
+        <div class="glass-card card-1 reveal reveal-d1">
           <div class="card-icon" style="color: var(--purple);">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -100,7 +99,7 @@
             automatización que optimicen tiempo y recursos en tu empresa.</p>
         </div>
 
-        <div class="glass-card card-2">
+        <div class="glass-card card-2 reveal reveal-d2">
           <div class="card-icon" style="color: var(--cyan);">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -113,7 +112,7 @@
             intuitivas, conectadas y hechas totalmente a la medida de tu equipo.</p>
         </div>
 
-        <div class="glass-card card-3">
+        <div class="glass-card card-3 reveal reveal-d3">
           <div class="card-icon" style="color: var(--orange);">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -136,7 +135,7 @@
           desarrollo simulado gracias a <strong>The Command Center</strong>.</p>
       </div>
 
-      <div class="glass-card"
+      <div class="glass-card reveal"
         style="max-width: 800px; margin: 0 auto; padding: 60px; text-align: center; border: 1px solid var(--purple);">
         <div style="margin-bottom: 24px; display: flex; justify-content: center; opacity: 0.9;">
           <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"
@@ -168,7 +167,7 @@
       <!-- Toggle Switch -->
       <div class="view-toggle-container">
         <div class="view-toggle">
-          <input type="radio" id="view-1" name="exp-view" value="terminal" checked>
+          <input type="radio" id="view-1" name="exp-view" value="terminal">
           <label for="view-1" class="toggle-label">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -178,7 +177,7 @@
             Terminal
           </label>
 
-          <input type="radio" id="view-2" name="exp-view" value="timeline">
+          <input type="radio" id="view-2" name="exp-view" value="timeline" checked>
           <label for="view-2" class="toggle-label">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -196,7 +195,7 @@
       <div class="exp-views-wrapper">
 
         <!-- VIEW 1: Terminal -->
-        <div id="view-terminal" class="exp-view active">
+        <div id="view-terminal" class="exp-view">
           <div class="terminal-window glass-card">
             <div class="terminal-header">
               <div class="term-dots">
@@ -245,10 +244,10 @@
         </div>
 
         <!-- VIEW 2: Timeline -->
-        <div id="view-timeline" class="exp-view">
+        <div id="view-timeline" class="exp-view active">
           <div class="timeline-container">
             <!-- SCCE Experience -->
-            <div class="timeline-node">
+            <div class="timeline-node reveal reveal-d1">
               <div class="timeline-dot"></div>
               <div class="timeline-content glass-card">
                 <div class="timeline-header">
@@ -276,7 +275,7 @@
             </div>
 
             <!-- QSD Soft Experience -->
-            <div class="timeline-node">
+            <div class="timeline-node reveal reveal-d2">
               <div class="timeline-dot"></div>
               <div class="timeline-content glass-card">
                 <div class="timeline-header">
@@ -319,7 +318,7 @@
       </div>
 
       <div class="stack-grid">
-        <div class="stack-category">
+        <div class="stack-category reveal reveal-d1">
           <h3 class="stack-title">Desarrollo Core</h3>
           <div class="badges">
             <span class="badge badge-nxt">Next.js</span>
@@ -332,7 +331,7 @@
           </div>
         </div>
 
-        <div class="stack-category">
+        <div class="stack-category reveal reveal-d2">
           <h3 class="stack-title">Bases de Datos</h3>
           <div class="badges">
             <span class="badge badge-pg">PostgreSQL</span>
@@ -341,7 +340,7 @@
           </div>
         </div>
 
-        <div class="stack-category">
+        <div class="stack-category reveal reveal-d3">
           <h3 class="stack-title">Infraestructura & Deploy</h3>
           <div class="badges">
             <span class="badge badge-aws">AWS</span>
@@ -354,7 +353,7 @@
           </div>
         </div>
 
-        <div class="stack-category">
+        <div class="stack-category reveal reveal-d4">
           <h3 class="stack-title">Herramientas</h3>
           <div class="badges">
             <span class="badge">Linux</span>
