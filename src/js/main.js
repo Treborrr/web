@@ -241,14 +241,38 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ Safari: request permission on first touch of the card
-        holoCard.addEventListener('touchstart', () => {
+        // iOS 13+: requestPermission() must be called from a button click
+        const iosBtn = document.createElement('button');
+        iosBtn.textContent = '⟳ 3D';
+        iosBtn.setAttribute('aria-label', 'Activar efecto 3D con giroscopio');
+        Object.assign(iosBtn.style, {
+          position: 'absolute', bottom: '10px', right: '10px', zIndex: '10',
+          background: 'rgba(189,147,249,0.15)', border: '1px solid rgba(189,147,249,0.5)',
+          color: '#bd93f9', borderRadius: '20px', padding: '4px 10px',
+          fontSize: '11px', cursor: 'pointer', backdropFilter: 'blur(4px)',
+          fontFamily: 'Fira Code, monospace', letterSpacing: '0.05em',
+        });
+        holoCard.style.position = 'relative';
+        holoCard.appendChild(iosBtn);
+
+        iosBtn.addEventListener('click', () => {
           DeviceOrientationEvent.requestPermission()
-            .then(state => { if (state === 'granted') attachGyro(); })
-            .catch(() => {});
-        }, { once: true });
+            .then(state => {
+              if (state === 'granted') {
+                attachGyro();
+                iosBtn.remove();
+              } else {
+                iosBtn.textContent = '✗ denegado';
+                iosBtn.title = 'Ajustes → Safari → Movimiento y orientación';
+              }
+            })
+            .catch(() => {
+              iosBtn.textContent = '✗ denegado';
+              iosBtn.title = 'Ajustes → Safari → Movimiento y orientación';
+            });
+        });
       } else {
-        // Android / Chrome iOS: attach immediately, no permission needed
+        // Android / browsers without requestPermission: attach immediately
         attachGyro();
       }
 
