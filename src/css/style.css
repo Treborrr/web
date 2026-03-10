@@ -260,11 +260,13 @@ nav a:hover {
   z-index: 2;
   border: 4px solid var(--surface);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(189, 147, 249, 0.2);
-  background: linear-gradient(135deg, rgba(30, 32, 45, 0.95), rgba(18, 18, 28, 0.98));
+  background: linear-gradient(135deg, rgb(30, 32, 45), rgb(18, 18, 28));
   display: flex;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
+  isolation: isolate;
+  /* Crucial: Prevents blend modes from picking up background dots */
   /* Ensure glare stays inside border-radius */
 }
 
@@ -394,24 +396,35 @@ nav a:hover {
   border-radius: 20px;
   z-index: 3;
   mix-blend-mode: color-dodge;
+  transform: translateZ(1px);
+  /* Crucial: Fixes color-dodge noise on Chromium within preserve-3d */
   opacity: var(--holo-opacity, 0);
-  /* Capa celofan: Reflejo blanco y manchas cromáticas suaves */
+  /* Capa celofan: Colores vibrantes y saturados tipo foil */
   background-image:
     radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(255, 255, 255, 0.2) 25%,
-      transparent 50%),
-    radial-gradient(circle at calc(var(--pointer-x, 50%) * 0.6) calc(var(--pointer-y, 50%) * 0.6),
-      rgba(255, 50, 150, 0.6) 0%, transparent 70%),
-    radial-gradient(circle at calc(100% - (var(--pointer-x, 50%) * 0.6)) calc(var(--pointer-y, 50%) * 0.6),
-      rgba(50, 200, 255, 0.6) 0%, transparent 70%),
-    radial-gradient(circle at calc(var(--pointer-x, 50%) * 0.6) calc(100% - (var(--pointer-y, 50%) * 0.6)),
-      rgba(255, 255, 50, 0.4) 0%, transparent 70%),
-    radial-gradient(circle at calc(100% - (var(--pointer-x, 50%) * 0.6)) calc(100% - (var(--pointer-y, 50%) * 0.6)),
-      rgba(150, 50, 255, 0.6) 0%, transparent 70%);
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0) 50%),
+    radial-gradient(circle at calc(var(--pointer-x, 50%) * 0.8) calc(var(--pointer-y, 50%) * 0.8),
+      rgba(255, 0, 128, 0.5) 0%, rgba(255, 0, 128, 0) 60%),
+    radial-gradient(circle at calc(100% - (var(--pointer-x, 50%) * 0.8)) calc(var(--pointer-y, 50%) * 0.8),
+      rgba(0, 255, 255, 0.5) 0%, rgba(0, 255, 255, 0) 60%),
+    radial-gradient(circle at calc(var(--pointer-x, 50%) * 0.8) calc(100% - (var(--pointer-y, 50%) * 0.8)),
+      rgba(0, 255, 0, 0.5) 0%, rgba(0, 255, 0, 0) 60%),
+    radial-gradient(circle at calc(100% - (var(--pointer-x, 50%) * 0.8)) calc(100% - (var(--pointer-y, 50%) * 0.8)),
+      rgba(128, 0, 255, 0.5) 0%, rgba(128, 0, 255, 0) 60%);
   background-size: 100% 100%;
   transition: opacity 0.4s ease;
   pointer-events: none;
+}
+
+/* Firefox specific fix: Firefox's Gecko engine produces heavy GPU noise with color-dodge 
+   when overlapping overlapping gradients in a 3D context. We fallback to plus-lighter or hard-light. */
+@-moz-document url-prefix() {
+  .holo-shine {
+    mix-blend-mode: screen;
+    opacity: calc(var(--holo-opacity, 0) * 1.5);
+  }
 }
 
 .holo-glare {
@@ -422,18 +435,24 @@ nav a:hover {
   z-index: 1;
   pointer-events: none;
   background: repeating-linear-gradient(-45deg,
-      #0e152e 0%,
-      hsl(180, 10%, 60%) 2%,
-      hsl(180, 29%, 66%) 4.5%,
-      hsl(180, 10%, 60%) 7%,
-      #0e152e 15%,
-      #0e152e 18%);
-  background-size: 300% 300%;
-  mix-blend-mode: color-dodge;
-  filter: blur(8px);
-  /* Difumina ópticamente el rayo de luz */
-  opacity: var(--glare-opacity, 0.4);
-  animation: var(--glare-anim, glareSweep 90s linear infinite);
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 5%,
+      /* Primer rayo: extremadamente sutil y delgado */
+      rgba(255, 255, 255, 0.2) 5.5%,
+      rgba(255, 255, 255, 0) 6%,
+      /* Espacio MUY amplio entre ambos destellos */
+      rgba(255, 255, 255, 0) 25%,
+      /* Segundo rayo: una línea afilada muy fina y elegante */
+      rgba(255, 255, 255, 0.5) 25.2%,
+      rgba(255, 255, 255, 0) 25.4%,
+      /* Vacío largo general hasta la siguiente pasada */
+      rgba(255, 255, 255, 0) 50%);
+  background-size: 200% 200%;
+  mix-blend-mode: screen;
+  filter: blur(5px);
+  /* Menor blur para mantener la nitidez de la carta coleccionable */
+  opacity: var(--glare-opacity, 0.85);
+  animation: var(--glare-anim, glareSweep 60s linear infinite);
 }
 
 .profile-container:hover .holo-shine {
@@ -465,8 +484,10 @@ nav a:hover {
   transform: translate(-50%, -50%);
   width: 440px;
   height: 520px;
-  background: linear-gradient(45deg, var(--purple), var(--cyan), var(--pink));
-  background-size: 200% 200%;
+  background-image:
+    radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%), rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+    linear-gradient(45deg, var(--purple), var(--cyan), var(--pink));
+  background-size: 100% 100%, 200% 200%;
   border-radius: 30px;
   filter: blur(40px);
   opacity: 0.4;
@@ -476,18 +497,18 @@ nav a:hover {
 
 @keyframes pulseGlow {
   0% {
-    background-position: 0% 50%;
+    background-position: center, 0% 50%;
     opacity: 0.3;
     transform: translate(-50%, -50%) scale(0.95);
   }
 
   50% {
-    opacity: 0.5;
+    opacity: 0.6;
     transform: translate(-50%, -50%) scale(1.05);
   }
 
   100% {
-    background-position: 100% 50%;
+    background-position: center, 100% 50%;
     opacity: 0.3;
     transform: translate(-50%, -50%) scale(0.95);
   }

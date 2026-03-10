@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const holoWrapper = holoCard.querySelector('.holo-wrapper');
     const holoShine = holoCard.querySelector('.holo-shine');
     const holoGlare = holoCard.querySelector('.holo-glare');
+    const profileGlow = holoCard.querySelector('.profile-glow');
 
     holoCard.addEventListener('mousemove', (e) => {
       const rect = holoCard.getBoundingClientRect();
@@ -180,6 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
         holoGlare.style.setProperty('--pointer-x', `${pointerX}%`);
         holoGlare.style.setProperty('--pointer-y', `${pointerY}%`);
       }
+
+      if (profileGlow) {
+        profileGlow.style.setProperty('--pointer-x', `${pointerX}%`);
+        profileGlow.style.setProperty('--pointer-y', `${pointerY}%`);
+      }
     });
 
     holoCard.addEventListener('mouseleave', () => {
@@ -191,6 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (holoGlare) {
         holoGlare.style.setProperty('--pointer-x', `50%`);
         holoGlare.style.setProperty('--pointer-y', `50%`);
+      }
+      if (profileGlow) {
+        profileGlow.style.setProperty('--pointer-x', `50%`);
+        profileGlow.style.setProperty('--pointer-y', `50%`);
       }
       // Add slight transition when returning to flat
       holoWrapper.style.transition = 'transform 0.5s ease';
@@ -231,6 +241,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (holoGlare) {
           holoGlare.style.setProperty('--pointer-x', `${pointerX}%`);
           holoGlare.style.setProperty('--pointer-y', `${pointerY}%`);
+        }
+        if (profileGlow) {
+          profileGlow.style.setProperty('--pointer-x', `${pointerX}%`);
+          profileGlow.style.setProperty('--pointer-y', `${pointerY}%`);
         }
       }
 
