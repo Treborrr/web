@@ -157,56 +157,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const holoGlare = holoCard.querySelector('.holo-glare');
     const profileGlow = holoCard.querySelector('.profile-glow');
 
-    holoCard.addEventListener('mousemove', (e) => {
-      const rect = holoCard.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    const holoWrapperRect = holoWrapper.getBoundingClientRect();
 
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
+    const clamp = (val, min = 0, max = 100) => Math.min(Math.max(val, min), max);
+    const adjust = (val, fromM, fromMax, toM, toMax) => toM + ((toMax - toM) * (val - fromM)) / (fromMax - fromM);
 
-      const rotateX = ((y - centerY) / centerY) * -15; // Max 15deg tilt
-      const rotateY = ((x - centerX) / centerX) * 15;
+    const updateCardTransform = (x, y, width, height) => {
+      const percentX = clamp((100 / width) * x);
+      const percentY = clamp((100 / height) * y);
 
+      const centerX = percentX - 50;
+      const centerY = percentY - 50;
+
+      const rotateX = -(centerX / 5);
+      const rotateY = (centerY / 4);
+
+      const bgX = adjust(percentX, 0, 100, 35, 65);
+      const bgY = adjust(percentY, 0, 100, 35, 65);
+      const distCenter = clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1);
+
+      holoWrapper.style.setProperty('--pointer-x', `${percentX}%`);
+      holoWrapper.style.setProperty('--pointer-y', `${percentY}%`);
+      holoWrapper.style.setProperty('--background-x', `${bgX}%`);
+      holoWrapper.style.setProperty('--background-y', `${bgY}%`);
+      holoWrapper.style.setProperty('--pointer-from-center', distCenter);
+      holoWrapper.style.setProperty('--pointer-from-top', percentY / 100);
+      holoWrapper.style.setProperty('--pointer-from-left', percentX / 100);
       holoWrapper.style.setProperty('--rotate-x', `${rotateX}deg`);
       holoWrapper.style.setProperty('--rotate-y', `${rotateY}deg`);
+      holoWrapper.style.setProperty('--card-opacity', 1);
+    };
 
-      const pointerX = (x / rect.width) * 100;
-      const pointerY = (y / rect.height) * 100;
-
-      holoShine.style.setProperty('--pointer-x', `${pointerX}%`);
-      holoShine.style.setProperty('--pointer-y', `${pointerY}%`);
-
-      if (holoGlare) {
-        holoGlare.style.setProperty('--pointer-x', `${pointerX}%`);
-        holoGlare.style.setProperty('--pointer-y', `${pointerY}%`);
-      }
-
-      if (profileGlow) {
-        profileGlow.style.setProperty('--pointer-x', `${pointerX}%`);
-        profileGlow.style.setProperty('--pointer-y', `${pointerY}%`);
-      }
+    holoCard.addEventListener('mousemove', (e) => {
+      const rect = holoWrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      updateCardTransform(x, y, rect.width, rect.height);
     });
 
     holoCard.addEventListener('mouseleave', () => {
+      // Return to base state, centered pointers, no tilt, opacity 0
+      holoWrapper.style.setProperty('--pointer-x', `50%`);
+      holoWrapper.style.setProperty('--pointer-y', `50%`);
+      holoWrapper.style.setProperty('--background-x', `50%`);
+      holoWrapper.style.setProperty('--background-y', `50%`);
+      holoWrapper.style.setProperty('--pointer-from-center', 0);
+      holoWrapper.style.setProperty('--pointer-from-top', 0.5);
+      holoWrapper.style.setProperty('--pointer-from-left', 0.5);
       holoWrapper.style.setProperty('--rotate-x', `0deg`);
       holoWrapper.style.setProperty('--rotate-y', `0deg`);
-      holoShine.style.setProperty('--pointer-x', `50%`);
-      holoShine.style.setProperty('--pointer-y', `50%`);
-
-      if (holoGlare) {
-        holoGlare.style.setProperty('--pointer-x', `50%`);
-        holoGlare.style.setProperty('--pointer-y', `50%`);
-      }
-      if (profileGlow) {
-        profileGlow.style.setProperty('--pointer-x', `50%`);
-        profileGlow.style.setProperty('--pointer-y', `50%`);
-      }
-      // Add slight transition when returning to flat
-      holoWrapper.style.transition = 'transform 0.5s ease';
-      setTimeout(() => {
-        holoWrapper.style.transition = 'transform 0.1s ease';
-      }, 500);
+      holoWrapper.style.setProperty('--card-opacity', 0);
     });
 
     // Gyroscope tilt effect for mobile
@@ -226,26 +226,18 @@ document.addEventListener('DOMContentLoaded', () => {
           gammaOrigin = gamma;
         }
 
-        const MAX = 15;
-        const rotateX = Math.max(-MAX, Math.min(MAX, ((beta - betaOrigin) / 30) * MAX));
-        const rotateY = Math.max(-MAX, Math.min(MAX, ((gamma - gammaOrigin) / 30) * MAX));
+        const rect = holoWrapper.getBoundingClientRect();
 
-        holoWrapper.style.setProperty('--rotate-x', `${rotateX}deg`);
-        holoWrapper.style.setProperty('--rotate-y', `${rotateY}deg`);
+        // Use identical scaling as React hook:
+        // beta controls X axis (up/down), gamma controls Y axis (left/right)
+        // + values of beta mean device is flipped forward, gamma positive means tilted right
+        const mobileTiltSensitivity = 2; // Sensitivity coefficient
 
-        const pointerX = ((rotateY / MAX) * 0.5 + 0.5) * 100;
-        const pointerY = ((rotateX / MAX) * -0.5 + 0.5) * 100;
+        // We simulate a mouse cursor position `x` and `y` generated by the phone tilt
+        const simulatedX = rect.width / 2 + gamma * mobileTiltSensitivity * 2;
+        const simulatedY = rect.height / 2 + (beta - 40) * mobileTiltSensitivity * 2;
 
-        holoShine.style.setProperty('--pointer-x', `${pointerX}%`);
-        holoShine.style.setProperty('--pointer-y', `${pointerY}%`);
-        if (holoGlare) {
-          holoGlare.style.setProperty('--pointer-x', `${pointerX}%`);
-          holoGlare.style.setProperty('--pointer-y', `${pointerY}%`);
-        }
-        if (profileGlow) {
-          profileGlow.style.setProperty('--pointer-x', `${pointerX}%`);
-          profileGlow.style.setProperty('--pointer-y', `${pointerY}%`);
-        }
+        updateCardTransform(simulatedX, simulatedY, rect.width, rect.height);
       }
 
       function attachGyro() {
