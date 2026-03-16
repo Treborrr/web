@@ -1,4 +1,4 @@
-# treborrr.dev
+# treborrr.biz
 
 El diseño sigue la paleta de colores **Dracula Theme** y utiliza la tipografía **Kdam Thmor Pro**.
 
