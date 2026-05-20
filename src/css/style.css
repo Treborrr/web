@@ -287,13 +287,12 @@ nav a:hover {
       hsla(266, 50%, 80%, calc(var(--card-opacity) * 0.75)) 10%,
       hsla(266, 25%, 70%, calc(var(--card-opacity) * 0.5)) 50%,
       hsla(266, 0%, 60%, 0) 100%),
-    radial-gradient(35% 52% at 55% 20%, rgba(189, 147, 249, 0.65) 0%, rgba(189, 147, 249, 0) 100%),
-    radial-gradient(100% 100% at 50% 50%, rgba(139, 233, 253, 0.7) 1%, rgba(139, 233, 253, 0) 76%),
+    radial-gradient(35% 52% at 55% 20%, rgba(80, 250, 123, 0.5) 0%, rgba(80, 250, 123, 0) 100%),
+    radial-gradient(100% 100% at 50% 50%, rgba(139, 233, 253, 0.65) 1%, rgba(139, 233, 253, 0) 76%),
     conic-gradient(from 124deg at 50% 50%,
-      #bd93f9 0%,
-      #8be9fd 38%,
-      #ff79c6 62%,
-      #bd93f9 100%);
+      #50fa7b 0%,
+      #8be9fd 45%,
+      #50fa7b 100%);
   overflow: hidden;
   z-index: 2;
 }
@@ -559,9 +558,8 @@ nav a:hover {
 }
 
 @keyframes constellation-pulse {
-  0%, 100% { filter: drop-shadow(0 0 14px rgba(189, 147, 249, 0.55)) drop-shadow(0 0 30px rgba(189, 147, 249, 0.2)); }
-  40%       { filter: drop-shadow(0 0 14px rgba(139, 233, 253, 0.55)) drop-shadow(0 0 30px rgba(139, 233, 253, 0.2)); }
-  70%       { filter: drop-shadow(0 0 14px rgba(255, 121, 198, 0.50)) drop-shadow(0 0 30px rgba(255, 121, 198, 0.18)); }
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(80, 250, 123, 0.55))  drop-shadow(0 0 30px rgba(80, 250, 123, 0.2)); }
+  50%       { filter: drop-shadow(0 0 14px rgba(139, 233, 253, 0.55)) drop-shadow(0 0 30px rgba(139, 233, 253, 0.2)); }
 }
 
 @keyframes holo-bg {
