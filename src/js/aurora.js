@@ -68,19 +68,15 @@ void main() {
     uv += toM * 0.35 * exp(-d * 2.2);
   }
 
-  // click discharge: a fast shockwave that briefly warps and energizes
+  // click discharge: a soft glow that briefly energizes nearby filaments
   vec2 c = (uClick - 0.5 * uRes) / uRes.y;
   c.y = -c.y;
   float burst = 0.0;
-  if (uClickAge < 0.9) {
-    float age  = uClickAge;
-    float dc   = length(c - uv);
-    float ring = abs(dc - age * 0.9);                  // expanding ring
-    float envelope = exp(-age * 4.0);                  // fades out fast
-    burst = smoothstep(0.08, 0.0, ring) * envelope;    // thin shock ring
-    burst += exp(-dc * 7.0) * envelope * 0.8;          // core flash
-    // the shock also tugs the filaments outward
-    uv += normalize(uv - c + 0.0001) * burst * 0.05;
+  if (uClickAge < 1.2) {
+    float dc = length(c - uv);
+    // ease in fast, fade out slow
+    float envelope = smoothstep(0.0, 0.08, uClickAge) * exp(-uClickAge * 2.5);
+    burst = exp(-dc * 4.0) * envelope;
   }
 
   float t = uTime;
@@ -97,7 +93,9 @@ void main() {
   // vignette: strongly dim the central band where content sits
   float vign = 0.12 + 0.88 * smoothstep(0.25, 0.85, abs(uv.x));
   e *= vign;
-  e += burst * 0.9;
+  // the burst brightens existing filaments rather than painting a flash
+  e *= 1.0 + burst * 2.5;
+  e += burst * 0.12;
 
   // breathing dracula palette: hues drift cyan <-> violet over ~90s
   float breathe = 0.5 + 0.5 * sin(t * 0.07);
