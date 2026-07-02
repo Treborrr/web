@@ -287,12 +287,13 @@ nav a:hover {
       hsla(266, 50%, 80%, calc(var(--card-opacity) * 0.75)) 10%,
       hsla(266, 25%, 70%, calc(var(--card-opacity) * 0.5)) 50%,
       hsla(266, 0%, 60%, 0) 100%),
-    radial-gradient(35% 52% at 55% 20%, rgba(80, 250, 123, 0.5) 0%, rgba(80, 250, 123, 0) 100%),
+    radial-gradient(35% 52% at 55% 20%, rgba(87, 85, 254, 0.5) 0%, rgba(87, 85, 254, 0) 100%),
     radial-gradient(100% 100% at 50% 50%, rgba(139, 233, 253, 0.65) 1%, rgba(139, 233, 253, 0) 76%),
     conic-gradient(from 124deg at 50% 50%,
-      #50fa7b 0%,
+      #5755fe 0%,
       #8be9fd 45%,
-      #50fa7b 100%);
+      #bd93f9 70%,
+      #5755fe 100%);
   overflow: hidden;
   z-index: 2;
 }
