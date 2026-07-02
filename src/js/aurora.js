@@ -1,9 +1,12 @@
 /**
- * V5-B: Plasma Lamp (WebGL)
- * =========================
- * Electric plasma filaments rendered with a noise shader. Filaments drift
- * slowly and bend toward the cursor like a plasma globe. Kept dark and
- * vignetted toward the content area so text stays readable.
+ * V6: Plasma Lamp (WebGL)
+ * =======================
+ * Electric plasma filaments rendered with a noise shader.
+ *  - Filaments drift slowly and bend toward the cursor (with inertia)
+ *  - Click/tap fires a discharge burst at that point, like touching the glass
+ *  - Palette breathes slowly between cyan and violet
+ *  - Adaptive resolution: sharp on retina, steps down if the GPU struggles
+ *  - Touch support; honors prefers-reduced-motion; pauses on hidden tab
  */
 
 const canvas = document.createElement('canvas');
@@ -27,6 +30,8 @@ uniform vec2  uRes;
 uniform float uTime;
 uniform vec2  uMouse;
 uniform float uMouseOn;
+uniform vec2  uClick;
+uniform float uClickAge;   // seconds since last click; large = no click
 
 // hash / noise / fbm
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -44,10 +49,8 @@ float fbm(vec2 p) {
 
 // one plasma filament: a ridge line in warped noise space
 float filament(vec2 uv, float seed, float t) {
-  // warp space with fbm so the line snakes around
   vec2 w = uv * 1.6 + vec2(seed * 13.7, seed * 7.3);
   float n = fbm(w + vec2(t * 0.045, -t * 0.035));
-  // ridge: distance of noise value from 0.5 -> thin bright line
   float d = abs(n - 0.5);
   // thin electric core + faint halo
   return smoothstep(0.018, 0.0, d) + smoothstep(0.06, 0.0, d) * 0.25;
@@ -65,6 +68,21 @@ void main() {
     uv += toM * 0.35 * exp(-d * 2.2);
   }
 
+  // click discharge: a fast shockwave that briefly warps and energizes
+  vec2 c = (uClick - 0.5 * uRes) / uRes.y;
+  c.y = -c.y;
+  float burst = 0.0;
+  if (uClickAge < 0.9) {
+    float age  = uClickAge;
+    float dc   = length(c - uv);
+    float ring = abs(dc - age * 0.9);                  // expanding ring
+    float envelope = exp(-age * 4.0);                  // fades out fast
+    burst = smoothstep(0.08, 0.0, ring) * envelope;    // thin shock ring
+    burst += exp(-dc * 7.0) * envelope * 0.8;          // core flash
+    // the shock also tugs the filaments outward
+    uv += normalize(uv - c + 0.0001) * burst * 0.05;
+  }
+
   float t = uTime;
   float e = 0.0;
   e += filament(uv, 1.0, t)        * 0.8;
@@ -79,12 +97,14 @@ void main() {
   // vignette: strongly dim the central band where content sits
   float vign = 0.12 + 0.88 * smoothstep(0.25, 0.85, abs(uv.x));
   e *= vign;
+  e += burst * 0.9;
 
-  // dracula palette: deep bg -> purple -> cyan core
-  vec3 bg     = vec3(0.028, 0.03, 0.07);
-  vec3 purple = vec3(0.45, 0.30, 0.85);
-  vec3 cyan   = vec3(0.42, 0.85, 0.98);
-  vec3 col = bg + purple * e * 0.35 + cyan * pow(e, 2.0) * 0.5;
+  // breathing dracula palette: hues drift cyan <-> violet over ~90s
+  float breathe = 0.5 + 0.5 * sin(t * 0.07);
+  vec3 bg    = vec3(0.028, 0.03, 0.07);
+  vec3 haze  = mix(vec3(0.45, 0.30, 0.85), vec3(0.30, 0.45, 0.90), breathe);
+  vec3 core  = mix(vec3(0.42, 0.85, 0.98), vec3(0.75, 0.55, 1.00), breathe);
+  vec3 col = bg + haze * e * 0.35 + core * pow(e, 2.0) * 0.5;
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -112,44 +132,96 @@ const locP = gl.getAttribLocation(prog, 'p');
 gl.enableVertexAttribArray(locP);
 gl.vertexAttribPointer(locP, 2, gl.FLOAT, false, 0, 0);
 
-const uRes     = gl.getUniformLocation(prog, 'uRes');
-const uTime    = gl.getUniformLocation(prog, 'uTime');
-const uMouse   = gl.getUniformLocation(prog, 'uMouse');
-const uMouseOn = gl.getUniformLocation(prog, 'uMouseOn');
+const uRes      = gl.getUniformLocation(prog, 'uRes');
+const uTime     = gl.getUniformLocation(prog, 'uTime');
+const uMouse    = gl.getUniformLocation(prog, 'uMouse');
+const uMouseOn  = gl.getUniformLocation(prog, 'uMouseOn');
+const uClick    = gl.getUniformLocation(prog, 'uClick');
+const uClickAge = gl.getUniformLocation(prog, 'uClickAge');
 
 const mouse = { x: -9999, y: -9999, sx: -9999, sy: -9999, active: false };
-window.addEventListener('mousemove', e => {
-  if (!mouse.active) { mouse.sx = e.clientX; mouse.sy = e.clientY; }
-  mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
-});
+const click = { x: 0, y: 0, at: -1e9 };
+
+function pointTo(x, y) {
+  if (!mouse.active) { mouse.sx = x; mouse.sy = y; }
+  mouse.x = x; mouse.y = y; mouse.active = true;
+}
+window.addEventListener('mousemove', e => pointTo(e.clientX, e.clientY));
 window.addEventListener('mouseleave', () => { mouse.active = false; });
+window.addEventListener('touchmove', e => {
+  const t = e.touches[0];
+  if (t) pointTo(t.clientX, t.clientY);
+}, { passive: true });
+window.addEventListener('touchend', () => { mouse.active = false; });
+
+function discharge(x, y) {
+  click.x = x; click.y = y; click.at = performance.now();
+}
+window.addEventListener('mousedown', e => discharge(e.clientX, e.clientY));
+window.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  if (t) { pointTo(t.clientX, t.clientY); discharge(t.clientX, t.clientY); }
+}, { passive: true });
+
+// ── Adaptive resolution ──────────────────────────────────────────────────────
+// Start at 0.5x CSS pixels (scaled by devicePixelRatio, capped at 2) and step
+// down if frames are slow, up if the GPU has headroom.
+let scale = 0.5;
+const SCALE_MIN = 0.3, SCALE_MAX = Math.min(window.devicePixelRatio || 1, 2) * 0.5;
 
 function resize() {
-  // render at half resolution for perf; CSS scales it up
-  canvas.width  = Math.floor(window.innerWidth / 2);
-  canvas.height = Math.floor(window.innerHeight / 2);
+  canvas.width  = Math.max(1, Math.floor(window.innerWidth  * scale));
+  canvas.height = Math.max(1, Math.floor(window.innerHeight * scale));
   gl.viewport(0, 0, canvas.width, canvas.height);
 }
 window.addEventListener('resize', resize);
 resize();
 
+let frameTimes = [];
+let lastFrame = performance.now();
+function tuneResolution(now) {
+  frameTimes.push(now - lastFrame);
+  lastFrame = now;
+  if (frameTimes.length < 60) return;
+  const avg = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
+  frameTimes = [];
+  if (avg > 22 && scale > SCALE_MIN)      { scale = Math.max(SCALE_MIN, scale * 0.8); resize(); }
+  else if (avg < 12 && scale < SCALE_MAX) { scale = Math.min(SCALE_MAX, scale * 1.15); resize(); }
+}
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 let running = true;
 document.addEventListener('visibilitychange', () => {
   running = document.visibilityState === 'visible';
-  if (running) requestAnimationFrame(frame);
+  if (running && !reducedMotion) requestAnimationFrame(frame);
 });
 
 const t0 = performance.now();
+function render(now) {
+  gl.uniform2f(uRes, canvas.width, canvas.height);
+  gl.uniform1f(uTime, (now - t0) / 1000);
+  mouse.sx += (mouse.x - mouse.sx) * 0.06;
+  mouse.sy += (mouse.y - mouse.sy) * 0.06;
+  gl.uniform2f(uMouse, mouse.sx * scale, mouse.sy * scale);
+  gl.uniform1f(uMouseOn, mouse.active ? 1 : 0);
+  gl.uniform2f(uClick, click.x * scale, click.y * scale);
+  gl.uniform1f(uClickAge, (now - click.at) / 1000);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+}
+
 function frame() {
   if (!running) return;
   requestAnimationFrame(frame);
-  gl.uniform2f(uRes, canvas.width, canvas.height);
-  gl.uniform1f(uTime, (performance.now() - t0) / 1000);
-  // trail the cursor with a bit of inertia
-  mouse.sx += (mouse.x - mouse.sx) * 0.06;
-  mouse.sy += (mouse.y - mouse.sy) * 0.06;
-  gl.uniform2f(uMouse, mouse.sx / 2, mouse.sy / 2);
-  gl.uniform1f(uMouseOn, mouse.active ? 1 : 0);
-  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  const now = performance.now();
+  tuneResolution(now);
+  render(now);
 }
-frame();
+
+if (reducedMotion) {
+  // static frame, no animation
+  render(performance.now());
+} else {
+  frame();
+}
