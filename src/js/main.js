@@ -260,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
       accent: '#ffb86c',
       glow: 'rgba(255, 184, 108, 0.4)',
       desc: 'Sitio bilingüe con sistema de reservas, galería de habitaciones y guía de lugares turísticos de Chachapoyas.',
+      url: 'https://hospedajeburgos.up.railway.app/',
     },
     {
       title: 'ABAWA',
@@ -267,6 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
       accent: '#bd93f9',
       glow: 'rgba(189, 147, 249, 0.4)',
       desc: 'Plataforma de gestión a medida con dashboard ejecutivo y control centralizado de la operación.',
+      url: 'https://abawa.up.railway.app/cata',
     },
     {
       title: 'BMS',
@@ -296,12 +298,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let cur = 0;
   let swapTimer = null;
 
+  const linkEl = document.getElementById('sp-link');
+
   const renderText = (i) => {
     const p = PROJECTS[i];
     idxEl.textContent = String(i + 1).padStart(2, '0');
     tagEl.textContent = p.tag;
     titleEl.textContent = p.title;
     descEl.textContent = p.desc;
+    if (linkEl) {
+      if (p.url) { linkEl.href = p.url; linkEl.hidden = false; }
+      else { linkEl.hidden = true; }
+    }
   };
 
   const setProject = (i, instant = false) => {

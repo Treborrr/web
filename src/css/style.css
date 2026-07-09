@@ -1502,6 +1502,24 @@ nav {
   max-width: 380px;
 }
 
+.sp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--pj-accent, var(--cyan));
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--pj-accent, var(--cyan)) 40%, transparent);
+  padding-bottom: 2px;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+.sp-link:hover { opacity: 0.75; border-color: var(--pj-accent, var(--cyan)); }
+.sp-link[hidden] { display: none; }
+
 .sp-rail {
   display: flex;
   flex-direction: column;
@@ -1890,6 +1908,7 @@ nav {
    FORM — success state
    ============================================================ */
 
+.cta-success[hidden] { display: none; }
 .cta-success {
   display: flex;
   align-items: center;
