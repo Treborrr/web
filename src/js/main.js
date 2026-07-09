@@ -20,11 +20,18 @@ document.addEventListener('click', (e) => {
   const form    = document.getElementById('cta-form');
   const btn     = document.getElementById('cta-submit');
   const success = document.getElementById('cta-success');
+  const errorEl = document.getElementById('cta-error');
   if (!form) return;
+  const fail = () => {
+    btn.disabled = false;
+    btn.style.opacity = '';
+    if (errorEl) errorEl.hidden = false;
+  };
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     btn.disabled = true;
     btn.style.opacity = '0.6';
+    if (errorEl) errorEl.hidden = true;
     try {
       const res = await fetch(form.action, {
         method: 'POST',
@@ -34,13 +41,9 @@ document.addEventListener('click', (e) => {
       if (res.ok) {
         form.hidden = true;
         success.hidden = false;
-      } else {
-        btn.disabled = false;
-        btn.style.opacity = '';
-      }
+      } else fail();
     } catch {
-      btn.disabled = false;
-      btn.style.opacity = '';
+      fail();
     }
   });
 })();
@@ -120,8 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const holoShine = holoCard.querySelector('.holo-shine');
     const holoGlare = holoCard.querySelector('.holo-glare');
     const profileGlow = holoCard.querySelector('.profile-glow');
-
-    const holoWrapperRect = holoWrapper.getBoundingClientRect();
 
     const clamp = (val, min = 0, max = 100) => Math.min(Math.max(val, min), max);
     const adjust = (val, fromM, fromMax, toM, toMax) => toM + ((toMax - toM) * (val - fromM)) / (fromMax - fromM);
@@ -335,7 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
     root.style.setProperty('--pj-accent', p.accent);
     root.style.setProperty('--pj-glow', p.glow);
     shots.forEach((s, j) => s.classList.toggle('active', j === i));
-    railItems.forEach((r, j) => r.classList.toggle('active', j === i));
+    railItems.forEach((r, j) => {
+      r.classList.toggle('active', j === i);
+      r.setAttribute('aria-selected', j === i ? 'true' : 'false');
+    });
     if (instant) { renderText(i); return; }
     clearTimeout(swapTimer);
     textBox.classList.add('is-swapping');

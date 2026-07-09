@@ -1956,3 +1956,48 @@ nav {
   /* Override the underline — doesn't work inside the pill */
   nav a.nav-active::after { display: none; }
 }
+
+/* ============================================================
+   MEJORAS — subtítulos, errores, accesibilidad
+   ============================================================ */
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 1.15rem;
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-error[hidden] { display: none; }
+.cta-error {
+  color: var(--red, #ff5555);
+  font-size: 0.95rem;
+  padding: 14px 0 4px;
+  animation: fade-up 0.4s ease both;
+}
+.cta-error a { color: inherit; font-weight: 600; }
+
+/* Foco visible al navegar con teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--cyan, #8be9fd);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Respeto a usuarios con motion reducido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .tech-track { animation: none !important; }
+  .cursor { animation: none; opacity: 1; }
+}
