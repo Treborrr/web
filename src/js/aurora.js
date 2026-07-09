@@ -32,6 +32,7 @@ uniform vec2  uMouse;
 uniform float uMouseOn;
 uniform vec2  uClick;
 uniform float uClickAge;   // seconds since last click; large = no click
+uniform float uGlobalBurst; // 0-1 global filament flare triggered by buttons
 
 // hash / noise / fbm
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -96,6 +97,8 @@ void main() {
   // the burst brightens existing filaments rather than painting a flash
   e *= 1.0 + burst * 2.5;
   e += burst * 0.12;
+  // global button flash: all filaments flare at once
+  e *= 1.0 + uGlobalBurst * 4.0;
 
   // breathing dracula palette: hues drift cyan <-> violet over ~90s
   float breathe = 0.5 + 0.5 * sin(t * 0.07);
@@ -134,11 +137,15 @@ const uRes      = gl.getUniformLocation(prog, 'uRes');
 const uTime     = gl.getUniformLocation(prog, 'uTime');
 const uMouse    = gl.getUniformLocation(prog, 'uMouse');
 const uMouseOn  = gl.getUniformLocation(prog, 'uMouseOn');
-const uClick    = gl.getUniformLocation(prog, 'uClick');
-const uClickAge = gl.getUniformLocation(prog, 'uClickAge');
+const uClick       = gl.getUniformLocation(prog, 'uClick');
+const uClickAge    = gl.getUniformLocation(prog, 'uClickAge');
+const uGlobalBurst = gl.getUniformLocation(prog, 'uGlobalBurst');
 
 const mouse = { x: -9999, y: -9999, sx: -9999, sy: -9999, active: false };
 const click = { x: 0, y: 0, at: -1e9 };
+const globalBurst = { at: -1e9 };
+
+window.plasmaButtonFlash = () => { globalBurst.at = performance.now(); };
 
 function pointTo(x, y) {
   if (!mouse.active) { mouse.sx = x; mouse.sy = y; }
@@ -206,6 +213,9 @@ function render(now) {
   gl.uniform1f(uMouseOn, mouse.active ? 1 : 0);
   gl.uniform2f(uClick, click.x * scale, click.y * scale);
   gl.uniform1f(uClickAge, (now - click.at) / 1000);
+  const gAge = (now - globalBurst.at) / 1000;
+  const gT   = Math.min(1, gAge / 0.06); const gEnv = gT * gT * (3 - 2 * gT);
+  gl.uniform1f(uGlobalBurst, gAge < 0.8 ? gEnv * Math.exp(-gAge * 4.5) : 0.0);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 

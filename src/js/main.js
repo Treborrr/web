@@ -1,5 +1,20 @@
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+// Button plasma flash — triggers global filament flare on button clicks (not nav)
+// For external links (target="_blank" or off-site), delays navigation until effect fades (~800ms)
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('a, button');
+  if (!btn || btn.closest('nav') || btn.closest('.sp-rail')) return;
+  if (typeof window.plasmaButtonFlash === 'function') window.plasmaButtonFlash();
+
+  const href = btn.getAttribute('href');
+  const isExternal = href && !href.startsWith('#') && btn.target === '_blank';
+  if (!isExternal) return;
+
+  e.preventDefault();
+  setTimeout(() => window.open(href, '_blank', 'noopener,noreferrer'), 820);
+});
+
 // Contact form — AJAX submit with success state
 (() => {
   const form    = document.getElementById('cta-form');

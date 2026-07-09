@@ -311,6 +311,8 @@ nav a.nav-active::after {
   pointer-events: none;
 }
 
+.pc-contact-btn { pointer-events: auto; }
+
 .pc-inside {
   inset: 1px;
   position: absolute;
