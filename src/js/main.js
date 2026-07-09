@@ -1,3 +1,35 @@
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+// Contact form — AJAX submit with success state
+(() => {
+  const form    = document.getElementById('cta-form');
+  const btn     = document.getElementById('cta-submit');
+  const success = document.getElementById('cta-success');
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        form.hidden = true;
+        success.hidden = false;
+      } else {
+        btn.disabled = false;
+        btn.style.opacity = '';
+      }
+    } catch {
+      btn.disabled = false;
+      btn.style.opacity = '';
+    }
+  });
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Dynamic Extension Animation
   const extEl = document.getElementById('ext-hero');
@@ -66,27 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener("scroll", reveal);
   reveal(); // Trigger on load
 
-  // 4. Experience View Toggle
-  const toggleInputs = document.querySelectorAll('input[name="exp-view"]');
-  const views = document.querySelectorAll('.exp-view');
-
-  if (toggleInputs.length > 0 && views.length > 0) {
-    toggleInputs.forEach(input => {
-      input.addEventListener('change', (e) => {
-        const targetViewId = `view-${e.target.value}`;
-
-        views.forEach(view => {
-          if (view.id === targetViewId) {
-            view.classList.add('active');
-          } else {
-            view.classList.remove('active');
-          }
-        });
-      });
-    });
-  }
-
-  // 5. Holographic Profile Card Tilt Effect
+  // 4. Holographic Profile Card Tilt Effect
   const holoCard = document.getElementById('holo-card');
   if (holoCard) {
     const holoWrapper = holoCard.querySelector('.holo-wrapper');
@@ -335,6 +347,43 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   onScroll();
+
+  // 3D tilt — listens on window to bypass the aurora canvas
+  const screen = root.querySelector('.sp-screen');
+  const visual = root.querySelector('.sp-visual');
+  if (screen && visual) {
+    const MAX_TILT = 12;
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let active = false;
+    let raf = null;
+
+    const tick = () => {
+      currentX += (targetX - currentX) * 0.1;
+      currentY += (targetY - currentY) * 0.1;
+      screen.style.transform = `perspective(1200px) rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+      raf = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = visual.getBoundingClientRect();
+      const inside = e.clientX >= rect.left && e.clientX <= rect.right &&
+                     e.clientY >= rect.top  && e.clientY <= rect.bottom;
+
+      if (inside) {
+        if (!active) { active = true; if (!raf) raf = requestAnimationFrame(tick); }
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top)  / rect.height;
+        targetY =  (px - 0.5) * 2 * MAX_TILT;
+        targetX = -(py - 0.5) * 2 * MAX_TILT;
+      } else if (active) {
+        active = false;
+        targetX = 0;
+        targetY = 0;
+        setTimeout(() => { cancelAnimationFrame(raf); raf = null; screen.style.transform = ''; }, 700);
+      }
+    }, { passive: true });
+  }
 })();
 
 /* ============================================================

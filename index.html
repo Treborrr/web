@@ -13,7 +13,7 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Robert Alvarado — Desarrollador de Sistemas a Medida" />
+  <meta property="og:title" content="Robert Alvarado " />
   <meta property="og:description"
     content="Construyo sistemas a medida que eliminan la fricción del papel y los procesos manuales, llevando tu operación a la nube." />
   <meta property="og:url" content="https://robertalvarado.biz/" />
@@ -23,8 +23,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Robert Alvarado — Desarrollador de Sistemas a Medida" />
-  <meta name="twitter:description"
-    content="Construyo sistemas a medida que llevan tu operación a la nube." />
+  <meta name="twitter:description" content="Construyo sistemas a medida que llevan tu operación a la nube." />
   <meta name="twitter:image" content="https://robertalvarado.biz/src/img/mi-foto.png" />
 
   <link rel="icon" type="image/png" href="src/img/trimmed-image.png" />
@@ -42,11 +41,49 @@
   <div id="scroll-progress" aria-hidden="true"></div>
   <div class="container">
     <nav>
-      <a href="#lo-que-hago">Servicios</a>
-      <a href="#proyectos">Portafolio</a>
-      <a href="#experiencia">Trayectoria</a>
-      <a href="#stack">Stack</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#lo-que-hago" aria-label="Servicios">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+        <span class="nav-label">Servicios</span>
+      </a>
+      <a href="#proyectos" aria-label="Portafolio">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="7" height="7" x="3" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="3" rx="1" />
+          <rect width="7" height="7" x="14" y="14" rx="1" />
+          <rect width="7" height="7" x="3" y="14" rx="1" />
+        </svg>
+        <span class="nav-label">Portafolio</span>
+      </a>
+      <a href="#experiencia" aria-label="Trayectoria">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+        </svg>
+        <span class="nav-label">Trayectoria</span>
+      </a>
+      <a href="#stack" aria-label="Stack">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 2 10 6.5v7L12 22 2 15.5v-7Z" />
+          <path d="M12 22v-6.5" />
+          <path d="m22 8.5-10 7-10-7" />
+        </svg>
+        <span class="nav-label">Stack</span>
+      </a>
+      <a href="#contacto" aria-label="Contacto">
+        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m22 2-7 20-4-9-9-4Z" />
+          <path d="M22 2 11 13" />
+        </svg>
+        <span class="nav-label">Contacto</span>
+      </a>
     </nav>
 
     <section class="hero">
@@ -85,7 +122,7 @@
                       <span class="holo-contact-status pc-status">Online</span>
                     </div>
                   </div>
-                  <a href="mailto:dev.robertalvarado@gmail.com" class="holo-contact-btn pc-contact-btn">Contáctame</a>
+                  <a href="#contacto" class="holo-contact-btn pc-contact-btn">Contáctame</a>
                 </div>
               </div>
 
@@ -99,6 +136,9 @@
           </div>
         </div>
       </div>
+      <a href="#lo-que-hago" class="scroll-hint" aria-label="Ver más">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
     </section>
 
     <!-- Servicios Section -->
@@ -154,7 +194,8 @@
     <section id="proyectos" class="reveal">
       <div class="section-header">
         <h2 class="section-title">Sistemas que ya operan</h2>
-        <p style="color: var(--muted); font-size: 1.15rem; font-weight: 300;">Sistemas reales construidos a medida. Cada proyecto, una solución pensada desde la operación.</p>
+        <p style="color: var(--muted); font-size: 1.15rem; font-weight: 300;">Sistemas reales construidos a medida. Cada
+          proyecto, una solución pensada desde la operación.</p>
       </div>
 
       <div class="sp-scroller" id="sp-scroller">
@@ -165,23 +206,32 @@
                 <span class="sp-index" id="sp-index" aria-hidden="true">01</span>
                 <span class="sp-tag" id="sp-tag">Turismo</span>
                 <h3 class="sp-title" id="sp-title">Casa Hospedaje Burgos</h3>
-                <p class="sp-desc" id="sp-desc">Sitio bilingüe con sistema de reservas, galería de habitaciones y guía de lugares turísticos de Chachapoyas.</p>
+                <p class="sp-desc" id="sp-desc">Sitio bilingüe con sistema de reservas, galería de habitaciones y guía
+                  de lugares turísticos de Chachapoyas.</p>
               </div>
               <div class="sp-rail" id="sp-rail" role="tablist" aria-label="Proyectos">
-                <button class="sp-rail-item active" data-index="0" aria-label="Casa Hospedaje Burgos"><span class="sp-rail-num">01</span><span class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
-                <button class="sp-rail-item" data-index="1" aria-label="ABAWA"><span class="sp-rail-num">02</span><span class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
-                <button class="sp-rail-item" data-index="2" aria-label="BMS"><span class="sp-rail-num">03</span><span class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
-                <button class="sp-rail-item" data-index="3" aria-label="SCCE"><span class="sp-rail-num">04</span><span class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
+                <button class="sp-rail-item active" data-index="0" aria-label="Casa Hospedaje Burgos"><span
+                    class="sp-rail-num">01</span><span class="sp-rail-track"><span
+                      class="sp-rail-fill"></span></span></button>
+                <button class="sp-rail-item" data-index="1" aria-label="ABAWA"><span class="sp-rail-num">02</span><span
+                    class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
+                <button class="sp-rail-item" data-index="2" aria-label="BMS"><span class="sp-rail-num">03</span><span
+                    class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
+                <button class="sp-rail-item" data-index="3" aria-label="SCCE"><span class="sp-rail-num">04</span><span
+                    class="sp-rail-track"><span class="sp-rail-fill"></span></span></button>
               </div>
             </div>
             <div class="sp-visual">
               <div class="sp-screen">
                 <div class="sp-screen-bar"><span></span><span></span><span></span></div>
                 <div class="sp-shots">
-                  <img class="sp-shot active" src="src/img/proyectos/Casa Hospedaje Burgos/hero.webp" alt="Casa Hospedaje Burgos" />
-                  <img class="sp-shot" src="src/img/proyectos/ABAWA/abawa-1.webp" alt="ABAWA — Plataforma de gestión" loading="lazy" />
+                  <img class="sp-shot active" src="src/img/proyectos/Casa Hospedaje Burgos/hero.webp"
+                    alt="Casa Hospedaje Burgos" />
+                  <img class="sp-shot" src="src/img/proyectos/ABAWA/abawa-1.webp" alt="ABAWA — Plataforma de gestión"
+                    loading="lazy" />
                   <img class="sp-shot" src="src/img/proyectos/BMS/login.webp" alt="BMS — Login" loading="lazy" />
-                  <img class="sp-shot" src="src/img/proyectos/Cacao Nuestro/INICIO.webp" alt="SCCE — Sistema de Control de Cacao Especial" loading="lazy" />
+                  <img class="sp-shot" src="src/img/proyectos/Cacao Nuestro/INICIO.webp"
+                    alt="SCCE — Sistema de Control de Cacao Especial" loading="lazy" />
                 </div>
               </div>
             </div>
@@ -199,86 +249,8 @@
         </p>
       </div>
 
-      <!-- Toggle Switch -->
-      <div class="view-toggle-container">
-        <div class="view-toggle">
-          <input type="radio" id="view-1" name="exp-view" value="terminal">
-          <label for="view-1" class="toggle-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="4 17 10 11 4 5"></polyline>
-              <line x1="12" y1="19" x2="20" y2="19"></line>
-            </svg>
-            Terminal
-          </label>
-
-          <input type="radio" id="view-2" name="exp-view" value="timeline" checked>
-          <label for="view-2" class="toggle-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="20" x2="12" y2="4"></line>
-              <line x1="6" y1="20" x2="6" y2="14"></line>
-              <line x1="18" y1="20" x2="18" y2="10"></line>
-            </svg>
-            Timeline
-          </label>
-          <div class="toggle-slider"></div>
-        </div>
-      </div>
-
       <!-- Views Container -->
       <div class="exp-views-wrapper">
-
-        <!-- VIEW 1: Terminal -->
-        <div id="view-terminal" class="exp-view">
-          <div class="terminal-window glass-card">
-            <div class="terminal-header">
-              <div class="term-dots">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-              </div>
-              <div class="term-title">robert@admin: ~/experiencia</div>
-            </div>
-            <div class="terminal-body logo-font">
-              <div class="term-line"><span class="term-prompt">robert@admin:~$</span> ./show_experience.sh</div>
-              <div class="term-output">
-                <div class="term-block">
-                  <span class="term-key">[CARGO]</span> Desarrollador de Software a Medida<br />
-                  <span class="term-key">[EMPRESA]</span> Cacao Nuestro<br />
-                  <span class="term-key">[PERIODO]</span> Feb 2026
-                </div>
-                <div class="term-list" style="margin-bottom: 24px;">
-                  <div>> Desarrollo e implementación de "SCCE" (Sistema de Control de Cacao Especial).</div>
-                  <div>> Construcción de una solución tecnológica hecha completamente a la medida según la lógica de
-                    negocio de la empresa.</div>
-                  <div>> Digitalización de procesos, reemplazando el papel por trazabilidad y gestión estructurada.
-                  </div>
-                  <div>> Diseño de arquitectura de software para optimizar el flujo de trabajo operativo.</div>
-                </div>
-
-                <div class="term-block">
-                  <span class="term-key">[CARGO]</span> Analista de Calidad de Software (Tester QA)<br />
-                  <span class="term-key">[EMPRESA]</span> QSD Soft S.A.C. – Lima, Perú<br />
-                  <span class="term-key">[PERIODO]</span> Ene 2022 – Feb 2025
-                </div>
-                <div class="term-list">
-                  <div>> Ejecución de pruebas funcionales y no funcionales en entornos de desarrollo y producción.</div>
-                  <div>> Elaboración de casos de prueba y documentación de resultados.</div>
-                  <div>> Identificación, reporte y seguimiento de incidencias en aplicaciones web y de escritorio.</div>
-                  <div>> Colaboración directa con equipos de desarrollo para asegurar la calidad del producto final.
-                  </div>
-                  <div>> Validación del cumplimiento de requisitos técnicos y funcionales establecidos.</div>
-                  <div>> Automatización de procesos y administración de entornos de prueba en Linux.</div>
-                </div>
-              </div>
-              <div class="term-line"><span class="term-prompt">robert@admin:~$</span> <span class="cursor"
-                  aria-hidden="true"></span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VIEW 2: Timeline -->
         <div id="view-timeline" class="exp-view active">
           <div class="timeline-container">
             <!-- SCCE Experience -->
@@ -358,29 +330,38 @@
       </div>
 
       <!-- Row 1: lenguajes, frameworks y bases de datos -->
+      <p class="tech-row-label">Lenguajes &amp; Frameworks</p>
       <div class="tech-marquee reveal reveal-d1">
         <div class="tech-track">
           <div class="tech-set">
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/nextdotjs/white" alt="" loading="lazy" />Next.js</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy" />TypeScript</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy" />Angular</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/nextdotjs/white" alt=""
+                loading="lazy" />Next.js</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/typescript" alt=""
+                loading="lazy" />TypeScript</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/angular" alt=""
+                loading="lazy" />Angular</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy" />Python</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/cplusplus" alt="" loading="lazy" />C++</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/php" alt="" loading="lazy" />PHP</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/lua" alt="" loading="lazy" />Lua</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy" />PostgreSQL</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/postgresql" alt=""
+                loading="lazy" />PostgreSQL</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/mysql" alt="" loading="lazy" />MySQL</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/sqlite" alt="" loading="lazy" />SQLite</span>
           </div>
           <div class="tech-set" aria-hidden="true">
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/nextdotjs/white" alt="" loading="lazy" />Next.js</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/typescript" alt="" loading="lazy" />TypeScript</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/angular" alt="" loading="lazy" />Angular</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/nextdotjs/white" alt=""
+                loading="lazy" />Next.js</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/typescript" alt=""
+                loading="lazy" />TypeScript</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/angular" alt=""
+                loading="lazy" />Angular</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/python" alt="" loading="lazy" />Python</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/cplusplus" alt="" loading="lazy" />C++</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/php" alt="" loading="lazy" />PHP</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/lua" alt="" loading="lazy" />Lua</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/postgresql" alt="" loading="lazy" />PostgreSQL</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/postgresql" alt=""
+                loading="lazy" />PostgreSQL</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/mysql" alt="" loading="lazy" />MySQL</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/sqlite" alt="" loading="lazy" />SQLite</span>
           </div>
@@ -388,28 +369,37 @@
       </div>
 
       <!-- Row 2: infraestructura, deploy y herramientas (dirección opuesta) -->
+      <p class="tech-row-label">Infraestructura &amp; Deploy</p>
       <div class="tech-marquee reverse reveal reveal-d2">
         <div class="tech-track">
           <div class="tech-set">
-            <span class="tech-pill"><img src="https://api.iconify.design/simple-icons:amazonaws.svg?color=%23FF9900" alt="" loading="lazy" />AWS</span>
+            <span class="tech-pill"><img src="https://api.iconify.design/simple-icons:amazonaws.svg?color=%23FF9900"
+                alt="" loading="lazy" />AWS</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy" />Docker</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/nginx" alt="" loading="lazy" />Nginx</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/apache" alt="" loading="lazy" />Apache</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/vercel/white" alt="" loading="lazy" />Vercel</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/railway/white" alt="" loading="lazy" />Railway</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/supabase" alt="" loading="lazy" />Supabase</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/vercel/white" alt=""
+                loading="lazy" />Vercel</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/railway/white" alt=""
+                loading="lazy" />Railway</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/supabase" alt=""
+                loading="lazy" />Supabase</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/linux" alt="" loading="lazy" />Linux</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/git" alt="" loading="lazy" />Git</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/neovim" alt="" loading="lazy" />Neovim</span>
           </div>
           <div class="tech-set" aria-hidden="true">
-            <span class="tech-pill"><img src="https://api.iconify.design/simple-icons:amazonaws.svg?color=%23FF9900" alt="" loading="lazy" />AWS</span>
+            <span class="tech-pill"><img src="https://api.iconify.design/simple-icons:amazonaws.svg?color=%23FF9900"
+                alt="" loading="lazy" />AWS</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/docker" alt="" loading="lazy" />Docker</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/nginx" alt="" loading="lazy" />Nginx</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/apache" alt="" loading="lazy" />Apache</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/vercel/white" alt="" loading="lazy" />Vercel</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/railway/white" alt="" loading="lazy" />Railway</span>
-            <span class="tech-pill"><img src="https://cdn.simpleicons.org/supabase" alt="" loading="lazy" />Supabase</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/vercel/white" alt=""
+                loading="lazy" />Vercel</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/railway/white" alt=""
+                loading="lazy" />Railway</span>
+            <span class="tech-pill"><img src="https://cdn.simpleicons.org/supabase" alt=""
+                loading="lazy" />Supabase</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/linux" alt="" loading="lazy" />Linux</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/git" alt="" loading="lazy" />Git</span>
             <span class="tech-pill"><img src="https://cdn.simpleicons.org/neovim" alt="" loading="lazy" />Neovim</span>
@@ -424,13 +414,37 @@
         <h2 class="cta-title">¿Tienes un proceso que digitalizar?</h2>
         <p class="cta-desc">Cuéntame cómo opera tu empresa hoy y diseñemos juntos el sistema a medida que
           elimine el papel y lleve tu operación a la nube. La primera conversación es gratis.</p>
-        <div class="cta-actions">
-          <a href="mailto:dev.robertalvarado@gmail.com" class="btn primary cta-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Escríbeme
-          </a>
-          <a href="https://wa.me/51999999999?text=Hola%20Robert,%20quiero%20digitalizar%20un%20proceso" target="_blank" rel="noopener noreferrer" class="btn cta-btn cta-btn-ghost">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.359.101 11.945c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.96 11.96 0 0 0 5.71 1.454h.006c6.585 0 11.946-5.359 11.949-11.945a11.9 11.9 0 0 0-3.48-8.408"/></svg>
+        <form class="cta-form" id="cta-form" action="https://formsubmit.co/ajax/dev.robertalvarado@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Nuevo contacto desde robertalvarado.biz" />
+          <input type="hidden" name="_captcha" value="false" />
+          <div class="cta-form-row">
+            <input type="text" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+            <input type="email" name="email" placeholder="Tu correo" required autocomplete="email" />
+          </div>
+          <textarea name="mensaje" rows="4"
+            placeholder="Cuéntame qué proceso quieres digitalizar — ¿qué se hace hoy en papel o Excel?"
+            required></textarea>
+          <button type="submit" class="btn primary cta-btn cta-form-submit" id="cta-submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+            Enviar mensaje
+          </button>
+        </form>
+        <p class="cta-success" id="cta-success" hidden>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Mensaje recibido — te escribo pronto.
+        </p>
+        <div class="cta-actions cta-alt">
+          <span class="cta-alt-label">o si prefieres directo:</span>
+          <a href="https://wa.me/51999999999?text=Hola%20Robert,%20quiero%20digitalizar%20un%20proceso" target="_blank"
+            rel="noopener noreferrer" class="btn cta-btn cta-btn-ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.359.101 11.945c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.96 11.96 0 0 0 5.71 1.454h.006c6.585 0 11.946-5.359 11.949-11.945a11.9 11.9 0 0 0-3.48-8.408" />
+            </svg>
             WhatsApp
           </a>
         </div>
