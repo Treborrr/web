@@ -232,3 +232,140 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+/* ============================================================
+   PORTFOLIO — SPOTLIGHT SCROLLYTELLING
+   ============================================================ */
+
+(() => {
+  const root = document.getElementById('sp-scroller');
+  if (!root) return;
+
+  const PROJECTS = [
+    {
+      title: 'Casa Hospedaje Burgos',
+      tag: 'Turismo',
+      accent: '#ffb86c',
+      glow: 'rgba(255, 184, 108, 0.4)',
+      desc: 'Sitio bilingüe con sistema de reservas, galería de habitaciones y guía de lugares turísticos de Chachapoyas.',
+    },
+    {
+      title: 'ABAWA',
+      tag: 'Gestión Empresarial',
+      accent: '#bd93f9',
+      glow: 'rgba(189, 147, 249, 0.4)',
+      desc: 'Plataforma de gestión a medida con dashboard ejecutivo y control centralizado de la operación.',
+    },
+    {
+      title: 'BMS',
+      tag: 'Retail & POS',
+      accent: '#8be9fd',
+      glow: 'rgba(139, 233, 253, 0.35)',
+      desc: 'Punto de venta integral con autoservicio, facturación electrónica SUNAT y panel de auditoría en tiempo real.',
+    },
+    {
+      title: 'SCCE',
+      tag: 'Agroindustrial',
+      accent: '#50fa7b',
+      glow: 'rgba(80, 250, 123, 0.35)',
+      desc: 'Trazabilidad digital de lotes de cacao especial — fermentación, secado y exportación sin una sola hoja de papel.',
+    },
+  ];
+
+  const N = PROJECTS.length;
+  const textBox = document.getElementById('sp-text');
+  const idxEl   = document.getElementById('sp-index');
+  const tagEl   = document.getElementById('sp-tag');
+  const titleEl = document.getElementById('sp-title');
+  const descEl  = document.getElementById('sp-desc');
+  const shots     = [...root.querySelectorAll('.sp-shot')];
+  const railItems = [...root.querySelectorAll('.sp-rail-item')];
+  const fills     = [...root.querySelectorAll('.sp-rail-fill')];
+  let cur = 0;
+  let swapTimer = null;
+
+  const renderText = (i) => {
+    const p = PROJECTS[i];
+    idxEl.textContent = String(i + 1).padStart(2, '0');
+    tagEl.textContent = p.tag;
+    titleEl.textContent = p.title;
+    descEl.textContent = p.desc;
+  };
+
+  const setProject = (i, instant = false) => {
+    if (i === cur) return;
+    cur = i;
+    const p = PROJECTS[i];
+    // Accent, screen and rail flip immediately; the text crossfades
+    root.style.setProperty('--pj-accent', p.accent);
+    root.style.setProperty('--pj-glow', p.glow);
+    shots.forEach((s, j) => s.classList.toggle('active', j === i));
+    railItems.forEach((r, j) => r.classList.toggle('active', j === i));
+    if (instant) { renderText(i); return; }
+    clearTimeout(swapTimer);
+    textBox.classList.add('is-swapping');
+    swapTimer = setTimeout(() => {
+      renderText(i);
+      textBox.classList.remove('is-swapping');
+    }, 170);
+  };
+
+  const travel = () => root.offsetHeight - window.innerHeight;
+
+  const onScroll = () => {
+    const top = root.getBoundingClientRect().top;
+    const prog = Math.min(1, Math.max(0, -top / travel()));
+    // Map progress to a continuous segment position in [0, N)
+    const seg = Math.min(prog * N, N - 0.0001);
+    setProject(Math.floor(seg));
+    fills.forEach((f, j) => {
+      f.style.transform = `scaleX(${Math.min(1, Math.max(0, seg - j))})`;
+    });
+  };
+
+  railItems.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const j = +btn.dataset.index;
+      const rootTop = root.getBoundingClientRect().top + window.scrollY;
+      // Land a hair inside the segment so floor() resolves to j
+      window.scrollTo({ top: rootTop + ((j + 0.05) / N) * travel(), behavior: 'smooth' });
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+
+/* ============================================================
+   IMMERSIVE SCROLL — progress bar + nav scrollspy
+   ============================================================ */
+
+(() => {
+  const bar = document.getElementById('scroll-progress');
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const sections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+  const update = () => {
+    if (bar) {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    }
+    // Scrollspy: last section whose top passed 40% of the viewport
+    let current = null;
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top <= window.innerHeight * 0.4) current = s.id;
+    });
+    navLinks.forEach(a =>
+      a.classList.toggle('nav-active', a.getAttribute('href') === `#${current}`));
+  };
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }
+  }, { passive: true });
+  update();
+})();
