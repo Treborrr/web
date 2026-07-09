@@ -202,7 +202,7 @@ nav a.nav-active::after {
   height: 1em;
   background: currentColor;
   margin-left: 4px;
-  vertical-align: text-bottom;
+  vertical-align: middle;
   animation: blink 1s step-end infinite;
 }
 
