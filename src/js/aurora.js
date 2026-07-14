@@ -7,7 +7,10 @@
  *  - Palette breathes slowly between cyan and violet
  *  - Adaptive resolution: sharp on retina, steps down if the GPU struggles
  *  - Touch support; honors prefers-reduced-motion; pauses on hidden tab
+ *  - Graceful fallback: tries webgl2 → webgl → CSS animated gradient
  */
+
+(function () {
 
 const canvas = document.createElement('canvas');
 Object.assign(canvas.style, {
@@ -17,7 +20,47 @@ Object.assign(canvas.style, {
 });
 document.body.appendChild(canvas);
 
-const gl = canvas.getContext('webgl');
+const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+
+// ── CSS gradient fallback (no WebGL) ─────────────────────────────────────────
+if (!gl) {
+  canvas.remove();
+  const fallback = document.createElement('div');
+  Object.assign(fallback.style, {
+    position: 'fixed', top: '0', left: '0',
+    width: '100vw', height: '100vh',
+    zIndex: '-2', pointerEvents: 'none',
+  });
+  document.body.appendChild(fallback);
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes plasma-drift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .plasma-fallback {
+      background: linear-gradient(
+        135deg,
+        #07071a 0%,
+        #0d0730 20%,
+        #150a3a 35%,
+        #07071a 50%,
+        #0a1030 65%,
+        #12083a 80%,
+        #07071a 100%
+      );
+      background-size: 400% 400%;
+      animation: plasma-drift 18s ease infinite;
+    }
+  `;
+  document.head.appendChild(style);
+  fallback.classList.add('plasma-fallback');
+
+  window.plasmaButtonFlash = () => {};
+  return;
+}
 
 const VERT = `
 attribute vec2 p;
@@ -233,3 +276,5 @@ if (reducedMotion) {
 } else {
   frame();
 }
+
+})();
