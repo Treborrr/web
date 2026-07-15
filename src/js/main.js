@@ -447,6 +447,14 @@ async function navigate(dest, push) {
   const st = doc.body.getAttribute('style');
   if (st) document.body.setAttribute('style', st); else document.body.removeAttribute('style');
   document.title = doc.title;
+  for (const sel of ['meta[name="description"]', 'link[rel="canonical"]']) {
+    const from = doc.querySelector(sel);
+    const to = document.querySelector(sel);
+    if (from && to) {
+      if (from.hasAttribute('content')) to.setAttribute('content', from.getAttribute('content'));
+      if (from.hasAttribute('href')) to.setAttribute('href', from.getAttribute('href'));
+    }
+  }
   if (push) history.pushState({}, '', url.pathname + url.hash);
 
   if (url.hash) {
