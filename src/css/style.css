@@ -2540,3 +2540,24 @@ html.pi-enter::after {
     box-shadow: 0 8px 28px rgba(189, 147, 249, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
+
+/* Formulario de contacto sobre fondo claro (páginas de servicio) */
+.plasma-light .cta-form input,
+.plasma-light .cta-form textarea {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(20, 22, 42, 0.14);
+  color: #191b2b;
+}
+
+.plasma-light .cta-form input::placeholder,
+.plasma-light .cta-form textarea::placeholder {
+  color: #8a90a8;
+}
+
+.plasma-light .cta-form input:focus,
+.plasma-light .cta-form textarea:focus {
+  border-color: color-mix(in srgb, var(--svc-accent) 55%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--svc-accent) 14%, transparent);
+}
+
+.plasma-light .cta-success { color: #15803d; }

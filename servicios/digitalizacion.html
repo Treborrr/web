@@ -170,9 +170,34 @@
         <h2 class="cta-title">¿Qué proceso te gustaría ver funcionando en digital?</h2>
         <p class="cta-desc">Cuéntame qué hace tu empresa hoy en papel o en Excel y te digo con honestidad si vale la
           pena construir un sistema. Sin rodeos, sin pitch de ventas. Solo una conversación real sobre tu operación.</p>
-        <div class="cta-actions" style="display: flex; justify-content: center;">
-          <a href="../index.html#contacto" data-flash-nav class="btn primary cta-btn">Cuéntame tu caso</a>
-        </div>
+        <form class="cta-form" id="cta-form" action="https://formsubmit.co/ajax/dev.robertalvarado@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Nuevo contacto desde robertalvarado.biz" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+          <div class="cta-form-row">
+            <input type="text" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+            <input type="email" name="email" placeholder="Tu correo" required autocomplete="email" />
+          </div>
+          <textarea name="mensaje" rows="4"
+            placeholder="Cuéntame cómo opera tu empresa hoy — ¿qué proceso te está doliendo más?"
+            required></textarea>
+          <button type="submit" class="btn primary cta-btn cta-form-submit" id="cta-submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+            Enviar mensaje
+          </button>
+        </form>
+        <p class="cta-error" id="cta-error" role="alert" hidden>
+          No se pudo enviar el mensaje. Escríbeme directo a
+          <a href="mailto:dev.robertalvarado@gmail.com">dev.robertalvarado@gmail.com</a>.
+        </p>
+        <p class="cta-success" id="cta-success" aria-live="polite" hidden>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Mensaje recibido — te escribo pronto.
+        </p>
       </div>
     </section>
 
