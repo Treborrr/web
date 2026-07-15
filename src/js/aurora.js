@@ -33,14 +33,12 @@ if (!gl) {
   });
   document.body.appendChild(fallback);
 
-  const light = document.body.classList.contains('plasma-light');
-  const gradient = light
-    ? `linear-gradient(135deg,
-        #f2f3f9 0%, #eae7f6 20%, #e6ecf7 35%, #f2f3f9 50%,
-        #e8ecf8 65%, #ece7f6 80%, #f2f3f9 100%)`
-    : `linear-gradient(135deg,
-        #07071a 0%, #0d0730 20%, #150a3a 35%, #07071a 50%,
-        #0a1030 65%, #12083a 80%, #07071a 100%)`;
+  const lightGrad = `linear-gradient(135deg,
+    #f2f3f9 0%, #eae7f6 20%, #e6ecf7 35%, #f2f3f9 50%,
+    #e8ecf8 65%, #ece7f6 80%, #f2f3f9 100%)`;
+  const darkGrad = `linear-gradient(135deg,
+    #07071a 0%, #0d0730 20%, #150a3a 35%, #07071a 50%,
+    #0a1030 65%, #12083a 80%, #07071a 100%)`;
 
   const style = document.createElement('style');
   style.textContent = `
@@ -50,22 +48,16 @@ if (!gl) {
       100% { background-position: 0% 50%; }
     }
     .plasma-fallback {
-      background: ${gradient};
       background-size: 400% 400%;
       animation: plasma-drift 18s ease infinite;
     }
   `;
   document.head.appendChild(style);
   fallback.classList.add('plasma-fallback');
-  if (light) fallback.classList.add('plasma-fallback--light');
 
-  const lightGrad = `linear-gradient(135deg,
-    #f2f3f9 0%, #eae7f6 20%, #e6ecf7 35%, #f2f3f9 50%,
-    #e8ecf8 65%, #ece7f6 80%, #f2f3f9 100%)`;
-  const darkGrad = `linear-gradient(135deg,
-    #07071a 0%, #0d0730 20%, #150a3a 35%, #07071a 50%,
-    #0a1030 65%, #12083a 80%, #07071a 100%)`;
-  window.__plasmaSetLight = (v) => { fallback.style.backgroundImage = v ? lightGrad : darkGrad; };
+  const setLight = (v) => { fallback.style.backgroundImage = v ? lightGrad : darkGrad; };
+  setLight(document.body.classList.contains('plasma-light'));
+  window.__plasmaSetLight = setLight;
 
   window.plasmaButtonFlash = () => {};
   return;
