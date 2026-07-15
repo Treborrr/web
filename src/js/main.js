@@ -480,6 +480,9 @@ async function navigate(dest, push) {
   }
 
   initPage();
+  // move keyboard/screen-reader focus to the fresh content
+  page.setAttribute('tabindex', '-1');
+  page.focus({ preventScroll: true });
   requestAnimationFrame(() => page.classList.remove('is-leaving'));
   await wait(reduce ? 0 : 260);
   navigating = false;
