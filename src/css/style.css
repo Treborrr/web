@@ -2001,3 +2001,516 @@ textarea:focus-visible {
   .tech-track { animation: none !important; }
   .cursor { animation: none; opacity: 1; }
 }
+
+/* ============================================================
+   SERVICIOS — tarjetas clicables y páginas de detalle
+   ============================================================ */
+
+/* Las tarjetas de "Lo que hago" ahora son enlaces */
+a.glass-card {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.card-more {
+  margin-top: auto;
+  padding-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  opacity: 0.75;
+}
+
+.card-more svg { transition: transform 0.3s ease; }
+.glass-card:hover .card-more { opacity: 1; }
+.glass-card:hover .card-more svg { transform: translateX(5px); }
+
+.card-1 .card-more { color: var(--purple); }
+.card-2 .card-more { color: var(--cyan); }
+.card-3 .card-more { color: var(--orange); }
+
+/* --- Página de detalle de servicio (v2 editorial) --- */
+.svc-page {
+  --svc-accent: var(--purple);
+  --svc-accent-soft: rgba(189, 147, 249, 0.14);
+}
+
+/* Scrim fijo sobre el plasma: legibilidad sin perder el fondo */
+.svc-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(140% 100% at 50% 0%, rgba(13, 14, 22, 0.35) 0%, rgba(13, 14, 22, 0.72) 55%, rgba(13, 14, 22, 0.88) 100%);
+}
+
+.svc-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.svc-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 0;
+}
+
+.svc-nav a:not(.btn) {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-family: 'Fira Code', monospace;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.svc-nav a:not(.btn):hover { color: var(--fg); }
+
+/* --- Cabecera compacta de servicio --- */
+.svc-hero {
+  padding: 72px 0 40px;
+}
+
+.svc-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: lowercase;
+  color: var(--svc-accent);
+  margin-bottom: 16px;
+}
+
+.svc-kicker::before {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: var(--svc-accent);
+}
+
+.svc-hero h1 {
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+  margin-bottom: 14px;
+}
+
+.svc-hero h1 .accent {
+  background: linear-gradient(90deg, var(--svc-accent), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.svc-lead {
+  color: var(--muted);
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.75;
+  max-width: 58ch;
+}
+
+/* --- Secciones numeradas --- */
+.svc-sec {
+  padding: 76px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.svc-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.svc-sec-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.82rem;
+  color: var(--svc-accent);
+  letter-spacing: 0.1em;
+}
+
+.svc-sec-head h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.3px;
+}
+
+.svc-sec-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  align-self: center;
+  background: linear-gradient(90deg, rgba(189, 147, 249, 0.25), transparent);
+}
+
+.svc-sec-sub {
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 58ch;
+  margin-bottom: 44px;
+}
+
+/* --- El problema: filas editoriales --- */
+.svc-pain {
+  display: grid;
+  grid-template-columns: 60px 0.9fr 1.3fr;
+  gap: 28px;
+  align-items: start;
+  padding: 28px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.svc-pain:first-of-type { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+
+.svc-pain:hover {
+  background: linear-gradient(90deg, var(--svc-accent-soft), transparent 60%);
+  border-left-color: var(--svc-accent);
+}
+
+.svc-pain-idx {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: var(--muted);
+  opacity: 0.55;
+  padding-top: 4px;
+}
+
+.svc-pain h3 {
+  font-size: 1.08rem;
+  line-height: 1.4;
+}
+
+.svc-pain p {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 0.97rem;
+  line-height: 1.7;
+}
+
+/* --- Qué obtienes: bento grid --- */
+.svc-bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.svc-bento article {
+  position: relative;
+  overflow: hidden;
+  background: rgba(12, 14, 28, 0.82);
+  border: 1px solid rgba(189, 147, 249, 0.1);
+  border-radius: 18px;
+  padding: 30px 28px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: var(--transition);
+}
+
+.svc-bento article:hover {
+  transform: translateY(-4px);
+  border-color: rgba(189, 147, 249, 0.35);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.svc-bento .b-lg { grid-column: span 4; }
+.svc-bento .b-md { grid-column: span 2; }
+
+.svc-bento .b-lg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 90% at 0% 0%, var(--svc-accent-soft), transparent 70%);
+}
+
+.svc-bento .b-tag {
+  display: inline-block;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--svc-accent);
+  border: 1px solid var(--svc-accent-soft);
+  background: var(--svc-accent-soft);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 18px;
+}
+
+.svc-bento h3 {
+  font-size: 1.08rem;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.svc-bento p {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 0.94rem;
+  line-height: 1.7;
+  position: relative;
+}
+
+.svc-bento .b-lg h3 { font-size: 1.35rem; }
+.svc-bento .b-lg p  { max-width: 52ch; }
+
+/* --- Cómo trabajo: timeline vertical --- */
+.svc-flow {
+  position: relative;
+  margin-left: 10px;
+  padding-left: 42px;
+  display: grid;
+  gap: 34px;
+}
+
+.svc-flow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--svc-accent) 0%, rgba(189, 147, 249, 0.25) 70%, transparent 100%);
+}
+
+.svc-flow-item { position: relative; max-width: 64ch; }
+
+.svc-flow-item::before {
+  content: '';
+  position: absolute;
+  left: -46px;
+  top: 7px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--svc-accent);
+  box-shadow: 0 0 14px var(--svc-accent);
+}
+
+.svc-flow-item h3 {
+  font-size: 1.05rem;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.svc-flow-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.svc-flow-item p {
+  color: var(--muted);
+  font-weight: 300;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* --- Navegación entre servicios --- */
+.svc-others {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 8px 0 48px;
+}
+
+.svc-other-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(189, 147, 249, 0.15);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-family: 'Fira Code', monospace;
+  transition: var(--transition);
+  background: rgba(13, 15, 30, 0.6);
+}
+
+.svc-other-link:hover {
+  color: var(--fg);
+  border-color: rgba(189, 147, 249, 0.4);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 860px) {
+  .svc-hero { padding: 48px 0 28px; }
+
+  .svc-sec { padding: 52px 0; }
+
+  .svc-pain {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 24px 16px;
+  }
+
+  .svc-pain-idx { padding-top: 0; }
+
+  .svc-bento { grid-template-columns: 1fr; }
+  .svc-bento .b-lg,
+  .svc-bento .b-md { grid-column: span 1; }
+}
+
+/* ============================================================
+   SERVICIOS — LIGHT MODE ("modo caro")
+   ============================================================ */
+body.plasma-light {
+  background-color: #eef0f6;
+  color: #191b2b;
+}
+
+/* Scrim claro: un velo blanco que mantiene el centro legible */
+.svc-page.plasma-light::before {
+  background:
+    radial-gradient(140% 100% at 50% 0%,
+      rgba(244, 245, 250, 0.55) 0%,
+      rgba(244, 245, 250, 0.78) 55%,
+      rgba(240, 242, 248, 0.9) 100%);
+}
+
+/* Cabecera / navegación */
+.plasma-light .svc-nav a:not(.btn) { color: #5a6178; }
+.plasma-light .svc-nav a:not(.btn):hover { color: #191b2b; }
+
+/* Acento sólido en el título (los degradados a cyan se pierden en blanco) */
+.plasma-light .svc-hero h1 { color: #14162a; }
+.plasma-light .svc-hero h1 .accent {
+  background: none;
+  -webkit-text-fill-color: initial;
+  color: var(--svc-accent);
+}
+.plasma-light .svc-lead { color: #4a5169; }
+
+/* Secciones */
+.plasma-light .svc-sec { border-top-color: rgba(20, 22, 42, 0.1); }
+.plasma-light .svc-sec-head h2 { color: #14162a; }
+.plasma-light .svc-sec-head::after {
+  background: linear-gradient(90deg, rgba(20, 22, 42, 0.18), transparent);
+}
+.plasma-light .svc-sec-sub { color: #5a6178; }
+
+/* Problemas: filas editoriales */
+.plasma-light .svc-pain {
+  border-bottom-color: rgba(20, 22, 42, 0.1);
+}
+.plasma-light .svc-pain:first-of-type { border-top-color: rgba(20, 22, 42, 0.1); }
+.plasma-light .svc-pain h3 { color: #1c1e30; }
+.plasma-light .svc-pain p { color: #565d74; }
+.plasma-light .svc-pain-idx { color: #565d74; opacity: 0.5; }
+.plasma-light .svc-pain:hover {
+  background: linear-gradient(90deg, var(--svc-accent-soft), transparent 60%);
+}
+
+/* Qué obtienes: bento en tarjetas blancas */
+.plasma-light .svc-bento article {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(20, 22, 42, 0.08);
+  box-shadow: 0 12px 30px rgba(20, 22, 42, 0.06);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+}
+.plasma-light .svc-bento article:hover {
+  border-color: color-mix(in srgb, var(--svc-accent) 40%, transparent);
+  box-shadow: 0 22px 44px rgba(20, 22, 42, 0.12);
+}
+.plasma-light .svc-bento h3 { color: #1c1e30; }
+.plasma-light .svc-bento p { color: #565d74; }
+
+/* Cómo trabajo: timeline */
+.plasma-light .svc-flow::before {
+  background: linear-gradient(180deg, var(--svc-accent) 0%, rgba(20, 22, 42, 0.18) 70%, transparent 100%);
+}
+.plasma-light .svc-flow-item::before { box-shadow: 0 0 10px color-mix(in srgb, var(--svc-accent) 55%, transparent); }
+.plasma-light .svc-flow-item h3 { color: #1c1e30; }
+.plasma-light .svc-flow-tag { color: #737a92; }
+.plasma-light .svc-flow-item p { color: #565d74; }
+
+/* Enlaces a otros servicios */
+.plasma-light .svc-other-link {
+  background: rgba(255, 255, 255, 0.66);
+  border-color: rgba(20, 22, 42, 0.12);
+  color: #5a6178;
+}
+.plasma-light .svc-other-link:hover {
+  color: #191b2b;
+  border-color: rgba(20, 22, 42, 0.3);
+}
+
+/* CTA: tarjeta clara translúcida, coherente con el resto del modo claro */
+.plasma-light .cta-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.66) 100%);
+  border-color: rgba(20, 22, 42, 0.1);
+  box-shadow: 0 24px 50px rgba(20, 22, 42, 0.1);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+}
+.plasma-light .cta-card::before {
+  background: radial-gradient(ellipse, var(--svc-accent-soft), transparent 70%);
+}
+.plasma-light .cta-card .cta-title { color: #14162a; }
+.plasma-light .cta-card .cta-desc { color: #565d74; }
+
+/* Footer claro */
+.plasma-light footer {
+  background: rgba(255, 255, 255, 0.5);
+  border-top-color: rgba(20, 22, 42, 0.1);
+}
+.plasma-light .footer-left,
+.plasma-light .social-links a { color: #5a6178; }
+.plasma-light .social-links a:hover { color: var(--svc-accent); }
+
+/* ============================================================
+   TRANSICIÓN SPA
+   El canvas del plasma nunca se recrea: los filamentos mantienen su
+   fase y solo se recolorean (dark <-> claro) vía JS. Aquí solo se
+   hace un crossfade suave del contenido (#page) durante el swap.
+   ============================================================ */
+#page {
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  will-change: opacity;
+}
+#page.is-leaving {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* Intro de velo para CARGA DIRECTA de una página de servicio (sin SPA):
+   emerge desde el color claro para que no haya un pop brusco */
+@keyframes page-fade-enter {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+html.pi-enter::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background: #eef0f6;
+  animation: page-fade-enter 620ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #page { transition: none; }
+  html.pi-enter::after { display: none; }
+}

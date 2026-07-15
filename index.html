@@ -31,13 +31,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&family=Fira+Code:wght@400;500&display=swap"
     rel="stylesheet">
 
   <link rel="stylesheet" href="src/css/style.css">
 </head>
 
 <body>
+  <div id="page">
   <div id="scroll-progress" aria-hidden="true"></div>
   <div class="container">
     <nav>
@@ -150,7 +151,8 @@
       </div>
 
       <div class="services-grid">
-        <div class="glass-card card-1 reveal reveal-d1">
+        <a href="servicios/analisis-operativo.html" data-flash-nav class="glass-card card-1 reveal reveal-d1"
+          aria-label="Análisis Operativo — ver cómo te ayuda">
           <div class="card-icon" style="color: var(--purple);">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -161,9 +163,16 @@
           <h3 class="card-title">Análisis Operativo</h3>
           <p class="card-desc">Estudio tu flujo de trabajo actual para identificar cuellos de botella y oportunidades de
             automatización que optimicen tiempo y recursos en tu empresa.</p>
-        </div>
+          <span class="card-more">Ver cómo te ayuda
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </a>
 
-        <div class="glass-card card-2 reveal reveal-d2">
+        <a href="servicios/digitalizacion.html" data-flash-nav class="glass-card card-2 reveal reveal-d2"
+          aria-label="Digitalización — ver cómo te ayuda">
           <div class="card-icon" style="color: var(--cyan);">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -174,9 +183,16 @@
           <h3 class="card-title">Digitalización</h3>
           <p class="card-desc">Transformo formularios, hojas de cálculo y registros físicos en plataformas digitales
             intuitivas, conectadas y hechas totalmente a la medida de tu equipo.</p>
-        </div>
+          <span class="card-more">Ver cómo te ayuda
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </a>
 
-        <div class="glass-card card-3 reveal reveal-d3">
+        <a href="servicios/seguridad-en-la-nube.html" data-flash-nav class="glass-card card-3 reveal reveal-d3"
+          aria-label="Seguridad en la Nube — ver cómo te ayuda">
           <div class="card-icon" style="color: var(--orange);">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -186,7 +202,13 @@
           <h3 class="card-title">Seguridad en la Nube</h3>
           <p class="card-desc">Implemento arquitecturas en la nube escalables con respaldos automatizados, garantizando
             que tu información esté siempre disponible, consistente y segura.</p>
-        </div>
+          <span class="card-more">Ver cómo te ayuda
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </a>
       </div>
     </section>
 
@@ -474,6 +496,7 @@
     </div>
   </footer>
 
+  </div>
   <script src="src/js/main.js" defer></script>
   <script type="module" src="src/js/aurora.js"></script>
 </body>

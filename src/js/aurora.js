@@ -33,6 +33,15 @@ if (!gl) {
   });
   document.body.appendChild(fallback);
 
+  const light = document.body.classList.contains('plasma-light');
+  const gradient = light
+    ? `linear-gradient(135deg,
+        #f2f3f9 0%, #eae7f6 20%, #e6ecf7 35%, #f2f3f9 50%,
+        #e8ecf8 65%, #ece7f6 80%, #f2f3f9 100%)`
+    : `linear-gradient(135deg,
+        #07071a 0%, #0d0730 20%, #150a3a 35%, #07071a 50%,
+        #0a1030 65%, #12083a 80%, #07071a 100%)`;
+
   const style = document.createElement('style');
   style.textContent = `
     @keyframes plasma-drift {
@@ -41,22 +50,22 @@ if (!gl) {
       100% { background-position: 0% 50%; }
     }
     .plasma-fallback {
-      background: linear-gradient(
-        135deg,
-        #07071a 0%,
-        #0d0730 20%,
-        #150a3a 35%,
-        #07071a 50%,
-        #0a1030 65%,
-        #12083a 80%,
-        #07071a 100%
-      );
+      background: ${gradient};
       background-size: 400% 400%;
       animation: plasma-drift 18s ease infinite;
     }
   `;
   document.head.appendChild(style);
   fallback.classList.add('plasma-fallback');
+  if (light) fallback.classList.add('plasma-fallback--light');
+
+  const lightGrad = `linear-gradient(135deg,
+    #f2f3f9 0%, #eae7f6 20%, #e6ecf7 35%, #f2f3f9 50%,
+    #e8ecf8 65%, #ece7f6 80%, #f2f3f9 100%)`;
+  const darkGrad = `linear-gradient(135deg,
+    #07071a 0%, #0d0730 20%, #150a3a 35%, #07071a 50%,
+    #0a1030 65%, #12083a 80%, #07071a 100%)`;
+  window.__plasmaSetLight = (v) => { fallback.style.backgroundImage = v ? lightGrad : darkGrad; };
 
   window.plasmaButtonFlash = () => {};
   return;
@@ -76,6 +85,7 @@ uniform float uMouseOn;
 uniform vec2  uClick;
 uniform float uClickAge;   // seconds since last click; large = no click
 uniform float uGlobalBurst; // 0-1 global filament flare triggered by buttons
+uniform float uLight;       // 1.0 = light theme (filaments darken a near-white bg)
 
 // hash / noise / fbm
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -145,6 +155,18 @@ void main() {
 
   // breathing dracula palette: hues drift cyan <-> violet over ~90s
   float breathe = 0.5 + 0.5 * sin(t * 0.07);
+
+  if (uLight > 0.5) {
+    // light theme = inverted colours: filaments take the dark-mode background
+    // colour (deep navy) and paint over a near-white canvas
+    vec3 bg  = vec3(0.945, 0.952, 0.972);
+    vec3 ink = vec3(0.028, 0.03, 0.07);           // exact dark-mode bg colour
+    float amt = clamp(e * 0.95, 0.0, 1.0);
+    vec3 col = mix(bg, ink, amt);
+    gl_FragColor = vec4(col, 1.0);
+    return;
+  }
+
   vec3 bg    = vec3(0.028, 0.03, 0.07);
   vec3 haze  = mix(vec3(0.45, 0.30, 0.85), vec3(0.30, 0.45, 0.90), breathe);
   vec3 core  = mix(vec3(0.42, 0.85, 0.98), vec3(0.75, 0.55, 1.00), breathe);
@@ -183,6 +205,17 @@ const uMouseOn  = gl.getUniformLocation(prog, 'uMouseOn');
 const uClick       = gl.getUniformLocation(prog, 'uClick');
 const uClickAge    = gl.getUniformLocation(prog, 'uClickAge');
 const uGlobalBurst = gl.getUniformLocation(prog, 'uGlobalBurst');
+const uLight       = gl.getUniformLocation(prog, 'uLight');
+
+// Theme is eased toward its target so SPA navigation morphs dark <-> light
+// smoothly while the filaments keep their exact phase (canvas never reloads).
+let lightCur    = document.body.classList.contains('plasma-light') ? 1 : 0;
+let lightTarget = lightCur;
+window.__plasmaSetLight = (v) => {
+  lightTarget = v ? 1 : 0;
+  // when the render loop is paused (reduced motion), apply immediately
+  if (reducedMotion) { lightCur = lightTarget; render(performance.now()); }
+};
 
 const mouse = { x: -9999, y: -9999, sx: -9999, sy: -9999, active: false };
 const click = { x: 0, y: 0, at: -1e9 };
@@ -259,6 +292,8 @@ function render(now) {
   const gAge = (now - globalBurst.at) / 1000;
   const gT   = Math.min(1, gAge / 0.06); const gEnv = gT * gT * (3 - 2 * gT);
   gl.uniform1f(uGlobalBurst, gAge < 0.8 ? gEnv * Math.exp(-gAge * 4.5) : 0.0);
+  lightCur += (lightTarget - lightCur) * 0.06;
+  gl.uniform1f(uLight, lightCur);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
