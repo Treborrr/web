@@ -413,9 +413,11 @@ async function navigate(dest, push) {
     return;
   }
   if (navigating) return;
-  navigating = true;
 
+  // pages without the SPA wrapper (e.g. /proyectos) fall back to a full load
   const page = document.getElementById('page');
+  if (!page) { location.href = dest; return; }
+  navigating = true;
   let html;
   try {
     const res = await fetch(url.pathname);
