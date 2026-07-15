@@ -405,6 +405,22 @@ document.addEventListener('click', (e) => {
 
 let navigating = false;
 
+// Prefetch on hover/touch: by the time the user clicks, the page is cached
+const prefetched = new Map();
+function prefetch(pathname) {
+  if (prefetched.has(pathname) || pathname === location.pathname) return;
+  prefetched.set(pathname, fetch(pathname).then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
+    .catch(() => { prefetched.delete(pathname); }));
+}
+const onPreIntent = (e) => {
+  const a = e.target.closest('a[href$=".html"]');
+  if (!a || a.target === '_blank') return;
+  const url = new URL(a.getAttribute('href'), location.href);
+  if (url.origin === location.origin) prefetch(url.pathname);
+};
+document.addEventListener('mouseover', onPreIntent, { passive: true });
+document.addEventListener('touchstart', onPreIntent, { passive: true });
+
 async function navigate(dest, push) {
   const url = new URL(dest, location.href);
 
@@ -420,9 +436,8 @@ async function navigate(dest, push) {
   navigating = true;
   let html;
   try {
-    const res = await fetch(url.pathname);
-    if (!res.ok) throw new Error(res.status);
-    html = await res.text();
+    html = await (prefetched.get(url.pathname) ??
+      fetch(url.pathname).then((r) => (r.ok ? r.text() : Promise.reject(r.status))));
   } catch {
     location.href = dest;   // hard-navigation fallback
     return;
