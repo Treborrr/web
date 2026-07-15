@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /design-archive/
+
+Sitemap: https://robertalvarado.biz/sitemap.xml
