@@ -288,10 +288,10 @@ function render(now) {
   const gAge = (now - globalBurst.at) / 1000;
   const gT   = Math.min(1, gAge / 0.06); const gEnv = gT * gT * (3 - 2 * gT);
   const flash = gAge < 0.8 ? gEnv * Math.exp(-gAge * 4.5) : 0.0;
-  // breathing: two slow pulses (~1.4s period) that fade out over ~3s
+  // breathing: three quick pulses (~1s period), gone by 3.5s
   const bAge = (now - breath.at) / 1000;
-  const bEnv = bAge < 3.0
-    ? Math.exp(-bAge * 0.85) * 0.19 * (1 - Math.cos((2 * Math.PI * bAge) / 1.4))
+  const bEnv = bAge < 3.5
+    ? Math.exp(-bAge * 0.75) * 0.30 * (1 - Math.cos((2 * Math.PI * bAge) / 1.0))
     : 0.0;
   gl.uniform1f(uGlobalBurst, flash + bEnv);
   lightCur += (lightTarget - lightCur) * 0.06;
