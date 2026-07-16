@@ -485,6 +485,8 @@ async function navigate(dest, push) {
   page.focus({ preventScroll: true });
   requestAnimationFrame(() => page.classList.remove('is-leaving'));
   await wait(reduce ? 0 : 260);
+  // the view settled: filaments take a slow breath, the page feels alive
+  if (toLight && !reduce && typeof window.plasmaBreathe === 'function') window.plasmaBreathe();
   navigating = false;
 }
 

@@ -60,6 +60,7 @@ if (!gl) {
   window.__plasmaSetLight = setLight;
 
   window.plasmaButtonFlash = () => {};
+  window.plasmaBreathe = () => {};
   return;
 }
 
@@ -212,8 +213,11 @@ window.__plasmaSetLight = (v) => {
 const mouse = { x: -9999, y: -9999, sx: -9999, sy: -9999, active: false };
 const click = { x: 0, y: 0, at: -1e9 };
 const globalBurst = { at: -1e9 };
+const breath = { at: -1e9 };
 
 window.plasmaButtonFlash = () => { globalBurst.at = performance.now(); };
+// Slow breathing pulse — filaments swell and settle, like the page inhales
+window.plasmaBreathe = () => { breath.at = performance.now(); };
 
 function pointTo(x, y) {
   if (!mouse.active) { mouse.sx = x; mouse.sy = y; }
@@ -283,7 +287,13 @@ function render(now) {
   gl.uniform1f(uClickAge, (now - click.at) / 1000);
   const gAge = (now - globalBurst.at) / 1000;
   const gT   = Math.min(1, gAge / 0.06); const gEnv = gT * gT * (3 - 2 * gT);
-  gl.uniform1f(uGlobalBurst, gAge < 0.8 ? gEnv * Math.exp(-gAge * 4.5) : 0.0);
+  const flash = gAge < 0.8 ? gEnv * Math.exp(-gAge * 4.5) : 0.0;
+  // breathing: two slow pulses (~1.4s period) that fade out over ~3s
+  const bAge = (now - breath.at) / 1000;
+  const bEnv = bAge < 3.0
+    ? Math.exp(-bAge * 0.85) * 0.19 * (1 - Math.cos((2 * Math.PI * bAge) / 1.4))
+    : 0.0;
+  gl.uniform1f(uGlobalBurst, flash + bEnv);
   lightCur += (lightTarget - lightCur) * 0.06;
   gl.uniform1f(uLight, lightCur);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
