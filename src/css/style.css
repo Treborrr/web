@@ -15,6 +15,12 @@
 
   --radius: 16px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Lente único del sitio: una sola familia de curvas.
+     --ease-cine llega rápido y asienta largo (montaje invisible);
+     --ease-swift para micro-interacciones. */
+  --ease-cine: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-swift: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -25,6 +31,12 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Con el steadicam activo (main.js), el smooth CSS pelearía con las
+   escrituras por frame del motor → jitter. El motor pone esta clase. */
+html.has-steadicam {
+  scroll-behavior: auto;
 }
 
 body {
@@ -164,6 +176,7 @@ nav a.nav-active::after {
   }
 }
 
+
 .hero-text {
   flex: 1;
 }
@@ -301,6 +314,23 @@ nav a.nav-active::after {
 .pc-card:hover,
 .pc-card.active {
   transition: none;
+}
+
+/* Rim glass — the rainbow ring stays dimmed to a glass edge at rest and
+   only blooms to full color on hover/touch. */
+.holo-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--surface-transparent);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.pc-card:hover::before,
+.pc-card.active::before {
+  opacity: 0;
 }
 
 .pc-card * {
@@ -1324,8 +1354,8 @@ footer {
 /* Reveal Animation class */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+  transform: translateY(24px);
+  transition: opacity 0.9s var(--ease-cine), transform 0.9s var(--ease-cine);
 }
 
 .reveal.active {
@@ -1333,21 +1363,56 @@ footer {
   transform: translateY(0);
 }
 
-/* Stagger delays for scroll-reveal children */
+/* Stagger delays for scroll-reveal children — cadencia apretada:
+   se lee como una sola ola coreografiada, no como cola de espera */
 .reveal-d1 {
-  transition-delay: 0.15s;
+  transition-delay: 0.08s;
 }
 
 .reveal-d2 {
-  transition-delay: 0.3s;
+  transition-delay: 0.16s;
 }
 
 .reveal-d3 {
-  transition-delay: 0.45s;
+  transition-delay: 0.24s;
 }
 
 .reveal-d4 {
-  transition-delay: 0.6s;
+  transition-delay: 0.32s;
+}
+
+/* ============================================================
+   TÍTULOS DE PELÍCULA — el section-title emerge desde una línea
+   base invisible: transform y clip-path animan en oposición, así
+   la "máscara" queda fija en pantalla mientras el texto sube.
+   Insets negativos: protegen descendentes y el glow del gradient.
+   ============================================================ */
+.reveal .section-title,
+.reveal .svc-sec-head h2 {
+  transform: translateY(0.8em);
+  clip-path: inset(-0.15em 0 0.8em 0);
+  opacity: 0;
+  transition: transform 1s var(--ease-cine), clip-path 1s var(--ease-cine), opacity 0.4s ease;
+}
+
+.reveal.active .section-title,
+.reveal.active .svc-sec-head h2 {
+  transform: none;
+  clip-path: inset(-0.15em 0 -0.15em 0);
+  opacity: 1;
+}
+
+/* El subtítulo respira detrás del título: apertura de escena */
+.reveal .section-subtitle {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.7s ease, transform 0.7s var(--ease-cine);
+}
+
+.reveal.active .section-subtitle {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.18s;
 }
 
 /* === Hero Entrance Animations (on load) === */
@@ -1376,28 +1441,28 @@ footer {
 }
 
 nav {
-  animation: heroFadeUp 0.6s cubic-bezier(0.5, 0, 0, 1) 0.05s both;
+  animation: heroFadeUp 0.6s var(--ease-cine) 0.05s both;
 }
 
 .subtitle-badge {
-  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.2s both;
+  animation: heroFadeUp 0.7s var(--ease-cine) 0.2s both;
 }
 
 .hero-text .title {
-  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.45s both;
+  animation: heroFadeUp 0.7s var(--ease-cine) 0.45s both;
 }
 
 .hero-text .description {
-  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.65s both;
+  animation: heroFadeUp 0.7s var(--ease-cine) 0.65s both;
 }
 
 .hero-text .actions {
-  animation: heroFadeUp 0.7s cubic-bezier(0.5, 0, 0, 1) 0.85s both;
+  animation: heroFadeUp 0.7s var(--ease-cine) 0.85s both;
 }
 
 .profile-container {
   animation:
-    heroFadeRight 0.9s cubic-bezier(0.5, 0, 0, 1) 0.3s both,
+    heroFadeRight 0.9s var(--ease-cine) 0.3s both,
     constellation-pulse 5s ease-in-out 1.5s infinite;
 }
 
@@ -1443,7 +1508,7 @@ nav {
 .sp-text {
   position: relative;
   padding-top: 78px;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity 0.22s var(--ease-swift), transform 0.22s var(--ease-swift);
 }
 
 .sp-text.is-swapping {
@@ -1622,6 +1687,9 @@ nav {
 .sp-shots {
   position: relative;
   aspect-ratio: 16 / 9.3;
+  /* dolly-in con scrub (main.js): origen alto porque los shots anclan arriba */
+  will-change: transform;
+  transform-origin: 50% 38%;
 }
 
 .sp-shot {
@@ -1634,12 +1702,16 @@ nav {
   display: block;
   opacity: 0;
   transform: scale(1.04);
-  transition: opacity 0.55s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  /* rack focus: la toma entrante llega desde desenfoque y clava nitidez
+     DESPUÉS del fade, como un foco que asienta (solo imágenes, nunca texto) */
+  filter: blur(9px) saturate(0.85) brightness(0.92);
+  transition: opacity 0.55s ease, transform 1.4s var(--ease-cine), filter 0.8s ease;
 }
 
 .sp-shot.active {
   opacity: 1;
   transform: scale(1);
+  filter: blur(0) saturate(1) brightness(1);
 }
 
 @media (max-width: 820px) {
@@ -2130,6 +2202,12 @@ a.glass-card {
 
 .svc-nav a:not(.btn):hover { color: var(--fg); }
 
+.svc-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 /* --- Cabecera compacta de servicio --- */
 .svc-hero {
   padding: 72px 0 40px;
@@ -2340,6 +2418,20 @@ a.glass-card {
   background: linear-gradient(180deg, var(--svc-accent) 0%, rgba(189, 147, 249, 0.25) 70%, transparent 100%);
 }
 
+/* Se dibuja sobre la línea base a medida que el lector avanza por los pasos */
+.svc-flow-fill {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--cyan) 0%, var(--svc-accent) 100%);
+  box-shadow: 0 0 10px var(--svc-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+
 .svc-flow-item { position: relative; max-width: 64ch; }
 
 .svc-flow-item::before {
@@ -2426,147 +2518,35 @@ a.glass-card {
 }
 
 /* ============================================================
-   SERVICIOS — LIGHT MODE ("modo caro")
-   ============================================================ */
-body.plasma-light {
-  background-color: #eef0f6;
-  color: #191b2b;
-}
-
-/* Scrim claro: un velo blanco que mantiene el centro legible */
-.svc-page.plasma-light::before {
-  background:
-    radial-gradient(140% 100% at 50% 0%,
-      rgba(244, 245, 250, 0.55) 0%,
-      rgba(244, 245, 250, 0.78) 55%,
-      rgba(240, 242, 248, 0.9) 100%);
-}
-
-/* Cabecera / navegación */
-.plasma-light .svc-nav a:not(.btn) { color: #5a6178; }
-.plasma-light .svc-nav a:not(.btn):hover { color: #191b2b; }
-
-/* Acento sólido en el título (los degradados a cyan se pierden en blanco) */
-.plasma-light .svc-hero h1 { color: #14162a; }
-.plasma-light .svc-hero h1 .accent {
-  background: none;
-  -webkit-text-fill-color: initial;
-  color: var(--svc-accent);
-}
-.plasma-light .svc-lead { color: #4a5169; }
-
-/* Secciones */
-.plasma-light .svc-sec { border-top-color: rgba(20, 22, 42, 0.1); }
-.plasma-light .svc-sec-head h2 { color: #14162a; }
-.plasma-light .svc-sec-head::after {
-  background: linear-gradient(90deg, rgba(20, 22, 42, 0.18), transparent);
-}
-.plasma-light .svc-sec-sub { color: #5a6178; }
-
-/* Problemas: filas editoriales */
-.plasma-light .svc-pain {
-  border-bottom-color: rgba(20, 22, 42, 0.1);
-}
-.plasma-light .svc-pain:first-of-type { border-top-color: rgba(20, 22, 42, 0.1); }
-.plasma-light .svc-pain h3 { color: #1c1e30; }
-.plasma-light .svc-pain p { color: #565d74; }
-.plasma-light .svc-pain-idx { color: #565d74; opacity: 0.5; }
-.plasma-light .svc-pain:hover {
-  background: linear-gradient(90deg, var(--svc-accent-soft), transparent 60%);
-}
-
-/* Qué obtienes: bento en tarjetas blancas */
-.plasma-light .svc-bento article {
-  background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(20, 22, 42, 0.08);
-  box-shadow: 0 12px 30px rgba(20, 22, 42, 0.06);
-  backdrop-filter: blur(10px) saturate(1.1);
-  -webkit-backdrop-filter: blur(10px) saturate(1.1);
-}
-.plasma-light .svc-bento article:hover {
-  border-color: color-mix(in srgb, var(--svc-accent) 40%, transparent);
-  box-shadow: 0 22px 44px rgba(20, 22, 42, 0.12);
-}
-.plasma-light .svc-bento h3 { color: #1c1e30; }
-.plasma-light .svc-bento p { color: #565d74; }
-
-/* Cómo trabajo: timeline */
-.plasma-light .svc-flow::before {
-  background: linear-gradient(180deg, var(--svc-accent) 0%, rgba(20, 22, 42, 0.18) 70%, transparent 100%);
-}
-.plasma-light .svc-flow-item::before { box-shadow: 0 0 10px color-mix(in srgb, var(--svc-accent) 55%, transparent); }
-.plasma-light .svc-flow-item h3 { color: #1c1e30; }
-.plasma-light .svc-flow-tag { color: #737a92; }
-.plasma-light .svc-flow-item p { color: #565d74; }
-
-/* Enlaces a otros servicios */
-.plasma-light .svc-other-link {
-  background: rgba(255, 255, 255, 0.66);
-  border-color: rgba(20, 22, 42, 0.12);
-  color: #5a6178;
-}
-.plasma-light .svc-other-link:hover {
-  color: #191b2b;
-  border-color: rgba(20, 22, 42, 0.3);
-}
-
-/* CTA: tarjeta clara translúcida, coherente con el resto del modo claro */
-.plasma-light .cta-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.66) 100%);
-  border-color: rgba(20, 22, 42, 0.1);
-  box-shadow: 0 24px 50px rgba(20, 22, 42, 0.1);
-  backdrop-filter: blur(12px) saturate(1.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.1);
-}
-.plasma-light .cta-card::before {
-  background: radial-gradient(ellipse, var(--svc-accent-soft), transparent 70%);
-}
-.plasma-light .cta-card .cta-title { color: #14162a; }
-.plasma-light .cta-card .cta-desc { color: #565d74; }
-
-/* Footer claro */
-.plasma-light footer {
-  background: rgba(255, 255, 255, 0.5);
-  border-top-color: rgba(20, 22, 42, 0.1);
-}
-.plasma-light .footer-left,
-.plasma-light .social-links a { color: #5a6178; }
-.plasma-light .social-links a:hover { color: var(--svc-accent); }
-
-/* ============================================================
    TRANSICIÓN SPA
    El canvas del plasma nunca se recrea: los filamentos mantienen su
-   fase y solo se recolorean (dark <-> claro) vía JS. Aquí solo se
-   hace un crossfade suave del contenido (#page) durante el swap.
+   fase entre navegaciones. Aquí solo se hace un crossfade suave del
+   contenido (#page) durante el swap.
    ============================================================ */
 #page {
-  transition: opacity 0.24s ease, transform 0.24s ease;
+  transition: opacity 0.28s ease, transform 0.3s var(--ease-cine);
   will-change: opacity;
 }
+
+/* Match cut: salida hacia ARRIBA y entrada desde abajo — las dos fases
+   leen como un único movimiento ascendente de cámara, con un push-in
+   de escala ≤0.5% que remata el asentamiento. */
 #page.is-leaving {
   opacity: 0;
-  transform: translateY(6px);
+  transform: translateY(-10px) scale(0.996);
 }
 
-/* Intro de velo para CARGA DIRECTA de una página de servicio (sin SPA):
-   emerge desde el color claro para que no haya un pop brusco */
-@keyframes page-fade-enter {
-  0%   { opacity: 1; }
-  100% { opacity: 0; }
-}
-html.pi-enter::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  pointer-events: none;
-  background: #eef0f6;
-  animation: page-fade-enter 620ms ease-out forwards;
+/* Estado inicial de la entrada, fijado sin transición (main.js fuerza
+   reflow con esta clase puesta); declarado después de .is-leaving para
+   ganar cuando ambas están presentes. */
+#page.is-entering {
+  transition: none;
+  opacity: 0;
+  transform: translateY(14px) scale(0.996);
 }
 
 @media (prefers-reduced-motion: reduce) {
   #page { transition: none; }
-  html.pi-enter::after { display: none; }
 }
 
 /* CTA flotante móvil en páginas de servicio: acceso a contacto
@@ -2575,19 +2555,24 @@ html.pi-enter::after {
   display: none;
 }
 
+.svc-fab-text {
+  display: none;
+}
+
+/* Ícono flotante (no píldora con texto): un área de colisión chica es menos
+   probable que tape un encabezado mientras el usuario scrollea */
 @media (max-width: 768px) {
   .svc-fab {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
     position: fixed;
     bottom: 24px;
     right: 20px;
     z-index: 1000;
-    padding: 14px 22px;
-    border-radius: 100px;
-    font-size: 0.92rem;
-    font-weight: 600;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
     text-decoration: none;
     color: #fff;
     background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
@@ -2595,23 +2580,47 @@ html.pi-enter::after {
   }
 }
 
-/* Formulario de contacto sobre fondo claro (páginas de servicio) */
-.plasma-light .cta-form input,
-.plasma-light .cta-form textarea {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(20, 22, 42, 0.14);
-  color: #191b2b;
+/* Teléfonos de poca altura: la card + logo + descripción no caben en 80vh
+   y terminan empujando texto detrás del dock flotante. Se achica la card para
+   recuperar espacio, y se esconde el mini-pill "Contáctame" de adentro: por
+   debajo de ~320px sus hijos flex se aplastan sin mínimo y el botón se
+   recorta. El CTA real ya existe en el botón grande de abajo y en el dock,
+   así que no se pierde alcance. (al final de la hoja a propósito, para ganar
+   por orden de cascada sobre las reglas de más arriba) */
+@media (max-width: 768px) and (max-height: 1000px) {
+  .holo-wrapper,
+  .pc-card {
+    width: min(200px, calc(100vw - 96px));
+  }
+
+  .pc-user-info {
+    display: none;
+  }
+
+  .hero-content {
+    gap: 16px;
+  }
+
+  .hero {
+    padding-bottom: 140px;
+  }
+
+  .description {
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
 }
 
-.plasma-light .cta-form input::placeholder,
-.plasma-light .cta-form textarea::placeholder {
-  color: #8a90a8;
-}
+/* Teléfonos realmente cortos (iPhone SE y similares, ~667px): el ajuste de
+   arriba no alcanza a despejar el dock del todo, así que además se recorta
+   el ritmo vertical de la descripción */
+@media (max-width: 768px) and (max-height: 700px) {
+  .description {
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
 
-.plasma-light .cta-form input:focus,
-.plasma-light .cta-form textarea:focus {
-  border-color: color-mix(in srgb, var(--svc-accent) 55%, transparent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--svc-accent) 14%, transparent);
+  .hero-content {
+    gap: 10px;
+  }
 }
-
-.plasma-light .cta-success { color: #15803d; }

@@ -32,18 +32,9 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&family=Fira+Code:wght@400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="../src/css/style.css">
-  <script>
-    // Transición de inversión al llegar desde la home oscura
-    (function () {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var h = document.documentElement;
-      h.classList.add('pi-enter');
-      h.addEventListener('animationend', function (e) { if (e.animationName === 'page-fade-enter') h.classList.remove('pi-enter'); });
-    })();
-  </script>
 </head>
 
-<body class="svc-page plasma-light" style="--svc-accent: #0e7490; --svc-accent-soft: rgba(14, 116, 137, 0.12);">
+<body class="svc-page" style="--svc-accent: #0e7490; --svc-accent-soft: rgba(14, 116, 137, 0.12);">
   <div id="page">
   <div class="svc-container">
 
@@ -78,21 +69,21 @@
       </div>
       <p class="svc-sec-sub">Cada mes que pasa sin digitalizar, el costo crece silenciosamente.</p>
 
-      <div class="svc-pain">
+      <div class="svc-pain reveal">
         <span class="svc-pain-idx">/01</span>
         <h3>Información que desaparece sin aviso</h3>
         <p>Un cuaderno mojado, una hoja traspapelada, un Excel que alguien sobrescribió por accidente. En papel no
           existe el control Z. Lo que se pierde, se pierde para siempre, y muchas veces ni te enteras hasta que
           lo necesitas.</p>
       </div>
-      <div class="svc-pain">
+      <div class="svc-pain reveal">
         <span class="svc-pain-idx">/02</span>
         <h3>Tu operación depende de personas, no de procesos</h3>
         <p>Cuando el conocimiento de cómo hacer las cosas vive solo en la cabeza de una persona, esa persona se
           convierte en un riesgo. Si falta un día, si se enferma, si renuncia, tu operación se frena. Un sistema
           bien construido hace que eso no importe.</p>
       </div>
-      <div class="svc-pain">
+      <div class="svc-pain reveal">
         <span class="svc-pain-idx">/03</span>
         <h3>Nadie tiene la misma versión de la realidad</h3>
         <p>El Excel del administrador dice una cosa, el cuaderno de almacén dice otra, y la memoria de tu vendedor
@@ -109,7 +100,7 @@
       <p class="svc-sec-sub">No te vendo software. Te construyo la herramienta exacta que tu operación necesita.</p>
 
       <div class="svc-bento">
-        <article class="b-lg">
+        <article class="b-lg reveal">
           <span class="b-tag">el cambio principal</span>
           <h3>Una sola verdad para toda tu empresa</h3>
           <p>Todo tu equipo trabaja desde el mismo lugar, con la misma información, actualizada en tiempo real. No
@@ -117,22 +108,22 @@
             Ya lo construí para empresas reales: trazabilidad de cacao de exportación, punto de venta con
             facturación electrónica, gestión hotelera completa. Están en producción hoy.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Hecho exactamente a tu medida</h3>
           <p>Mapeo tu proceso actual y construyo sobre él. Tu equipo reconoce el flujo porque es el que ya conoce.
             La adopción es natural, no forzada.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Historial completo, siempre</h3>
           <p>Sabes quién registró qué y cuándo. Ante cualquier duda, auditoría o reclamo, el historial está a un
             clic, no en una caja de archivadores.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Reportes que antes tardaban un día</h3>
           <p>El sistema genera en segundos lo que hoy le toma horas a alguien armar en Excel. Decides con datos de
             hoy, no del mes pasado.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Crece cuando tú creces</h3>
           <p>Empezamos por el módulo que más duele. Cuando estés listo, el sistema se expande. No pagas por lo que
             no usas todavía.</p>
@@ -148,22 +139,23 @@
       <p class="svc-sec-sub">Sin reuniones eternas ni sorpresas. Resultados visibles desde la primera semana.</p>
 
       <div class="svc-flow">
-        <div class="svc-flow-item">
+        <div class="svc-flow-fill" aria-hidden="true"></div>
+        <div class="svc-flow-item reveal">
           <h3>Primero te escucho <span class="svc-flow-tag">gratis, 30 minutos</span></h3>
           <p>Me cuentas cómo opera tu empresa hoy y qué te está frenando. No hay compromiso. Si al final de la
             llamada no ves el valor, no seguimos.</p>
         </div>
-        <div class="svc-flow-item">
+        <div class="svc-flow-item reveal">
           <h3>Diseñamos juntos antes de construir <span class="svc-flow-tag">semana 1</span></h3>
           <p>Te muestro pantallas y flujos antes de escribir una línea de código. Tu equipo opina desde el día uno
             porque son ellos los que lo van a usar todos los días.</p>
         </div>
-        <div class="svc-flow-item">
+        <div class="svc-flow-item reveal">
           <h3>Entregas reales, no promesas <span class="svc-flow-tag">semanas siguientes</span></h3>
           <p>Construyo por módulos y te entrego funcionalidad que puedes usar mientras seguimos avanzando. Ves
             progreso concreto, no un PowerPoint de lo que va a existir algún día.</p>
         </div>
-        <div class="svc-flow-item">
+        <div class="svc-flow-item reveal">
           <h3>No termino cuando entrego <span class="svc-flow-tag">hasta que funcione solo</span></h3>
           <p>Capacito a tu equipo, ajusto lo que haga falta y acompaño los primeros días de uso real. El proyecto
             cierra cuando el sistema ya corre solo, no cuando yo digo que está listo.</p>
@@ -245,7 +237,7 @@
       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" />
     </svg>
-    Hablemos
+    <span class="svc-fab-text">Hablemos</span>
   </a>
   </div>
   <script src="../src/js/main.js" defer></script>

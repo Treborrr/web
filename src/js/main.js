@@ -2,6 +2,8 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_EN = document.documentElement.lang === 'en';
+const isEnPath = (pathname) => /^\/en(\/|$)/.test(pathname);
 
 /* ============================================================
    PAGE-SCOPED INIT
@@ -21,8 +23,23 @@ function initPage() {
   initReveal(signal);
   initForm();
   initHolo(signal);
+  initGrade();
   initScrollytelling(signal);
   initScrollspy(signal);
+  initServiceTimeline(signal);
+}
+
+// Etalonaje de llegada: las páginas de servicio tiñen la luz del plasma con
+// su acento; el resto vuelve a la respiración nativa (el scrollspy ajusta
+// después escena por escena).
+function initGrade() {
+  const accent = document.body.classList.contains('svc-page')
+    ? getComputedStyle(document.body).getPropertyValue('--svc-accent').trim() || null
+    : null;
+  // en la primera carga aurora.js (module) aún no definió el hook:
+  // se deja el valor pendiente y aurora lo aplica al arrancar
+  if (typeof window.plasmaGrade === 'function') window.plasmaGrade(accent);
+  else window.__gradeWanted = accent;
 }
 
 function initYear() {
@@ -72,18 +89,71 @@ function initExtTyping(signal) {
   loop();
 }
 
-// Scroll-reveal animation
+// Scroll-reveal animation — IntersectionObserver, one-shot per element.
+// Siblings that cross the threshold in the same frame (e.g. a row of bento
+// cards) get an automatic incremental stagger; elements that already carry
+// an explicit .reveal-d1..d4 class keep their hand-picked delay instead.
 function initReveal(signal) {
-  const reveal = () => {
-    const reveals = document.querySelectorAll('.reveal');
-    const windowHeight = window.innerHeight;
-    for (let i = 0; i < reveals.length; i++) {
-      const elementTop = reveals[i].getBoundingClientRect().top;
-      if (elementTop < windowHeight - 100) reveals[i].classList.add('active');
-    }
+  const reveals = document.querySelectorAll('.reveal');
+  if (!reveals.length) return;
+
+  if (prefersReduced() || !('IntersectionObserver' in window)) {
+    reveals.forEach((el) => el.classList.add('active'));
+    return;
+  }
+
+  const hasExplicitDelay = (el) =>
+    el.classList.contains('reveal-d1') || el.classList.contains('reveal-d2') ||
+    el.classList.contains('reveal-d3') || el.classList.contains('reveal-d4');
+
+  const io = new IntersectionObserver((entries) => {
+    const batchIdx = new Map(); // parent -> siblings seen so far in this batch
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (!hasExplicitDelay(el)) {
+        const idx = batchIdx.get(el.parentElement) || 0;
+        batchIdx.set(el.parentElement, idx + 1);
+        if (idx > 0) el.style.transitionDelay = `${Math.min(idx, 5) * 70}ms`;
+      }
+      el.classList.add('active');
+      // numbered sections give the plasma a slow breath as they arrive
+      if (el.classList.contains('svc-sec') && typeof window.plasmaBreathe === 'function') {
+        window.plasmaBreathe();
+      }
+      io.unobserve(el);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' });
+
+  reveals.forEach((el) => io.observe(el));
+  signal.addEventListener('abort', () => io.disconnect());
+}
+
+// Service page — vertical timeline fill scrubs with scroll progress,
+// mirroring the portfolio rail's scroll-linked scaleX math.
+function initServiceTimeline(signal) {
+  const flow = document.querySelector('.svc-flow');
+  const fill = document.querySelector('.svc-flow-fill');
+  if (!flow || !fill) return;
+
+  if (prefersReduced()) { fill.style.transform = 'scaleY(1)'; return; }
+
+  const update = () => {
+    const rect = flow.getBoundingClientRect();
+    const readingLine = window.innerHeight * 0.62;
+    const progress = Math.min(1, Math.max(0, (readingLine - rect.top) / rect.height));
+    fill.style.transform = `scaleY(${progress})`;
   };
-  window.addEventListener('scroll', reveal, { signal });
-  reveal();
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }
+  }, { passive: true, signal });
+  window.addEventListener('resize', update, { signal });
+  update();
 }
 
 // Contact form — AJAX submit with success state
@@ -195,7 +265,7 @@ function initHolo(signal) {
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
       const iosBtn = document.createElement('button');
       iosBtn.textContent = '⟳ 3D';
-      iosBtn.setAttribute('aria-label', 'Activar efecto 3D con giroscopio');
+      iosBtn.setAttribute('aria-label', IS_EN ? 'Enable 3D gyroscope effect' : 'Activar efecto 3D con giroscopio');
       Object.assign(iosBtn.style, {
         position: 'absolute', bottom: '10px', right: '10px', zIndex: '10',
         background: 'rgba(189,147,249,0.15)', border: '1px solid rgba(189,147,249,0.5)',
@@ -209,9 +279,15 @@ function initHolo(signal) {
         DeviceOrientationEvent.requestPermission()
           .then((state) => {
             if (state === 'granted') { attachGyro(); iosBtn.remove(); }
-            else { iosBtn.textContent = '✗ denegado'; iosBtn.title = 'Ajustes → Safari → Movimiento y orientación'; }
+            else {
+              iosBtn.textContent = IS_EN ? '✗ denied' : '✗ denegado';
+              iosBtn.title = IS_EN ? 'Settings → Safari → Motion & Orientation' : 'Ajustes → Safari → Movimiento y orientación';
+            }
           })
-          .catch(() => { iosBtn.textContent = '✗ denegado'; iosBtn.title = 'Ajustes → Safari → Movimiento y orientación'; });
+          .catch(() => {
+            iosBtn.textContent = IS_EN ? '✗ denied' : '✗ denegado';
+            iosBtn.title = IS_EN ? 'Settings → Safari → Motion & Orientation' : 'Ajustes → Safari → Movimiento y orientación';
+          });
       }, { signal });
     } else {
       attachGyro();
@@ -233,10 +309,10 @@ function initScrollytelling(signal) {
   const root = document.getElementById('sp-scroller');
   if (!root) return;
 
-  const PROJECTS = [
+  const PROJECTS_ES = [
     { title: 'Casa Hospedaje Burgos', tag: 'Turismo', accent: '#ffb86c', glow: 'rgba(255, 184, 108, 0.4)',
       desc: 'Sitio bilingüe con sistema de reservas, galería de habitaciones y guía de lugares turísticos de Chachapoyas.',
-      url: 'https://hospedajeburgos.up.railway.app/' },
+      url: 'https://burgosweb.treborrr.workers.dev/' },
     { title: 'ABAWA', tag: 'Gestión Empresarial', accent: '#bd93f9', glow: 'rgba(189, 147, 249, 0.4)',
       desc: 'Plataforma de gestión a medida con dashboard ejecutivo y control centralizado de la operación.',
       url: 'https://abawa.up.railway.app/cata' },
@@ -245,6 +321,21 @@ function initScrollytelling(signal) {
     { title: 'SCCE', tag: 'Agroindustrial', accent: '#50fa7b', glow: 'rgba(80, 250, 123, 0.35)',
       desc: 'Trazabilidad digital de lotes de cacao especial — fermentación, secado y exportación sin una sola hoja de papel.' },
   ];
+
+  const PROJECTS_EN = [
+    { title: 'Casa Hospedaje Burgos', tag: 'Tourism', accent: '#ffb86c', glow: 'rgba(255, 184, 108, 0.4)',
+      desc: 'Bilingual site with a booking system, a room gallery, and a guide to tourist spots around Chachapoyas.',
+      url: 'https://burgosweb.treborrr.workers.dev/' },
+    { title: 'ABAWA', tag: 'Business Management', accent: '#bd93f9', glow: 'rgba(189, 147, 249, 0.4)',
+      desc: 'Custom management platform with an executive dashboard and centralized control of the operation.',
+      url: 'https://abawa.up.railway.app/cata' },
+    { title: 'BMS', tag: 'Retail & POS', accent: '#8be9fd', glow: 'rgba(139, 233, 253, 0.35)',
+      desc: 'Full point-of-sale system with self-service, SUNAT e-invoicing (Peru’s tax authority), and a real-time audit panel.' },
+    { title: 'SCCE', tag: 'Agribusiness', accent: '#50fa7b', glow: 'rgba(80, 250, 123, 0.35)',
+      desc: 'Digital traceability for specialty cacao batches: fermentation, drying, and export without a single sheet of paper.' },
+  ];
+
+  const PROJECTS = IS_EN ? PROJECTS_EN : PROJECTS_ES;
 
   const N = PROJECTS.length;
   const textBox = document.getElementById('sp-text');
@@ -287,25 +378,44 @@ function initScrollytelling(signal) {
     swapTimer = setTimeout(() => {
       renderText(i);
       textBox.classList.remove('is-swapping');
-    }, 170);
+    }, 210); // corta a mitad del fade de 220ms del .sp-text
   };
 
   const travel = () => root.offsetHeight - window.innerHeight;
+  const shotsWrap = root.querySelector('.sp-shots');
+  const reduce = prefersReduced();
+  let lastPlasma = null;
   const onScroll = () => {
     const top = root.getBoundingClientRect().top;
     const prog = Math.min(1, Math.max(0, -top / travel()));
     const seg = Math.min(prog * N, N - 0.0001);
     setProject(Math.floor(seg));
+    // etalonaje del set: la luz acompaña al proyecto, pero SOLO mientras el
+    // scroller está de verdad en escena (fuera de rango manda el scrollspy)
+    if (typeof window.plasmaGrade === 'function') {
+      if (prog > 0.02 && prog < 0.98) {
+        const acc = PROJECTS[Math.floor(seg)].accent;
+        if (acc !== lastPlasma) { lastPlasma = acc; window.plasmaGrade(acc); }
+      } else {
+        lastPlasma = null;
+      }
+    }
     fills.forEach((f, j) => {
       f.style.transform = `scaleX(${Math.min(1, Math.max(0, seg - j))})`;
     });
+    // dolly-in con scrub: push-in de hasta +3% que sigue la rueda; la curva
+    // seno garantiza que cada corte arranca y termina en scale(1) exacto
+    if (!reduce && shotsWrap) {
+      const segProg = seg - Math.floor(seg);
+      shotsWrap.style.transform = `scale(${(1 + 0.03 * Math.sin(Math.PI * segProg)).toFixed(4)})`;
+    }
   };
 
   railItems.forEach((btn) => {
     btn.addEventListener('click', () => {
       const j = +btn.dataset.index;
       const rootTop = root.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: rootTop + ((j + 0.05) / N) * travel(), behavior: 'smooth' });
+      scrollToY(rootTop + ((j + 0.05) / N) * travel());
     }, { signal });
   });
 
@@ -353,6 +463,7 @@ function initScrollspy(signal) {
   const bar = document.getElementById('scroll-progress');
   const navLinks = document.querySelectorAll('nav a[href^="#"]');
   const sections = [...navLinks].map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  let lastGraded;
 
   const update = () => {
     if (bar) {
@@ -365,6 +476,15 @@ function initScrollspy(signal) {
     });
     navLinks.forEach((a) =>
       a.classList.toggle('nav-active', a.getAttribute('href') === `#${current}`));
+
+    // etalonaje por escena: secciones con data-grade tiñen la luz del set;
+    // dentro de #proyectos manda setProject; sin sección (hero) → luz nativa
+    if (sections.length && current !== lastGraded) {
+      lastGraded = current;
+      if (current !== 'proyectos' && current !== 'projects' && typeof window.plasmaGrade === 'function') {
+        window.plasmaGrade(current ? (document.getElementById(current)?.dataset.grade || null) : null);
+      }
+    }
   };
 
   let ticking = false;
@@ -378,8 +498,169 @@ function initScrollspy(signal) {
 }
 
 /* ============================================================
-   ONE-TIME GLOBAL: plasma flash + SPA router
+   ONE-TIME GLOBAL: steadicam + plasma flash + SPA router
    ============================================================ */
+
+/* Steadicam — inercia de rueda + travelling programático.
+   Scrollea con window.scrollTo real cada frame, así window.scrollY sigue
+   siendo la verdad: el scrub del portafolio, el scrollspy y el timeline de
+   servicios se alimentan de los eventos scroll nativos sin tocarlos.
+   Solo puntero fino (touch/iOS quedan 100% nativos) y sin reduced-motion.
+   Killswitch: SMOOTH_WHEEL = false deja el sitio exactamente como antes. */
+const SMOOTH_WHEEL = true;
+window.__scroll = (() => {
+  if (!SMOOTH_WHEEL) return null;
+  const CFG = { lerpWheel: 0.14, mult: 1.0 };
+  const fineQ = window.matchMedia('(pointer: fine)');
+  const reduceQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const st = {
+    target: 0, current: 0, lastWrite: -1, vel: 0,
+    raf: 0, lastT: 0, tween: null, max: 0, lerp: CFG.lerpWheel,
+  };
+  let engaged = false;
+
+  const measure = () => {
+    st.max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  };
+  const clampY = (y) => Math.min(st.max, Math.max(0, y));
+  const easeInOutExpo = (t) =>
+    t <= 0 ? 0 : t >= 1 ? 1 : t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2;
+
+  const stop = () => {
+    if (st.raf) cancelAnimationFrame(st.raf);
+    st.raf = 0; st.lastT = 0; st.vel = 0;
+  };
+
+  const frame = (now) => {
+    st.raf = 0;
+    const dt = st.lastT ? Math.min(64, now - st.lastT) : 16.7;
+    st.lastT = now;
+
+    // adopt-on-mismatch: alguien más scrolleó (teclado, barra, find-in-page,
+    // focus, router) → el motor adopta esa posición y cede el control
+    if (st.lastWrite >= 0 && Math.abs(window.scrollY - st.lastWrite) > 1) {
+      st.current = st.target = clampY(window.scrollY);
+      st.tween = null;
+      stop();
+      return;
+    }
+
+    let next;
+    if (st.tween) {
+      const tw = st.tween;
+      const t = Math.min(1, (now - tw.t0) / tw.dur);
+      next = tw.from + (tw.to - tw.from) * easeInOutExpo(t);
+      if (t >= 1) { st.tween = null; st.target = tw.to; next = tw.to; }
+    } else {
+      // lerp independiente de framerate (crítico en pantallas 120Hz)
+      const alpha = 1 - Math.pow(1 - st.lerp, dt / 16.7);
+      next = st.current + (st.target - st.current) * alpha;
+      if (Math.abs(st.target - next) < 0.5) next = st.target;
+    }
+
+    st.vel = (next - st.current) / Math.max(1, dt);
+    st.current = next;
+    window.scrollTo({ top: next, behavior: 'instant' });
+    st.lastWrite = window.scrollY;
+
+    if (st.tween || st.current !== st.target) {
+      st.raf = requestAnimationFrame(frame);
+    } else {
+      stop();
+    }
+  };
+  const start = () => { if (!st.raf) { st.lastT = 0; st.raf = requestAnimationFrame(frame); } };
+
+  const onWheel = (e) => {
+    if (e.ctrlKey || e.metaKey || e.defaultPrevented) return;        // pinch-zoom
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;             // scroll horizontal
+    if (e.target instanceof Element && e.target.closest('textarea')) return; // scroll propio
+
+    // Trackpad: se deja 100% nativo. macOS ya trae su propia inercia y
+    // rebote elástico — pelear frame a frame contra su fase de momentum
+    // (que en Safari llega en eventos no cancelables: nuestro preventDefault
+    // no hace nada y el navegador sigue moviendo el scroll por su cuenta a
+    // la vez que nuestro motor también lo mueve) es justo lo que dejaba el
+    // trackpad trabado tras bajar y subir varias veces. El suavizado propio
+    // solo aporta con la rueda de muescas clásica, que nativamente scrollea
+    // a saltos.
+    if (e.deltaMode === 0 && (Math.abs(e.deltaY) < 40 || !Number.isInteger(e.deltaY))) return;
+
+    let dy = e.deltaY;
+    if (e.deltaMode === 1) dy *= 16;
+    else if (e.deltaMode === 2) dy *= window.innerHeight;
+
+    measure();
+    if (Math.abs(window.scrollY - st.lastWrite) > 1) st.current = st.target = clampY(window.scrollY);
+
+    e.preventDefault();
+    st.tween = null; // el usuario siempre gana sobre un travelling en curso
+    st.target = clampY(st.target + dy * CFG.mult);
+    start();
+  };
+
+  const engage = () => {
+    if (engaged) return;
+    engaged = true;
+    document.documentElement.classList.add('has-steadicam');
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('resize', measure);
+    measure();
+    st.current = st.target = window.scrollY;
+    st.lastWrite = -1;
+  };
+  const disengage = () => {
+    if (!engaged) return;
+    engaged = false;
+    document.documentElement.classList.remove('has-steadicam');
+    window.removeEventListener('wheel', onWheel);
+    window.removeEventListener('resize', measure);
+    st.tween = null;
+    stop();
+  };
+  const evalGate = () => { (fineQ.matches && !reduceQ.matches) ? engage() : disengage(); };
+  fineQ.addEventListener?.('change', evalGate);
+  reduceQ.addEventListener?.('change', evalGate);
+  evalGate();
+
+  return {
+    get vel() { return st.vel; },
+    get engaged() { return engaged; },
+    // travelling dirigido: duración escalada por distancia, llegada en seda
+    to(y) {
+      measure();
+      const to = clampY(y);
+      if (!engaged) { window.scrollTo({ top: to, behavior: 'smooth' }); return; }
+      if (Math.abs(window.scrollY - st.lastWrite) > 1) st.current = window.scrollY;
+      st.target = to;
+      const dist = Math.abs(to - st.current);
+      st.tween = { from: st.current, to, t0: performance.now(), dur: Math.min(1200, Math.max(550, dist / 2.2)) };
+      st.lastWrite = window.scrollY;
+      start();
+    },
+    // corte seco: resets del router, popstate
+    jump(y) {
+      st.tween = null;
+      stop();
+      window.scrollTo({ top: y, behavior: 'instant' });
+      st.lastWrite = window.scrollY;
+      st.current = st.target = st.lastWrite;
+    },
+  };
+})();
+
+const scrollToY = (y) =>
+  window.__scroll ? window.__scroll.to(y) : window.scrollTo({ top: y, behavior: 'smooth' });
+const jumpToY = (y) =>
+  window.__scroll ? window.__scroll.jump(y) : window.scrollTo({ top: y, behavior: 'instant' });
+// posición de layout del elemento — ignora transforms (un .reveal aún no
+// activado está corrido 24px por su translateY y ensuciaría el aterrizaje)
+const layoutTop = (el) => {
+  let y = 0;
+  for (; el; el = el.offsetParent) y += el.offsetTop;
+  return y;
+};
 
 // Plasma flare on any button/link click (except in-page nav and portfolio rail)
 document.addEventListener('click', (e) => {
@@ -396,8 +677,21 @@ document.addEventListener('click', (e) => {
 
   const url = new URL(href, location.href);
   if (url.origin !== location.origin) return;          // external → let default
-  if (url.pathname === location.pathname) return;       // same page hash → native smooth scroll
+  if (url.pathname === renderedPath) {
+    // ancla in-page: con el steadicam activo el travelling es nuestro,
+    // con la misma curva que el rail (en touch/reduced sigue el nativo)
+    const target = url.hash && document.querySelector(url.hash);
+    if (target && window.__scroll?.engaged) {
+      e.preventDefault();
+      history.pushState({}, '', url.pathname + url.hash);
+      window.__scroll.to(layoutTop(target));
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+    }
+    return;
+  }
   if (!url.pathname.endsWith('.html')) return;          // not a page we own
+  if (isEnPath(url.pathname) !== isEnPath(location.pathname)) return; // crossing languages → full reload
 
   e.preventDefault();
   navigate(url.pathname + url.hash, true);
@@ -421,11 +715,19 @@ const onPreIntent = (e) => {
 document.addEventListener('mouseover', onPreIntent, { passive: true });
 document.addEventListener('touchstart', onPreIntent, { passive: true });
 
+// Página realmente renderizada en el DOM. En popstate location.pathname ya
+// cambió antes de que podamos swapear — comparar contra location dejaría el
+// DOM viejo con URL nueva (bug latente del router, ahora corregido).
+let renderedPath = location.pathname;
+
 async function navigate(dest, push) {
   const url = new URL(dest, location.href);
 
-  if (url.pathname === location.pathname) {
-    if (url.hash) document.querySelector(url.hash)?.scrollIntoView({ behavior: 'smooth' });
+  if (url.pathname === renderedPath) {
+    if (url.hash) {
+      const t = document.querySelector(url.hash);
+      if (t) scrollToY(layoutTop(t));
+    }
     return;
   }
   if (navigating) return;
@@ -447,11 +749,7 @@ async function navigate(dest, push) {
   const newPage = doc.getElementById('page');
   if (!newPage) { location.href = dest; return; }
 
-  const toLight = doc.body.classList.contains('plasma-light');
   const reduce = prefersReduced();
-
-  // Recolor the (persistent) plasma toward the destination theme
-  if (typeof window.__plasmaSetLight === 'function') window.__plasmaSetLight(toLight);
 
   // Crossfade the content only — the canvas keeps running underneath
   page.classList.add('is-leaving');
@@ -470,27 +768,37 @@ async function navigate(dest, push) {
       if (from.hasAttribute('href')) to.setAttribute('href', from.getAttribute('href'));
     }
   }
+  renderedPath = url.pathname;
   if (push) history.pushState({}, '', url.pathname + url.hash);
 
+  // aterrizaje siempre instantáneo: el corte de escena no se anima
   if (url.hash) {
     const target = document.querySelector(url.hash);
-    if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+    jumpToY(target ? layoutTop(target) : 0);
   } else {
-    window.scrollTo(0, 0);
+    jumpToY(0);
   }
 
   initPage();
   // move keyboard/screen-reader focus to the fresh content
   page.setAttribute('tabindex', '-1');
   page.focus({ preventScroll: true });
-  requestAnimationFrame(() => page.classList.remove('is-leaving'));
-  await wait(reduce ? 0 : 260);
+  // match cut en dos fases: fijar el estado de entrada (abajo, invisible)
+  // sin transición, y al frame siguiente soltar el asentamiento hacia arriba
+  page.classList.add('is-entering');
+  void page.offsetHeight;
+  page.classList.remove('is-leaving');
+  requestAnimationFrame(() => page.classList.remove('is-entering'));
+  await wait(reduce ? 0 : 300);
   // the view settled: filaments take a slow breath, the page feels alive
-  if (toLight && !reduce && typeof window.plasmaBreathe === 'function') window.plasmaBreathe();
+  if (!reduce && typeof window.plasmaBreathe === 'function') window.plasmaBreathe();
   navigating = false;
 }
 
-window.addEventListener('popstate', () => navigate(location.pathname + location.hash, false));
+window.addEventListener('popstate', () => {
+  window.__scroll?.jump(window.scrollY); // cancela cualquier travelling en curso
+  navigate(location.pathname + location.hash, false);
+});
 
 // First load
 initPage();

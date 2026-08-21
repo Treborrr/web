@@ -61,6 +61,7 @@ if (!gl) {
 
   window.plasmaButtonFlash = () => {};
   window.plasmaBreathe = () => {};
+  window.plasmaGrade = () => {};
   return;
 }
 
@@ -79,6 +80,9 @@ uniform vec2  uClick;
 uniform float uClickAge;   // seconds since last click; large = no click
 uniform float uGlobalBurst; // 0-1 global filament flare triggered by buttons
 uniform float uLight;       // 1.0 = light theme (filaments darken a near-white bg)
+uniform float uScroll;      // scroll suavizado en unidades de viewport (plano lejano)
+uniform vec3  uTint;        // etalonaje por escena: acento hacia el que vira la luz
+uniform float uTintAmt;     // 0 = respiración nativa cian-violeta, 1 = tinte pleno
 
 // hash / noise / fbm
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -128,8 +132,12 @@ void main() {
 
   float t = uTime;
   float e = 0.0;
-  e += filament(uv, 1.0, t)        * 0.8;
-  e += filament(uv * 0.8, 3.0, t)  * 0.7;
+  // parallax de dos capas: los filamentos derivan al 6-10% de la velocidad
+  // del contenido (la capa "cercana" viaja más) — fondo LEJOS, contenido CERCA.
+  // uv queda intacto para el glow del cursor y la viñeta: la protección de la
+  // columna de texto no se mueve.
+  e += filament(uv + vec2(0.0, -uScroll * 0.10), 1.0, t)        * 0.8;
+  e += filament(uv * 0.8 + vec2(0.0, -uScroll * 0.06), 3.0, t)  * 0.7;
 
   // extra energy near the cursor
   if (uMouseOn > 0.5) {
@@ -163,6 +171,11 @@ void main() {
   vec3 bg    = vec3(0.028, 0.03, 0.07);
   vec3 haze  = mix(vec3(0.45, 0.30, 0.85), vec3(0.30, 0.45, 0.90), breathe);
   vec3 core  = mix(vec3(0.42, 0.85, 0.98), vec3(0.75, 0.55, 1.00), breathe);
+  // etalonaje: solo cambia la temperatura de la luz, nunca la luminancia del
+  // fondo — la legibilidad no se mueve (tope duro 0.45/0.25)
+  float ta = uTintAmt * (1.0 - uLight);
+  haze = mix(haze, uTint, ta * 0.45);
+  core = mix(core, uTint, ta * 0.25);
   vec3 col = bg + haze * e * 0.35 + core * pow(e, 2.0) * 0.5;
 
   gl_FragColor = vec4(col, 1.0);
@@ -199,6 +212,9 @@ const uClick       = gl.getUniformLocation(prog, 'uClick');
 const uClickAge    = gl.getUniformLocation(prog, 'uClickAge');
 const uGlobalBurst = gl.getUniformLocation(prog, 'uGlobalBurst');
 const uLight       = gl.getUniformLocation(prog, 'uLight');
+const uScroll      = gl.getUniformLocation(prog, 'uScroll');
+const uTint        = gl.getUniformLocation(prog, 'uTint');
+const uTintAmt     = gl.getUniformLocation(prog, 'uTintAmt');
 
 // Theme is eased toward its target so SPA navigation morphs dark <-> light
 // smoothly while the filaments keep their exact phase (canvas never reloads).
@@ -218,6 +234,35 @@ const breath = { at: -1e9 };
 window.plasmaButtonFlash = () => { globalBurst.at = performance.now(); };
 // Slow breathing pulse — filaments swell and settle, like the page inhales
 window.plasmaBreathe = () => { breath.at = performance.now(); };
+
+// Etalonaje por escena: la luz vira hacia un acento con cross-dissolve de ~2s.
+// plasmaGrade('#ff79c6') tiñe; plasmaGrade(null) devuelve la respiración nativa.
+const grade = { r: 0.5, g: 0.5, b: 0.9, tr: 0.5, tg: 0.5, tb: 0.9, amt: 0, tAmt: 0 };
+function parseHex(hex) {
+  if (typeof hex !== 'string') return null;
+  const m = hex.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (!m) return null;
+  let h = m[1];
+  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  return {
+    r: parseInt(h.slice(0, 2), 16) / 255,
+    g: parseInt(h.slice(2, 4), 16) / 255,
+    b: parseInt(h.slice(4, 6), 16) / 255,
+  };
+}
+window.plasmaGrade = (hex) => {
+  const c = parseHex(hex);
+  if (c) { grade.tr = c.r; grade.tg = c.g; grade.tb = c.b; grade.tAmt = 1; }
+  else grade.tAmt = 0;
+  if (reducedMotion) {
+    grade.r = grade.tr; grade.g = grade.tg; grade.b = grade.tb; grade.amt = grade.tAmt;
+    render(performance.now());
+  }
+};
+
+// Plano lejano: scroll suavizado con lerp propio (en touch, donde no hay
+// steadicam, esta inercia es la que da la sensación de peso al fondo)
+let scrollCur = 0;
 
 function pointTo(x, y) {
   if (!mouse.active) { mouse.sx = x; mouse.sy = y; }
@@ -296,6 +341,14 @@ function render(now) {
   gl.uniform1f(uGlobalBurst, flash + bEnv);
   lightCur += (lightTarget - lightCur) * 0.06;
   gl.uniform1f(uLight, lightCur);
+  scrollCur += (window.scrollY / window.innerHeight - scrollCur) * 0.08;
+  gl.uniform1f(uScroll, scrollCur);
+  grade.r += (grade.tr - grade.r) * 0.025;
+  grade.g += (grade.tg - grade.g) * 0.025;
+  grade.b += (grade.tb - grade.b) * 0.025;
+  grade.amt += (grade.tAmt - grade.amt) * 0.025;
+  gl.uniform3f(uTint, grade.r, grade.g, grade.b);
+  gl.uniform1f(uTintAmt, grade.amt);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 
@@ -312,6 +365,12 @@ if (reducedMotion) {
   render(performance.now());
 } else {
   frame();
+}
+
+// etalonaje que main.js dejó pendiente antes de que este módulo cargara
+if ('__gradeWanted' in window) {
+  window.plasmaGrade(window.__gradeWanted);
+  delete window.__gradeWanted;
 }
 
 })();

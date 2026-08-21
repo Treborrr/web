@@ -32,18 +32,9 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kdam+Thmor+Pro&family=Fira+Code:wght@400;500&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="../src/css/style.css">
-  <script>
-    // Transición de inversión al llegar desde la home oscura
-    (function () {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var h = document.documentElement;
-      h.classList.add('pi-enter');
-      h.addEventListener('animationend', function (e) { if (e.animationName === 'page-fade-enter') h.classList.remove('pi-enter'); });
-    })();
-  </script>
 </head>
 
-<body class="svc-page plasma-light" style="--svc-accent: #c2410c; --svc-accent-soft: rgba(194, 65, 12, 0.12);">
+<body class="svc-page" style="--svc-accent: #c2410c; --svc-accent-soft: rgba(194, 65, 12, 0.12);">
   <div id="page">
   <div class="svc-container">
 
@@ -78,21 +69,21 @@
       </div>
       <p class="svc-sec-sub">No son casos raros. Pasan todo el tiempo, y casi siempre podían haberse evitado.</p>
 
-      <div class="svc-pain">
+      <div class="svc-pain reveal">
         <span class="svc-pain-idx">/01</span>
         <h3>Un solo punto de falla que nadie ve venir</h3>
         <p>Un disco dañado, un virus, un robo, un cortocircuito. Cualquiera de esos eventos borra años de
           información en cuestión de minutos si todo vive en una sola máquina. Sin respaldo no hay recuperación,
           y muchas empresas lo descubren cuando ya es demasiado tarde.</p>
       </div>
-      <div class="svc-pain">
+      <div class="svc-pain reveal">
         <span class="svc-pain-idx">/02</span>
         <h3>Accesos que nunca se controlan</h3>
         <p>Cuando todos comparten la misma contraseña o el mismo archivo, no existe forma de saber quién vio qué,
           quién cambió algo, ni quién borró un registro importante. Un ex empleado con acceso a tu sistema es una
           vulnerabilidad que puede costar más que todo lo que le pagaste mientras trabajó contigo.</p>
       </div>
-      <div class="svc-pain">
+      <div class="svc-pain reveal">
         <span class="svc-pain-idx">/03</span>
         <h3>La operación se para cuando menos lo esperas</h3>
         <p>Si el sistema vive en una computadora de tu local, un corte de luz, una falla de internet o un problema
@@ -109,29 +100,29 @@
       <p class="svc-sec-sub">Infraestructura en la nube pensada para tu tamaño de empresa, no para una corporación.</p>
 
       <div class="svc-bento">
-        <article class="b-lg">
+        <article class="b-lg reveal">
           <span class="b-tag">lo más importante</span>
           <h3>Respaldos que funcionan solos, todos los días</h3>
           <p>No basta con configurar copias automáticas y cruzar los dedos. Yo simulo una pérdida real y restauro
             tus datos frente a ti, para que veas con tus propios ojos que el día que esto pase de verdad, tu empresa
             no se detiene. Esa prueba es la diferencia entre tener un respaldo y saber que funciona.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Cada persona ve solo lo que le corresponde</h3>
           <p>Tú ves todo desde tu celular. Cada miembro del equipo accede solo a su área. Cuando alguien sale de la
             empresa, su acceso se cierra en un minuto.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Tu sistema en línea 24 horas, sin depender de tu local</h3>
           <p>Infraestructura sobre proveedores probados como AWS, Railway y Supabase. Un corte de luz en tu oficina
             no afecta nada.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Pagas por lo que usas, nada más</h3>
           <p>Empiezas con lo mínimo necesario y escalas cuando tu operación lo pida. No compras capacidad que va a
             estar ociosa meses.</p>
         </article>
-        <article class="b-md">
+        <article class="b-md reveal">
           <h3>Todo queda en tus manos, no en las mías</h3>
           <p>Las cuentas, los servidores y los accesos son de tu empresa desde el primer día. No quedas atado a mí
             si el día de mañana decides trabajar con otra persona.</p>
@@ -147,22 +138,23 @@
       <p class="svc-sec-sub">Tu operación no se detiene mientras hacemos la transición. Eso es innegociable.</p>
 
       <div class="svc-flow">
-        <div class="svc-flow-item">
+        <div class="svc-flow-fill" aria-hidden="true"></div>
+        <div class="svc-flow-item reveal">
           <h3>Primero entiendo tu situación real <span class="svc-flow-tag">gratis, 30 minutos</span></h3>
           <p>Reviso dónde vive tu información hoy y qué pasaría si mañana falla algo. Te digo los riesgos sin
             tecnicismos, en tu idioma, sin compromiso de continuar.</p>
         </div>
-        <div class="svc-flow-item">
+        <div class="svc-flow-item reveal">
           <h3>Diseño la arquitectura a tu tamaño <span class="svc-flow-tag">según tu operación</span></h3>
           <p>Nube no significa caro. Significa bien dimensionado. Elijo los servicios correctos para lo que tu
             empresa necesita hoy, con margen para crecer mañana.</p>
         </div>
-        <div class="svc-flow-item">
+        <div class="svc-flow-item reveal">
           <h3>La migración pasa por detrás <span class="svc-flow-tag">sin interrumpir tu día a día</span></h3>
           <p>Mientras yo preparo la infraestructura en la nube, tu equipo sigue trabajando exactamente igual.
             El cambio ocurre sin que nadie tenga que parar.</p>
         </div>
-        <div class="svc-flow-item">
+        <div class="svc-flow-item reveal">
           <h3>Pruebo que funciona antes de cerrar <span class="svc-flow-tag">frente a ti</span></h3>
           <p>Simulo una falla real y restauro tus datos mientras tú miras. Solo cuando ves que la recuperación
             funciona de verdad, damos el proyecto por terminado.</p>
@@ -244,7 +236,7 @@
       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" />
     </svg>
-    Hablemos
+    <span class="svc-fab-text">Hablemos</span>
   </a>
   </div>
   <script src="../src/js/main.js" defer></script>
