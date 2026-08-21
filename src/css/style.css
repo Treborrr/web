@@ -1944,6 +1944,59 @@ nav {
 }
 
 /* ============================================================
+   EMPRESAS — client logo marquee (same seamless-loop mechanic as
+   .tech-marquee, bare logos instead of pills)
+   ============================================================ */
+.clients-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 42px 0;
+}
+
+.clients-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
+}
+
+.clients-set {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  padding-right: 64px;
+}
+
+.client-logo {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  filter: invert(1);
+  opacity: 0.55;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease, filter 0.35s ease;
+}
+
+/* Spotlight — hovering the row mutes the rest so the one logo you're
+   pointing at gets the attention (same idea as .card-icon's hover lift). */
+.clients-set:hover .client-logo:not(:hover) {
+  opacity: 0.3;
+}
+
+.client-logo:hover {
+  opacity: 1;
+  transform: translateY(-3px) scale(1.08);
+  filter: invert(1) drop-shadow(0 6px 18px rgba(189, 147, 249, 0.45));
+}
+
+@media (max-width: 768px) {
+  .clients-marquee { padding: 32px 0; }
+  .clients-set { gap: 42px; padding-right: 42px; }
+  .client-logo { height: 30px; }
+}
+
+/* ============================================================
    NAV — active pill on mobile dock
    ============================================================ */
 
@@ -1999,6 +2052,7 @@ textarea:focus-visible {
     scroll-behavior: auto !important;
   }
   .tech-track { animation: none !important; }
+  .clients-track { animation: none !important; }
   .cursor { animation: none; opacity: 1; }
 }
 
