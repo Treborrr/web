@@ -20,4 +20,20 @@
     <loc>https://robertalvarado.biz/proyectos/</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://robertalvarado.biz/en/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://robertalvarado.biz/en/services/operational-analysis.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://robertalvarado.biz/en/services/digitalization.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://robertalvarado.biz/en/services/cloud-security.html</loc>
+    <priority>0.9</priority>
+  </url>
 </urlset>
